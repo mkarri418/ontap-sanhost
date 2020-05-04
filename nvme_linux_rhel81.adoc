@@ -1,0 +1,286 @@
+---
+sidebar: sidebar
+permalink: nvme_linux_rhel81.html
+keywords: nvme, linux, rhel, red hat, enterprise
+summary: Sunshine
+---
+
+= NVMe Host Configuration for Red Had Enterprise Linux with ONTAP
+:toc: macro
+:hardbreaks:
+:toclevels: 1
+:nofooter:
+:icons: font
+:linkattrs:
+:imagesdir: ./media/
+
+==	Supportability
+FC-NVME is supported on ONTAP 9.6 or later for the following versions of RHEL:
+
+*	RHEL 8.1
+
+RHEL initiator host can run both FC-NVMe & FC-SCSI traffic through the same adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported adapters and controllers.
+For the most current list of supported configurations see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
+
+==	Known limitations
+*	Native FC-NVMe auto-connect scripts are not available.
++
+You can use the HBA vendor provided external scripts instead.
+*	By default, NVMe multipath is disabled.
++
+It must be manually enabled.
+*	By default, round-robin load balancing is not available.
++
+Steps to write a udev rule for this functionality are provided in the section on Enabling NVMe.
+
+==	Enabling NVMe on RHEL
+
+.Steps
+.	Install Red Hat Enterprise Linux on the server.
+
+.	After the installation is complete, verify that you are running with the specified Red Hat Enterprise Linux kernel. See the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix] for a current list supported versions.
++
+`*# cat/etc/redhat-release*`
+`Red Hat Enterprise Linux Server release x.x`
+
+.	Verify that the nvme-cli package is installed.
++
+`*# rpm -qa|grep nvme-cli*`
+`nvme-cli-1.8.1-3.el8.x86_64`
+
+.	Enable in-kernel NVMe multipath.
++
+`*# grubby –args=nvme_core.multipath=Y –update-kernel /boot/vmlinuz-4.18.0-147.el8.x86_64*`
+
+.	Add the string below as a separate udev rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules. This enables round-robin load balancing for NVMe multipath.
++
+`*# Enable round-robin for NetApp ONTAP ACTION==”add”, SUBSYSTEM==”nvme-subsystem”, ATTR{model}==”NetApp ONTAP Controller”, ATTR{iopolicy}=”round-robin*`
+
+.	Reboot.
+
+== Configuring the Broadcom FC Adapter for NVMe
+
+.	Verify that you are using the supported adapter. For the most current list of supported adapters see the NetApp Interoperability Matrix.
++
+`*# cat /sys/class/scsi_host/host*/modelname*`
+`LPe32002-M2`
+`LPe32002-M2`
++
+`*# cat /sys/class/scsi_host/host*/modeldesc*`
+`Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter`
+`Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter`
+
+.	Verify that you are using the recommended LPFC firmware and driver versions.
++
+`*# cat /sys/class/scsi_host/host*/fwrev*`
+`12.4.243.17, sil-4.2.c`
+`12.4.243.17, sil-4.2.c`
+
+.	Verify that lpfc_enable_fc4_type is set to 3.
++
+`*# cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type*`
+
+.	If lpfc_enable_fc4_type is not set to 3 do the following:
+
+..	Go into /etc/modprobe.d/lpfc.conf and set it to 3.
++
+`*# cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type 3*`
+
+..	Run dracut -f and reboot the host.
+
+..	Verify that that lpfc_enable_fc4_type is set to 3.
++
+`*# cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type*`
+
+.	Copy and install the LPFC outbox driver and auto-connect scripts.
++
+`*# tar -xvzf elx-lpfc-dd-rhel8-12.4.243.20-ds-1.tar.gz*`
+`*# cd elx-lpfc-dd-rhel8-12.4.253.20-ds-1*`
+`*# ./elx_lpfc_install-sh -i -n*`
++
+*Note:*  Autoconnect scripts are included with the drivers for the OS release. These are called inbox drivers.  If you download the off-box drivers (drivers that are not included with the OS release), an autoconnect script is included in the download and should be installed as part of the driver and firmware installation process.
+
+.	Reboot the host
+
+.	Verify that the recommended LPFC outbox driver and auto-connect scripts are installed.
++
+`*# cat/sys/module/lpfc/version*`
+`0:12.4.243.20`
++
+`*# rpm -qa \ grep nvmefc*`
+`nvmefc-connect-12.4.65.0-1.noarch`
+
+.	Verify that the initiator ports are up and running.
++
+`*# cat /sys/class/fc_host/host*/port_name*`
+`0x10000090fae0ec61`
+`0x10000090fae0ec62`
++
+`*# cat /sys/class/fc_host/host*/port_state*`
+`Online`
+`Online`
+
+.	Verify that the NVMe/FC initiator ports are enabled, running and able to see the target LIFs.
++
+`*# cat /sys/class/scsi_host/host*/nvme_info*`
+`NVME Initiator Enabled`
+`XRI Dist lpfc0 Total 6144 NVME 2947 SCSI 2977 ELS 250`
+`NVME LPORT lpfc0 WWPN x10000090fae0ec61 WWNN x20000090fae0ec61 DID x012000 ONLINE`
+`NVME RPORT WWPN x202d00a098c80f09 WWNN x202c00a098c80f09 DID x010201 TARGET DISCSRVC ONLINE`
+`NVME RPORT WWPN x203100a098c80f09 WWNN x202c00a098c80f09 DID x010601 TARGET DISCSRVC ONLINE`
+`NVME Statistics`
+`...`
+
+.	Verify that the namespaces are created.
++
+`*# nvme list*`
+`Node SN Model Namespace Usage Format FW Rev`
+`---------------- -------------------- -----------------------`
+`/dev/nvme0n1 80BADBKnB/JvAAAAAAAC NetApp ONTAP Controller 1 128.85 GB / 128.85 GB 4 KiB + 0 B FFFFFFFF`
+
+.	Verify the status of the ANA paths.
++
+`*# nvme list-subsys/dev/nvme0n1*`
+`Nvme-subsysf0 – NQN=nqn.1992-08.com.netapp:sn.341541339b9511e8a9b500a098c80f09:subsystem.rhel_141_nvme_ss_10_0`
+`\`
+`+- nvme0 fc traddr=nn-0x202c00a098c80f09:pn-0x202d00a098c80f09 host_traddr=nn-0x20000090fae0ec61:pn-0x10000090fae0ec61 live optimized`
+`+- nvme1 fc traddr=nn-0x207300a098dfdd91:pn-0x207600a098dfdd91 host_traddr=nn-0x200000109b1c1204:pn-0x100000109b1c1204 live inaccessible`
+`+- nvme2 fc traddr=nn-0x207300a098dfdd91:pn-0x207500a098dfdd91 host_traddr=nn-0x200000109b1c1205:pn-0x100000109b1c1205 live optimized`
+`+- nvme3 fc traddr=nn-0x207300a098dfdd91:pn-0x207700a098dfdd91 host traddr=nn-0x200000109b1c1205:pn-0x100000109b1c1205 live inaccessible`
+
+==	Validating FC-NVMe
+
+.	Verify the following settings.
++
+`*# cat /sys/module/nvme_core/parameters/multipath*`
+`Y`
++
+`*# cat /sys/class/nvme-subsystem/nvme-subsys*/model*`
+`NetApp ONTAP Controller`
+`NetApp ONTAP Controller`
++
+`*# cat /sys/class/nvme-subsystem/nvme-subsys*/iopolicy*`
+`round-robin`
+`round-robin`
+
+.	Verify the NetApp plug-in for ONTAP devices.
++
+`*# nvme netapp ontapdevices -o column*`
+`Device   Vserver  Namespace Path             NSID   UUID   Size`
+`-------  -------- -------------------------  ------ ----- -----`
+`/dev/nvme0n1   vs_nvme_10       /vol/rhel_141_vol_10_0/rhel_141_ns_10_0    1        55baf453-f629-4a18-9364-b6aee3f50dad   53.69GB`
+`/dev/nvme0n2   vs_nvme_10       /vol/rhel_141_vol_10_0/rhel_141_ns_10_1    2        0294a714-152d-43fd-afd2-e7fc196c54b9   5.37GB`
+`/dev/nvme1n1   vs_nvme_10       /vol/rhel_141_vol_10_0/rhel_141_ns_10_2    1        a2fefdc1-e49b-4786-b54a-8e1f878f3f84     5.37GB`
+`...`
++
+`*# nvme netapp ontapdevices -o json*`
+`{`
+   `"ONTAPdevices" : [`
+   `{`
+        `Device" : "/dev/nvme0n1",`
+        `"Vserver" : "vs_nvme_10",`
+        `"Namespace_Path" : "/vol/rhel_141_vol_10_0/rhel_141_ns_10_0",`
+         `"NSID" : 1,`
+         `"UUID" : "55baf453-f629-4a18-9364-b6aee3f50dad",`
+         `"Size" : "53.69GB",`
+         `"LBA_Data_Size" : 4096,`
+         `"Namespace_Size" : 13107200`
+    `},`
+   `{`
+         `"Device" : "/dev/nvme0n2",`
+         `"Vserver" : "vs_nvme_10",`
+         `"Namespace_Path" : "/vol/rhel_141_vol_10_0/rhel_141_ns_10_1",`
+         `"NSID" : 2,`
+         `"UUID" : "0294a714-152d-43fd-afd2-e7fc196c54b9",`
+         `"Size" : "5.37GB",`
+         `"LBA_Data_Size" : 4096,`
+         `"Namespace_Size" : 1310720`
+    `},`
+   `{`
+         `"Device" : "/dev/nvme1n1",`
+         `"Vserver" : "vs_nvme_10",`
+         `"Namespace_Path" : "/vol/rhel_141_vol_10_0/rhel_141_ns_10_2",`
+         `"NSID" : 1,`
+         `"UUID" : "a2fefdc1-e49b-4786-b54a-8e1f878f3f84",`
+         `"Size" : "5.37GB",`
+          `"LBA_Data_Size" : 4096,`
+          `"Namespace_Size" : 1310720`
+   `}`
+`]`
+`...`
++
+`*# nvme netapp ontapdevices*`
+`/dev/nvme0n1, Vserver vs_nvme_10, Namespace Path /vol/rhel_141_vol_10_0/rhel_141_ns_10_0, NSID 1, UUID 55baf453-f629-4a18-9364-b6aee3f50dad, Size 53.69GB`
+`/dev/nvme0n2, Vserver vs_nvme_10, Namespace Path /vol/rhel_141_vol_10_0/rhel_141_ns_10_1, NSID 2, UUID 0294a714-152d-43fd-afd2-e7fc196c54b9, Size 5.37GB`
+`/dev/nvme1n1, Vserver vs_nvme_10, Namespace Path /vol/rhel_141_vol_10_0/rhel_141_ns_10_2, NSID 1, UUID a2fefdc1-e49b-4786-b54a-8e1f878f3f84, Size 5.37GB`
+
+.	On the RHEL 8.1 host, check the hostnqn string at /etc/nvme/hostnqn and verify that it matches the hostnqn string for the corresponding subsystem on the ONTAP array.
++
+`*# cat /etc/nvme/hostnqn*`
++
+`nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd`
++
+`**> vserver nvme subsystem host show -vserver vs_nvme_10*`
+`Vserver Subsystem Host NQN`
+`------- --------- -------------------------------------- -----------`
+`rhel_141_nvme_ss_10_0`
+`nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd`
+
+==	Enabling 1MB I/O Size
+
+The lpfc_sg_seg_cnt parameter must be set to 256 in order for the host to issue 1MB size I/O.
+
+.	 Set the lpfc_sg_seg_cnt parameter to 256.
++
+`*# cat /etc/modprobe.d/lpfc.conf*`
+`options lpfc lpfc_sg_seg_cnt=256`
+
+.	Run a 'dracut -f' command, and reboot the host.
+
+.	Verify that lpfc_sg_seg_cnt is 256.
++
+`*# cat /sys/module/lpfc/parameters/lpfc_sg_seg_cnt*`
+`256`
+
+== Verbose Logging
+
+=== LPFC verbose logging
+
+.	You can set the lpfc_log_verbose driver setting to any of the following values to log FC-NVMe events.
++
+`#define LOG_NVME 0x00100000 /* NVME general events. */`
+`#define LOG_NVME_DISC 0x00200000 /* NVME Discovery/Connect events. */`
+`#define LOG_NVME_ABTS 0x00400000 /* NVME ABTS events. */`
+`#define LOG_NVME_IOERR 0x00800000 /* NVME IO Error events. */`
+
+.	After setting any of these values, run dracut-f and reboot host.
+
+.	After rebooting, verify the settings.
++
+`*# cat /etc/modprobe.d/lpfc.conf*`
+`lpfc_enable_fc4_type=3 lpfc_log_verbose=0xf00083`
++
+`*# cat /sys/module/lpfc/parameters/lpfc_log_verbose*`
+`15728771`
+
+=== QLogic verbose logging
+
+.	Set the general Qlogic logging level. There is no specific logging for FC-NVMe.
++
+`*# cat /etc/modprobe.d/qla2xxx.conf*`
+`options qla2xxx ql2xnvmeenable=1 ql2xextended_error_logging=0x1e400000`
+
+.	Run dracut-f and reboot host.
+
+.	After rebooting, verify the settings.
++
+`*# cat /sys/module/qla2xxx/parameters/ql2xextended_error_logging*`
+`507510784`
+
+==	Known Issues
+
+[options="header" width="80%"]
+|=======
+|Bug ID |Description
+|link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1255441[1255441] |Unable to blacklist NVMe devices in dm-multipath
+|=======
