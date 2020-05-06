@@ -5,7 +5,7 @@ keywords: nvme, linux, rhel, red hat, enterprise
 summary: Sunshine
 ---
 
-= NVMe Host Configuration for Red Had Enterprise Linux with ONTAP
+= NVMe Host Configuration for RHEL 8.1 with ONTAP
 :toc: macro
 :hardbreaks:
 :toclevels: 1
