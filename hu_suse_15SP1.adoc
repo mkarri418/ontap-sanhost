@@ -1,0 +1,84 @@
+---
+sidebar: sidebar
+permalink: hu_suse_15SP1.html
+keywords: host utilities, suse, linux, enterprise, server, 15, SP1, netapp, ontap
+summary: Describes how to use SUSE Linux Enterprise Server 15 SP1 with ONTAP
+---
+
+= Using SUSE Linux Enterprise Server 15 SP1 with ONTAP
+:toc: macro
+:hardbreaks:
+:toclevels: 1
+:nofooter:
+:icons: font
+:linkattrs:
+:imagesdir: ./media/
+
+== Installing the Linux Unified Host Utilities
+
+include::_include/hu_installing_luhu_with32.adoc[]
+
+== SAN Toolkit
+
+include::_include/hu_san_toolkit.adoc[]
+
+== SAN Booting
+
+.Before you begin
+If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=86309;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+
+include::_include/hu_san_booting_steps.adoc[]
+
+== Multipathing
+
+For Oracle  Linux 7.6 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.6 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+
+include::_include/hu_multipathing.adoc[]
+
+include::_include/hu_asa_configuration.adoc[]
+
+----
+// Insert example
+----
+
+include::_include/hu_asa_configuration_note.adoc[]
+
+include::_include/hu_non_asa_configuration.adoc[]
+
+----
+// Insert example
+----
+
+include::_include/hu_asa_configuration_note.adoc[]
+
+== Recommended Settings
+
+The Oracle Linux 7.6 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+include::_include/hu_recommended_settings.adoc[]
+
+
+[cols=2*,options="header"]
+|===
+| Parameter
+| Setting
+| Insert Parameter | Insert Setting
+| vendor | NETAPP
+|===
+
+.Example
+
+The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
+
+----
+// Insert example
+----
+
+== Known Problems and Limitations
+
+[cols=4*,options="header"]
+|===
+| NetApp Bug ID
+| Title
+| Description
+| Bugzilla ID
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1202736[1202736]B | Title | Description | BugzillaID

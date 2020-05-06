@@ -6,7 +6,7 @@ entries:
     - title: RHEL
       entries:
       - title: 8.1
-        url: /nvme_linux_rhel81.html
+        url: /nvme_rhel_81.html
   - title: FC/iSCSI Host Utilities
     entries:
     - title: RHEL
@@ -14,68 +14,68 @@ entries:
       - title: RHEL 8
         entries:
         - title: 8.1
-          url: /hu_rhel81.html
+          url: /hu_rhel_81.html
         - title: 8.0
-          url: /hu_rhel80.html
+          url: /hu_rhel_80.html
       - title: RHEL 7
         entries:
         - title: 7.7
-          url: /hu_rhel77.html
+          url: /hu_rhel_77.html
         - title: 7.6
-          url: /hu_rhel76.html
+          url: /hu_rhel_76.html
         - title: 7.5
-          url: /hu_rhel75.html
+          url: /hu_rhel_75.html
         - title: 7.4
-          url: /hu_rhel74.html
+          url: /hu_rhel_74.html
         - title: 7.3
-          url: /hu_rhel73.html
+          url: /hu_rhel_73.html
         - title: 7.2
-          url: /hu_rhel72.html
+          url: /hu_rhel_72.html
         - title: 7.1
-          url: /hu_rhel71.html
+          url: /hu_rhel_71.html
         - title: 7.0
-          url: /hu_rhel70.html
+          url: /hu_rhel_70.html
       - title: RHEL 6
         entries:
         - title: 6.10
-          url: /hu_rhel610.html
+          url: /hu_rhel_610.html
         - title: 6.9
-          url: /hu_rhel69.html
+          url: /hu_rhel_69.html
         - title: 6.8
-          url: /hu_rhel68.html
+          url: /hu_rhel_68.html
         - title: 6.7
-          url: /hu_rhel67.html
+          url: /hu_rhel_67.html
         - title: 6.6
-          url: /hu_rhel66.html
+          url: /hu_rhel_66.html
         - title: 6.5
-          url: /hu_rhel65.html
+          url: /hu_rhel_65.html
         - title: 6.4
-          url: /hu_rhel64.html
+          url: /hu_rhel_64.html
     - title: SUSE
       entries:
       - title: SUSE 15
         entries:
         - title: 15
-          url: /hu_suse15.html
+          url: /hu_suse_15.html
         - title: 15 SP1
-          url: /hu_suse15SP1.html
+          url: /hu_suse_15SP1.html
       - title: SUSE 12
         entries:
         - title: 12
-          url: /hu_suse12.html
+          url: /hu_suse_12.html
         - title: 12 SP 5
-          url: /hu_suse12SP5.html
+          url: /hu_suse_12SP5.html
         - title: 12 SP 4
-          url: /hu_suse12SP4.html
+          url: /hu_suse_12SP4.html
         - title: 12 SP 3
-          url: /hu_suse12SP3.html
+          url: /hu_suse_12SP3.html
         - title: 12 SP 2
-          url: /hu_suse12SP2.html
+          url: /hu_suse_12SP2.html
         - title: 12 SP 1
-          url: /hu_suse12SP1.htmll
+          url: /hu_suse_12SP1.htmll
     - title: Oracle Linux
       entries:
-      - title: 7
+      - title: OL 7
         entries:
         - title: 7.6
-          url: /hu_ol76.html
+          url: /hu_ol_76.html

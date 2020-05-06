@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar
-permalink: hu_ol76.html
+permalink: hu_ol_76.html
 keywords: host utilities, oracle, linux, 7.6, netapp, ontap
 summary: Sunshine
 ---
