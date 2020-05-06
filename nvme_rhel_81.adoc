@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar
-permalink: nvme_linux_rhel81.html
+permalink: nvme_rhel_81.html
 keywords: nvme, linux, rhel, red hat, enterprise
 summary: Sunshine
 ---
