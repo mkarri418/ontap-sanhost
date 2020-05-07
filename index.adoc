@@ -2,7 +2,7 @@
 sidebar: sidebar
 permalink: index.html
 keywords: ontap, san, host, rhel, red, hat, linux, sles, suse,
-summary: SAN Host Doucmentation
+summary: SAN Host Documentation
 ---
 
 = SAN Host Documentation
