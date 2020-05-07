@@ -1,0 +1,16 @@
+---
+sidebar: sidebar
+permalink: index.html
+keywords: ontap, san, host, rhel, red, hat, linux, sles, suse,
+summary: SAN Host Documentation
+---
+
+= SAN Host Documentation
+:hardbreaks:
+:nofooter:
+:icons: font
+:linkattrs:
+:imagesdir: ./media/
+
+[.lead]
+Something about hosts...
