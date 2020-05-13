@@ -16,45 +16,45 @@ summary: Describes how to use Red Hat Enterprise Linux 8.0 with ONTAP
 
 == Installing the Linux Unified Host Utilities
 
-include::_include/hu/hu_installing_luhu_with32.adoc[]
+include::_include/hu/reuse_hu_installing_luhu_with32.adoc[]
 
 == SAN Toolkit
 
-include::_include/hu/hu_san_toolkit.adoc[]
+include::_include/hu/reuse_hu_san_toolkit.adoc[]
 
 == SAN Booting
 
 .Before you begin
 If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=86309;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
-include::_include/hu/hu_san_booting_steps.adoc[]
+include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
 For Oracle  Linux 7.6 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.6 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
-include::_include/hu/hu_multipathing.adoc[]
+include::_include/hu/reuse_hu_multipathing.adoc[]
 
-include::_include/hu/hu_asa_configuration.adoc[]
-
-----
-// Insert example
-----
-
-include::_include/hu/hu_asa_configuration_note.adoc[]
-
-include::_include/hu/hu_non_asa_configuration.adoc[]
+include::_include/hu/reuse_hu_asa_configuration.adoc[]
 
 ----
 // Insert example
 ----
 
-include::_include/hu/hu_asa_configuration_note.adoc[]
+include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
+
+include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
+
+----
+// Insert example
+----
+
+include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
 The Oracle Linux 7.6 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
-include::_include/hu/hu_recommended_settings.adoc[]
+include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
 [cols=2*,options="header"]
