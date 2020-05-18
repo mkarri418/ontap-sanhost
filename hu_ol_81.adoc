@@ -119,8 +119,8 @@ devices {
 
 There are no known issues for Oracle Linux 8.1.
 
-include::_include/hu/ol_issues_note.adoc[]
+include::_include/hu/reuse_hu_ol_issues_note.adoc[]
 
 == Release Notes
 
-include::_include/hu/release_notes.adoc[]
+include::_include/hu/reuse_hu_release_notes.adoc[]
