@@ -75,11 +75,19 @@ entries:
           url: /hu_suse_12SP1.html
     - title: Oracle Linux
       entries:
-      - title: OL 7
+      - title: OL 8
         entries:
-        - title: 7.6
-          url: /hu_ol_76.html
-        - title: 8.0
-          url: /hu_ol_80.html
         - title: 8.1
           url: /hu_ol_81.html
+        - title: 8.0
+          url: /hu_ol_80.html
+      - title: OL 7
+        entries:
+        - title: 7.7
+          url: /hu_ol_77.html
+        - title: 7.6
+          url: /hu_ol_76.html
+        - title: 7.5
+          url: /hu_ol_75.html
+        - title: 7.4
+          url: /hu_ol_74.html
