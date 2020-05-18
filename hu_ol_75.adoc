@@ -1,11 +1,11 @@
 ---
 sidebar: sidebar
-permalink: hu_ol_74.html
-keywords: host utilities, oracle, linux, 7.4, netapp, ontap
-summary: Describes how to use Oracle Linux 7.4 with ONTAP
+permalink: hu_ol_75.html
+keywords: host utilities, oracle, linux, 7.5, netapp, ontap
+summary: Describes how to use Oracle Linux 7.5 with ONTAP
 ---
 
-= Using Oracle Linux 7.4 with NetApp ONTAP
+= Using Oracle Linux 7.5 with NetApp ONTAP
 :toc: macro
 :hardbreaks:
 :toclevels: 1
@@ -25,13 +25,13 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=80004;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=83635;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle  Linux 7.4 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.4 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+For Oracle  Linux 7.5 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.5 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
 include::_include/hu/reuse_hu_multipathing.adoc[]
 
@@ -68,7 +68,7 @@ include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The Oracle Linux 7.4 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+The Oracle Linux 7.5 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
@@ -97,7 +97,8 @@ include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 .Example
 
-The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
+The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs.
+If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
 
 ----
 defaults {
@@ -122,11 +123,10 @@ devices {
 | Title
 | Description
 | Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1109468[1109468] | Firmware dumps observed on an OL7.4 Hypervisor with QLE8362 card |During storage failover operations on an OL7.4 Hypervisor with QLE8362 card,  the firmware dumps are observed occasionally. The firmware dumps might result in an I/O outage on the host, which might go up to 500 seconds. After the adapter completes the firmware dump, the I/O operation resumes in the normal manner. No further recovery procedure is required on the host. To indicate the firmware dump, the following message is displayed in the /var/log/message file:
- qla2xxx [0000:0c:00.3]-d001:8: Firmware dump saved to temp buffer (8/ffffc90008901000), dump status flags (0x3f)
-| link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=16039[16039]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1177239[1177239] | Kernel disruption observed on OL7.5 with Qlogic QLE2672 16G FC during storage failover operations |During storage failover operations on Oracle Linux 7 (OL7.5) with kernel 4.1.12-112.16.4.el7uek.x86_64 and the Qlogic QLE2672 HBA, you might observe kernel disruption. This prompts a reboot of the operating system which causes an application disruption.
+If kdump is configured, the kernel disruption creates a vmcore file in the  /var/crash/ directory. This disruption can be observed in the module “kmem_cache_alloc+118,” which is logged in the vmcore file and identified with the string "exception RIP: kmem_cache_alloc+118."
+After a kernel disruption, you can recover by rebooting the host operating system and restarting the application. |  
 |===
-
 == Release Notes
 
 include::_include/hu/reuse_hu_release_notes.adoc[]
