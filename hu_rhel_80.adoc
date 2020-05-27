@@ -16,7 +16,7 @@ summary: Describes how to use Red Hat Enterprise Linux 8.0 with ONTAP
 
 == Installing the Linux Unified Host Utilities
 
-include::_include/hu/reuse_hu_installing_luhu_with32.adoc[]
+include::_include/hu/reuse_hu_installing_luhu_without32.adoc[]
 
 == SAN Toolkit
 
@@ -25,35 +25,34 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=86309;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=91241;&solution=236&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle  Linux 7.6 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.6 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+For Red Hat Enterprise Linux (RHEL) 8.0 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. RHEL 8.0 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
-include::_include/hu/reuse_hu_multipathing.adoc[]
-
-include::_include/hu/reuse_hu_asa_configuration.adoc[]
-
-----
-// Insert example
-----
-
-include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
-
-include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
+include::_include/hu/reuse_hu_multipathing_non_asa.adoc[]
+include::_include/hu/reuse_hu_non_asa_configuration_solo.adoc[]
 
 ----
-// Insert example
+# multipath -ll
+3600a098038303634722b4d59646c4436 dm-28 NETAPP,LUN C-Mode
+size=10G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+|-+- policy='service-time 0' prio=50 status=active
+| |- 16:0:6:35 sdwb  69:624  active ready running
+| |- 16:0:5:35 sdun  66:752  active ready running
+`-+- policy='service-time 0' prio=10 status=enabled
+  |- 15:0:0:35 sdaj  66:48   active ready running
+  |- 15:0:1:35 sdbx  68:176  active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The Oracle Linux 7.6 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+The RHEL 8.0 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
@@ -61,24 +60,61 @@ include::_include/hu/reuse_hu_recommended_settings.adoc[]
 |===
 | Parameter
 | Setting
-| Insert Parameter | Insert Setting
+| detect_prio | yes
+| dev_loss_tmo | "infinity"
+| failback | immediate
+| fast_io_fail_tmo | 5
+| features | "2 pg_init_retries 50"
+| flush_on_last_del | "yes"
+| hardware_handler | "0"
+| no_path_retry | queue
+| path_checker | "tur"
+| path_grouping_policy | "group_by_prio"
+| path_selector | "service-time 0"
+| polling_interval | 5
+| prio | "ontap"
+| product | LUN.*
+| retain_attached_hw_handler | yes
+| rr_weight | "uniform"
+| user_friendly_names | no
 | vendor | NETAPP
 |===
 
 .Example
 
-The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
+The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `no_path_retry` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
 
 ----
-// Insert example
+defaults {
+   path_checker      readsector0
+   no_path_retry      fail
+}
+
+devices {
+   device {
+      vendor         "NETAPP  "
+      product         "LUN.*"
+      no_path_retry     queue
+      path_checker      tur
+   }
+}
 ----
 
 == Known Problems and Limitations
 
-[cols=4*,options="header"]
 |===
 | NetApp Bug ID
 | Title
 | Description
 | Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1202736[1202736]B | Title | Description | BugzillaID
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1238719[1238719^] |Kernel disruption on RHEL8 with QLogic QLE2672 16GB FC during storage failover operations |Kernel disruption might occur during storage failover operations on a Red Hat Enterprise Linux (RHEL) 8 kernel with a QLogic QLE2672 host bus adapter (HBA). The kernel disruption causes the operating system to reboot. The reboot causes application disruption and generates the vmcore file under the /var/crash/directory if kdump is configured.  Use the vmcore file to identify the cause of the failure. In this case, the disruption is in the “kmem_cache_alloc+160” module. It is logged in the vmcore file with the following string:    "[exception RIP: kmem_cache_alloc+160]". Reboot the host OS to recover the operating system and then restart the application. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1710009[1710009^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1226783[1226783^] | RHEL8 OS boots up to "emergency mode" when more than 204 SCSI devices are mapped on all Fibre Channel (FC) host bus adapters (HBA) | If a host is mapped with more than 204 SCSI devices during an operating systemreboot process, the RHEL8 OS fails to boot up to "normal mode" and enters "emergency mode". This results in most of the host services becoming unavailable. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1690356[1690356^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1230882[1230882^] |Creating a partition on an iSCSI multipath device during the RHEL8 installation is not feasible. | iSCSI SAN LUN multipath devices are not listed in disk selection during RHEL 8 installation. Consequently, the multipath service is not enabled on the SAN boot device. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1709995[1709995^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1266250[1266250^] |Login to multiple paths fails during the Red Hat Enterprise Linux 8.0 installation on iSCSI SAN LUN | You cannot login to multiple paths during the Red Hat Enterprise Linux 8.0 installation on iSCSI SAN LUN multipath devices. Installation is not possible on multipath iSCSI device and the multipath service is not enabled on the SAN boot device. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1758504[1758504^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1266250[1266250^] |Login to multiple paths fails during the Red Hat Enterprise Linux 8.0 installation on iSCSI SAN LUN | You cannot login to multiple paths during the Red Hat Enterprise Linux 8.0 installation on iSCSI SAN LUN multipath devices. Installation is not possible on multipath iSCSI device and the multipath service is not enabled on the SAN boot device. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1758504[1758504^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1266250[1266250^] |Login to multiple paths fails during the Red Hat Enterprise Linux 8.0 installation on iSCSI SAN LUN | You cannot login to multiple paths during the Red Hat Enterprise Linux 8.0 installation on iSCSI SAN LUN multipath devices. Installation is not possible on multipath iSCSI device and the multipath service is not enabled on the SAN boot device. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1758504[1758504^]
+|===
+
+== Release Notes
+
+include::_include/hu/reuse_hu_release_notes.adoc[]
