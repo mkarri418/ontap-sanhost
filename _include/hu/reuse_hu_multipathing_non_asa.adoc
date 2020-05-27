@@ -1,0 +1,1 @@
+You can use the `multipath -ll` command to verify the settings for your ONTAP LUNs.
