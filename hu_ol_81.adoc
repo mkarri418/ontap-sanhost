@@ -31,9 +31,9 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle  Linux 8.1 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 8.1 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+For Oracle Linux 8.1 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 8.1 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
-include::_include/hu/reuse_hu_multipathing.adoc[]
+include::_include/hu/reuse_hu_multipathing_non_asa.adoc[]
 
 include::_include/hu/reuse_hu_non_asa_configuration_solo.adoc[]
 
