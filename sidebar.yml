@@ -13,6 +13,8 @@ entries:
       entries:
       - title: RHEL 8
         entries:
+        - title: 8.2
+          url: /hu_rhel_82.html
         - title: 8.1
           url: /hu_rhel_81.html
         - title: 8.0
