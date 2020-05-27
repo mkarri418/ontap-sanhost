@@ -34,7 +34,6 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 For Oracle  Linux 7.3 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.3 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
 include::_include/hu/reuse_hu_multipathing.adoc[]
-
 include::_include/hu/reuse_hu_asa_configuration.adoc[]
 
 ----
@@ -118,6 +117,8 @@ devices {
 == Known Problems and Limitations
 
 There are no known issues for Oracle 7.3.
+
+include::_include/hu/reuse_hu_ol_issues_note.adoc[]
 
 == Release Notes
 
