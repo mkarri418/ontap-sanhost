@@ -102,7 +102,7 @@ devices {
 
 == Known Problems and Limitations
 
-[cols=2*,options="header"]
+[cols=4*,options="header"]
 |===
 | NetApp Bug ID
 | Title
