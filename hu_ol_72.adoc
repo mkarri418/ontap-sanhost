@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar
-permalink: hu_ol_73.html
+permalink: hu_ol_72.html
 keywords: host utilities, oracle, linux, 7.3, netapp, ontap
 summary: Describes how to use Oracle Linux 7.3 with ONTAP
 ---
