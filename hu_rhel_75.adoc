@@ -25,35 +25,34 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=86309;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=82985;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle  Linux 7.6 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.6 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+For Red Hat Enterprise Linux (RHEL) 7.5 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. RHEL 7.5 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
-include::_include/hu/reuse_hu_multipathing.adoc[]
-
-include::_include/hu/reuse_hu_asa_configuration.adoc[]
-
-----
-// Insert example
-----
-
-include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
-
-include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
+include::_include/hu/reuse_hu_multipathing_non_asa.adoc[]
+include::_include/hu/reuse_hu_non_asa_configuration_solo.adoc[]
 
 ----
-// Insert example
+# multipath -ll
+3600a09803831347657244e527766394e dm-5 NETAPP,LUN C-Mode
+size=80G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle’ hwhandler='1 alua' wp=rw
+|-+- policy='service-time 0' prio=50 status=active
+| |- 11:0:1:0 sdj  8:144  active ready running
+| |- 11:0:2:0 sdr  65:16  active ready running
+`-+- policy='service-time 0' prio=10 status=enabled
+  |- 11:0:0:0 sdb  8:i6   active ready running
+  |- 12:0:0:0 sdz  65:144 active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The Oracle Linux 7.6 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+The RHEL 7.5 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
@@ -61,16 +60,44 @@ include::_include/hu/reuse_hu_recommended_settings.adoc[]
 |===
 | Parameter
 | Setting
-| Insert Parameter | Insert Setting
+| detect_prio | yes
+| dev_loss_tmo | "infinity"
+| failback | immediate
+| fast_io_fail_tmo | 5
+| features | "3 queue_if_no_path pg_init_retries 50"
+| flush_on_last_del | "yes"
+| hardware_handler | "0"
+| no_path_retry | queue
+| path_checker | "tur"
+| path_grouping_policy | "group_by_prio"
+| path_selector | "service-time 0"
+| polling_interval | 5
+| prio | "ontap"
+| product | LUN.*
+| retain_attached_hw_handler | yes
+| rr_weight | "uniform"
+| user_friendly_names | no
 | vendor | NETAPP
 |===
 
 .Example
 
-The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
+The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `no_path_retry` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
 
 ----
-// Insert example
+defaults {
+   path_checker      readsector0
+   no_path_retry      fail
+}
+
+devices {
+   device {
+      vendor         "NETAPP  "
+      product         "LUN.*"
+      no_path_retry     queue
+      path_checker      tur
+   }
+}
 ----
 
 == Known Problems and Limitations
@@ -81,4 +108,12 @@ The following example shows how to correct an overridden default. In this case, 
 | Title
 | Description
 | Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1202736[1202736]B | Title | Description | BugzillaID
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1139053[1139053^] | Kernel disruption occurs on RHEL7.5 with QLogic QLE2672 16GB FC during storage failover operations |During storage failover operations on the RHEL7U5 kernel with QLogic QLE2672 16GB fibre channel host bus adapter, the kernel disruption occurs due to a panic in the kernel. The kernel panic causes RHEL 7.5 to reboot, which leads to an application disruption. The kernel panic generates the vmcore file under the /var/crash/directory if kdump is configured. The vmcore file is used to understand the cause of the failure. In this case, the panic was observed in the “get_next_timer_interrupt+440” module which is logged in the vmcore file with the following string: " [exception RIP: get_next_timer_interrupt+440]" After the kernel disruption, you can recover the operating system by rebooting the host operating system and restarting the application as required. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1542564[1542564^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1138536[1138536^] | Kernel disruption occurs on RHEL7U5 with QLogic QLE2742 32GB FC during storage failover operations | During storage failover operations on the Red Hat Enterprise Linux (RHEL) RHEL7U5 kernel with QLogic QLE2742 HBA, kernel disruption occurs due to a panic in the kernel. The kernel panic leads to a reboot of the operating system, causing an application disruption. The kernel panic generates the vmcore file under the /var/crash/ directory if kdump is configured. When the kernel panics, you can use the vmcore file to investigate the reason for the failure. The following example shows a panic in the bget_next_timer_interrupt+440b module. The panic is logged in the vmcore file with the following string: " [exception RIP: get_next_timer_interrupt+440]" You can recover the operating system by rebooting the host OS and restarting the application as required. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1541972[1541972^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1148090[1148090^] | Kernel disruption occurs on RHEL 7.5 with QLogic QLE2742 32GB FC HBA during storage failover operations | During storage failover operations on the Red Hat Enterprise Linux (RHEL) 7.5 kernel with a QLogic QLE2742 Fibre Channel (FC) host bus adapter (HBA), a kernel disruption occurs due to a panic in the kernel. The kernel panic causes RHEL 7.5 to reboot, which leads to an application disruption. If the kdump mechanism is enabled, the kernel panic generates a vmcore file located in the /var/crash/ directory. You can analyze the vmcore file to determine the cause of the panic.  In this instance, when storage failover with the QLogic QLE2742 HBA event occurs, the "native_queued_spin_lock_slowpath+464" module is affected. You can locate the event in the vmcore file by finding the following string:     " [exception RIP: native_queued_spin_lock_slowpath+464]"  After the kernel disruption, you can reboot the Host OS and recover the operating system, and then you can restart the applications as required. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1559050[1559050^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1146898[1146898^] | Kernel disruption occurs on RHEL 7.5 with Emulex HBAs during storage failover operations | During storage failover operations on a Red Hat Enterprise Linux (RHEL) 7.5 system with Emulex LPe32002-M2 32-GB FC host bus adapters (HBAs), a disruption in the kernel occurs. The kernel disruption causes a reboot of the operating system, which in turn causes an application disruption.  If you configure kdump, the kernel disruption generates the vmcore file under the /var/crash/ directory. You can use the vmcore file to determine the cause of the failure. In the following example, you can see the disruption in the "lpfc_hba_clean_txcmplq+368" module. This disruption is logged in the vmcore file with the following string: " [exception RIP: lpfc_hba_clean_txcmplq+368]" After the kernel disruption, reboot the host OS to recover the operating system. Restart the application as required. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1554777[1554777^]
+|===
+
+== Release Notes
+
+include::_include/hu/reuse_hu_release_notes.adoc[]
