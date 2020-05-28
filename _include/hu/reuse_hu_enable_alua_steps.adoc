@@ -14,4 +14,4 @@ The command: `mkinitrd -f /boot/ initrd-"uname -r".img uname -r`
 Or
 The command: `dracut -f`
 .	Reboot the host.
-.	Verify the output of the cat /proc/cmdline command to ensure that the setting is complete.
+.	Verify the output of the `cat /proc/cmdline` command to ensure that the setting is complete.
