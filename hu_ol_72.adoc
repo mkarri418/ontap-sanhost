@@ -31,7 +31,27 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle Linux 7.2 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.2 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+.Oracle Linux 7.2 UEK R3 Configuration
+
+For Oracle Linux 7.2 UEK R3, create an empty multipath.conf file. The settings for Oracle Linux 7.2 UEK with and without ALUA update automatically by default. To Enable ALUA Handler, perform the following steps:
+
+.	Create a backup of the initrd-image.
+.	Append the following parameter value to the kernel for ALUA and non-ALUA to work:
+`rdloaddriver=scsi_dh_alua`
++
+.Example
+....
+kernel /vmlinuz-3.8.13-68.1.2.el6uek.x86_64 ro root=/dev/mapper/vg_ibmx3550m421096-lv_root rd_NO_LUKSrd_LVM_LV=vg_ibmx3550m421096/lv_root LANG=en_US.UTF-8 rd_NO_MDSYSFONT=latarcyrheb-sun16 crashkernel=256M KEYBOARDTYPE=pc KEYTABLE=us rd_LVM_LV=vg_ibmx3550m421096/lv_swap rd_NO_DM rhgb quiet rdloaddriver=scsi_dh_aluarunning
+....
+
+.	Use the `dracut -f` command to recreate the initrd-image.
+
+.	Reboot the host.
+.	Verify the output of the `cat /proc/cmdline` command to ensure that the setting is complete.
+
+.Oracle Linux 7.2 UEK R4 Configuration
+
+For Oracle Linux 7.2 UEK R4 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.2 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
 include::_include/hu/reuse_hu_multipathing_non_asa.adoc[]
 include::_include/hu/reuse_hu_non_asa_configuration_solo.adoc[]
