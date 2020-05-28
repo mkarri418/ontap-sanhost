@@ -107,7 +107,7 @@ devices {
 | Title
 | Description
 | Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1177239[1177239] | Kernel disruption observed on OL7.5 with Qlogic QLE2672 16G FC during storage failover operations |During storage failover operations on Oracle Linux 7 (OL7.5) with kernel 4.1.12-112.16.4.el7uek.x86_64 and the Qlogic QLE2672 HBA, you might observe kernel disruption. This prompts a reboot of the operating system which causes an application disruption.
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1177239[1177239^] | Kernel disruption observed on OL7.5 with Qlogic QLE2672 16G FC during storage failover operations |During storage failover operations on Oracle Linux 7 (OL7.5) with kernel 4.1.12-112.16.4.el7uek.x86_64 and the Qlogic QLE2672 HBA, you might observe kernel disruption. This prompts a reboot of the operating system which causes an application disruption.
 If kdump is configured, the kernel disruption creates a vmcore file in the  /var/crash/ directory. This disruption can be observed in the module “kmem_cache_alloc+118,” which is logged in the vmcore file and identified with the string "exception RIP: kmem_cache_alloc+118."
 After a kernel disruption, you can recover by rebooting the host operating system and restarting the application. |
 |===

@@ -25,7 +25,7 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the https://mysupport.netapp.com/matrix/imt.jsp?components=77396;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the https://mysupport.netapp.com/matrix/imt.jsp?components=77396;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
@@ -33,23 +33,8 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 For Oracle  Linux 7.3 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.3 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
-include::_include/hu/reuse_hu_multipathing.adoc[]
-include::_include/hu/reuse_hu_asa_configuration.adoc[]
-
-----
-# multipath -ll
-3600a09803831347657244e527766394e dm-5 NETAPP,LUN C-Mode
-size=80G  features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle' hwhandler='1 alua' wp=rw
-`-+- policy='service-time 0' prio=50 status=active
-  |- 11:0:7:1    sdfi   130:64   active ready running
-  |- 11:0:9:1    sdiy  8:288     active ready running
-  |- 11:0:10:1  sdml 69:464   active ready running
-  |- 11:0:11:1  sdpt  131:304  active ready running
-----
-
-include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
-
-include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
+include::_include/hu/reuse_hu_multipathing_non_asa.adoc[]
+include::_include/hu/reuse_hu_non_asa_configuration_solo.adoc[]
 
 ----
 # multipath -ll
@@ -67,7 +52,7 @@ include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The Oracle Linux 7.3 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+The Oracle Linux 7.3 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
