@@ -143,7 +143,7 @@ In this case, the panic was observed in the “blk_finish_request+289” module.
 It is logged in the vmcore file with the following string:
 "exception RIP: blk_finish_request+289"
 
-After the kernel disruption, you can recover the operating system  by rebooting the Host OS. You can restart the application as required. | link:http://bugzilla.suse.com/show_bug.cgi?id=1062496[1062496[^]
+After the kernel disruption, you can recover the operating system  by rebooting the Host OS. You can restart the application as required. | link:http://bugzilla.suse.com/show_bug.cgi?id=1062496[1062496^]
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1117261[1117261^] | Kernel disruption observed on SLES12SP3 with Qlogic QLE2662 16GB FC during storage failover operations | During storage failover operations on Sles12sp3 kernel (kernel-default-4.4.82-6.3.1) with Qlogic QLE2662 HBA, you might observe kernel disruption. This prompts a reboot of the operating system causing application disruption. The kernel disruption generates a vmcore file under /var/crash/ directory if kdump is configured. The vmcore file can be used to understand the cause of the failure.
 Example:
 In this case the Kernel disruption was observed in the module "unknown or invalid address" and is logged in vmcore file with the following string - exception RIP: unknown or invalid address.
