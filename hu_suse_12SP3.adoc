@@ -129,7 +129,7 @@ Example:
 In the observed case, the kernel disruption was observed in the module “lpfc_sli_ringtxcmpl_put+51” and is logged in the vmcore file
 – exception RIP: lpfc_sli_ringtxcmpl_put+51.
 
-Recover the operating system after the kernel disruption by rebooting the host operating system and restarting the application. | link:http://bugzilla.suse.com/show_bug.cgi?id=1042847[1042847[^]
+Recover the operating system after the kernel disruption by rebooting the host operating system and restarting the application. | link:http://bugzilla.suse.com/show_bug.cgi?id=1042847[1042847^]
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1089561[1089561^] | Kernel disruption observed on kernel version SLES12 SP3 with Emulex LPe32002 32GB FC during storage failover operations | A kernel disruption might occur during storage failover operations on kernel version SLES12 SP3 with Emulex LPe32002 HBA. The kernel disruption prompts a reboot of the operating system, which in turn causes an application disruption. If the kdump is configured, the kernel disruption generates a vmcore file under /var/crash/directory. You can investigate the cause of the failure in the vmcore file.
 Example:
 In the observed case, the kernel disruption was observed in the module
@@ -148,7 +148,7 @@ After the kernel disruption, you can recover the operating system  by rebooting 
 Example:
 In this case the Kernel disruption was observed in the module "unknown or invalid address" and is logged in vmcore file with the following string - exception RIP: unknown or invalid address.
 
-After kernel disruption, the operating system can be recovered by rebooting the host operating system and restarting the application as required. | link:http://bugzilla.suse.com/show_bug.cgi?id=1062508[1062508[^]
+After kernel disruption, the operating system can be recovered by rebooting the host operating system and restarting the application as required. | link:http://bugzilla.suse.com/show_bug.cgi?id=1062508[1062508^]
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1117274[1117274^] | Kernel disruption observed on SLES12SP3 with Emulex LPe16002 16GB FC during storage failover operations | During storage failover operations on Sles12sp3 kernel (kernel-default-4.4.87-3.1) with Emulex LPe16002 HBA, you might observe kernel disruption. This prompts a reboot of the operating system causing application disruption. The kernel disruption
 generates a vmcore file under the /var/crash/ directory if kdump is configured. The vmcore file can be used to understand the cause
 of the failure.
