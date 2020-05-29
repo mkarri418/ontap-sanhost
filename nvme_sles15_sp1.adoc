@@ -17,6 +17,7 @@ summary: Sunshine
 == Supportability
 
 NVMe/FC is supported on ONTAP 9.6 or later for the following versions of SLES:
+
 *	SLES15 SP1
 +
 SLES15 SP1 host can run both NVMe/FC, & FCP (FC-SCSI) traffic through the same fibre channel initiator adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
@@ -37,7 +38,7 @@ None. Native NVMe/FC auto-connect scripts are included in the nvme-cli package. 
 ----
 
 .	Upgrade to nvme-cli-1.8.1-6.9.1 MU package.
-
++
 This nvme-cli package contains the native NVMe/FC auto-connect scripts, so you do not need to install the external NVMe/FC auto-connect scripts provided by Broadcom on the SLES15 SP1 host.  This package also includes the ONTAP udev rule which enables round-robin load balancing for NVMe multipath, and the NetApp plug-in for ONTAP devices.
 +
 ----
@@ -128,6 +129,7 @@ NVME Statistics
 ==	Validating NVMe/FC
 
 .	Verify the following NVMe/FC settings.
++
 ----
 # cat /sys/module/nvme_core/parameters/multipath
 Y

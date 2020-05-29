@@ -13,4 +13,13 @@ summary: SAN Host Documentation
 :imagesdir: ./media/
 
 [.lead]
-Something about hosts...
+
+You can use this documentation to configure SAN hosts for the NVMe/FC, iSCSI and FC protocols.
+
+Each document is specific to a distribution and version of Linux.  If your distribution and version of Linux is not yet listed, please check back soon.  
+
+You can find additional information on SAN configurations in the following documentation:
+
+link:https://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-asa-config/home.html[All SAN Array Software Configuration Guide]
+link:https://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-cm-sanag/home.html[SAN Administration Guide]
+link:https://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-cm-sanconf/home.html[SAN Configuration Guide]

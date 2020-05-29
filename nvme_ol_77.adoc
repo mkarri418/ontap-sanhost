@@ -71,7 +71,8 @@ ol_157_nvme_ss_10_0
 nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd
 ----
 
-.Note:  If the hostnqn strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from /etc/nvme/hostnqn on the host.
+.Note:
+If the hostnqn strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from `/etc/nvme/hostnqn` on the host.
 
 .	Reboot the host.
 

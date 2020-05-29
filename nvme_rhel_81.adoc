@@ -17,6 +17,7 @@ summary: Sunshine
 == Supportability
 
 NVMe/FC is supported on ONTAP 9.6 or later for the following versions of RHEL:
+
 *	RHEL 8.1
 
 RHEL 8.1 host can run both NVMe & SCSI traffic through the same fibre channel initiator adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
@@ -77,7 +78,8 @@ rhel_141_nvme_ss_10_0
 nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd
 ----
 +
-.Note:  If the hostnqn strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from /etc/nvme/hostnqn on the host.
+.Note:
+If the hostnqn strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from /etc/nvme/hostnqn on the host.
 +
 .	Reboot the host.
 
@@ -105,7 +107,8 @@ Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
 # ./elx_lpfc_install-sh -i -n
 ----
 +
-.Note: The native drivers that come bundled with the OS are called inbox drivers. If you download the outbox drivers (drivers that are not included with the OS release), an auto-connect script is included in the download and should be installed as part of the driver installation process.
+.Note:
+The native drivers that come bundled with the OS are called inbox drivers. If you download the outbox drivers (drivers that are not included with the OS release), an auto-connect script is included in the download and should be installed as part of the driver installation process.
 
 .	Reboot the host.
 
