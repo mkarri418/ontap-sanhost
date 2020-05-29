@@ -31,6 +31,8 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
+Oracle Linux 7.2 supports Unbreakable Enterprise Kernel (UEK) R3 and UEK R4. The OS boots with UEK R3 kernel by default.
+
 .Oracle Linux 7.2 UEK R3 Configuration
 
 For Oracle Linux 7.2 UEK R3, create an empty multipath.conf file. The settings for Oracle Linux 7.2 UEK with and without ALUA update automatically by default. To Enable ALUA Handler, perform the following steps:
