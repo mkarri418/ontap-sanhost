@@ -5,7 +5,7 @@ keywords: ontap, san, host, rhel, red, hat, linux, sles, suse,
 summary: SAN Host Documentation
 ---
 
-= SAN Host Documentation
+= ONTAP SAN Host Configuration
 :hardbreaks:
 :nofooter:
 :icons: font
@@ -14,9 +14,11 @@ summary: SAN Host Documentation
 
 [.lead]
 
-You can use this documentation to configure SAN hosts for the NVMe/FC, iSCSI and FC protocols.
+This content provides distribution-specific guidance about how to configure ONTAP SAN hosts for the NVMe, iSCSI, and FC protocols.
 
-Each document is specific to a distribution and version of Linux.  If your distribution and version of Linux is not yet listed, please check back soon.  
+For best performance and to ensure successful failover, it is important to correctly configure SAN hosts using ONTAP storage. These documents show how to quickly set up a best practice configuration.
+
+For iSCSI and FC, this documentation replaces the traditional Linux Unified Host Utilities guides. Each document is specific to one distribution and version of Linux, so you see only the information for your exact version. If your distribution and version of Linux is not yet listed, please check back soon.
 
 You can find additional information on SAN configurations in the following documentation:
 
