@@ -20,6 +20,8 @@ For best performance and to ensure successful failover, it is important to corre
 
 For iSCSI and FC, this documentation replaces the traditional Linux Unified Host Utilities guides. Each document is specific to one distribution and version of Linux, so you see only the information for your exact version. If your distribution and version of Linux is not yet listed, please check back soon.
 
+== More information
+
 You can find additional information on SAN configurations in the following documentation:
 
 link:https://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-asa-config/home.html[All SAN Array Software Configuration Guide]
