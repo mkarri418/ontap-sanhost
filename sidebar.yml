@@ -1,7 +1,7 @@
 entries:
   - title: Home
     url: /index.html
-  - title: NVMe/FC Configurations
+  - title: NVMe/FC Host Configurations
     entries:
     - title: RHEL
       entries:
@@ -15,7 +15,7 @@ entries:
       entries:
       - title: 7.7
         url: /nvme_ol_77.html
-  - title: FC/iSCSI Host Utilities
+  - title: FC/iSCSI Host Configurations
     entries:
     - title: RHEL
       entries:
