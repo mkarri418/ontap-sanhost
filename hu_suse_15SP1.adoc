@@ -1,11 +1,11 @@
 ---
 sidebar: sidebar
 permalink: hu_suse_15SP1.html
-keywords: host utilities, suse, linux, enterprise, server, 15, SP1, netapp, ontap
+keywords: host utilities, suse linux enterprise server 15 sp1, suse, linux, 15 sp1, netapp, ontap
 summary: Describes how to use SUSE Linux Enterprise Server 15 SP1 with ONTAP
 ---
 
-= Using SUSE Linux Enterprise Server 15 SP1 with ONTAP
+= SUSE Linux Enterprise Server 15 SP1 with ONTAP
 :toc: macro
 :hardbreaks:
 :toclevels: 1
@@ -25,20 +25,28 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=86309;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=84067;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle  Linux 7.6 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.6 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+For SUSE Linux Enterprise Server 15 SP1 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. SUSE Linux Enterprise Server 15 SP1 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
 include::_include/hu/reuse_hu_multipathing.adoc[]
 
 include::_include/hu/reuse_hu_asa_configuration.adoc[]
 
 ----
-// Insert example
+# multipath -ll
+3600a0980383034466b2b4a3775474859 dm-3 NETAPP,LUN C-Mode
+size=20G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle' hwhandler='1 alua' wp=rw
+|-+- policy='round-robin 0' prio=50 status=active
+| |- 1:0:8:1  sdb 8:16 active ready running
+| `- 2:0:8:1  sdd 8:48 active ready running
+`-+- policy='round-robin 0' prio=10 status=enabled
+  |- 1:0:9:1  sdc 8:32 active ready running
+  `- 2:0:9:1  sde 8:64 active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
@@ -46,14 +54,22 @@ include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
 
 ----
-// Insert example
+# multipath -ll
+3600a09803831347657244e527766394e dm-5 NETAPP,LUN C-Mode
+size=80G  features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+|-+- policy='service-time 0' prio=50 status=active
+| |- 11:0:1:0 sdj 8:144 active ready running
+| |- 11:0:2:0 sdr 65:16 active ready running
+`-+- policy='service-time 0' prio=10 status=enabled
+ |- 11:0:0:0 sdb 8:i6 active ready running
+ |- 12:0:0:0 sdz 65:144 active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The Oracle Linux 7.6 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+SUSE Linux Enterprise Server 15 SP1 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
@@ -61,24 +77,66 @@ include::_include/hu/reuse_hu_recommended_settings.adoc[]
 |===
 | Parameter
 | Setting
-| Insert Parameter | Insert Setting
+| detect_prio | yes
+| dev_loss_tmo | "infinity"
+| failback | immediate
+| fast_io_fail_tmo | 5
+| features | "2 pg_init_retries 50"
+| flush_on_last_del | "yes"
+| hardware_handler | "0"
+| no_path_retry | queue
+| path_checker | "tur"
+| path_grouping_policy | "group_by_prio"
+| path_selector | "service-time 0"
+| polling_interval | 5
+| prio | "ontap"
+| product | LUN.*
+| retain_attached_hw_handler | yes
+| rr_weight | "uniform"
+| user_friendly_names | no
 | vendor | NETAPP
 |===
 
 .Example
 
-The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
+The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `no_path_retry` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
 
 ----
-// Insert example
+defaults {
+   path_checker      readsector0
+   no_path_retry      fail
+}
+
+devices {
+   device {
+      vendor         "NETAPP  "
+      product         "LUN.*"
+      no_path_retry     queue
+      path_checker      tur
+   }
+}
 ----
 
 == Known Problems and Limitations
 
-[cols=4*,options="header"]
+[cols=4,options="header" width="80%"]
 |===
 | NetApp Bug ID
 | Title
 | Description
 | Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1202736[1202736]B | Title | Description | BugzillaID
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1246622[1246622^] | Remote ports transit to a blocked state on SLES15SP1 with Emulex LPe12002 8GB FC during storage failover operations. | Remote ports transit to a blocked state on SLES15SP1 with Emulex LPe12002 8GB Fibre Channel (FC) during storage failover operations. When the storage node returns to an optimal state, the LIFs also come up and the remote port state should read "online." Occasionally, the remote port state might continue to read as "blocked” or "not present." This state can lead to a "failed faulty" path to LUNs at the multipath layer as well as an I/O outage for those LUNs. You can check the remoteport's details against the following sample commands:
+
+----
+cat/sys/class/fc_host/host*/device/rport*/fc_remote_ports/rport*/port_name
+
+cat/sys/class/fc_host/host*/device/rport*/fc_remote_ports/rport*/port_state
+----
+
+
+| link:https://bugzilla.suse.com/show_bug.cgi?id=1139137[1139137^]
+|===
+
+== Release Notes
+
+include::_include/hu/reuse_hu_release_notes.adoc[]
