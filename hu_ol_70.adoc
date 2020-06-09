@@ -25,13 +25,13 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the https://mysupport.netapp.com/matrix/imt.jsp?components=70671;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the https://mysupport.netapp.com/matrix/imt.jsp?components=68625;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle Linux 7.0 UEK R4 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.0 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.To Enable ALUA Handler, perform the following steps:
+For Oracle Linux 7.0 UEK R4 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.0 is compiled with all settings required to recognize and correctly manage ONTAP LUNs. To Enable ALUA Handler, perform the following steps:
 
 .	Append the following parameter value to the kernel for ALUA and non-ALUA to work:
 `rdloaddriver=scsi_dh_alua`
@@ -43,6 +43,7 @@ kernel /vmlinuz-3.8.13-68.1.2.el6uek.x86_64 ro root=/dev/mapper/vg_ibmx3550m4210
 .	Recreate the initrd-image with the `dracut -f` command.
 .	Reboot the host.
 .	Verify the output of the `cat /proc/cmdline` command to ensure that the setting is complete.
+
 include::_include/hu/reuse_hu_multipathing_non_asa.adoc[]
 include::_include/hu/reuse_hu_non_asa_configuration_solo.adoc[]
 

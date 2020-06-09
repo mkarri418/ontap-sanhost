@@ -103,3 +103,7 @@ entries:
           url: /hu_ol_71.html
         - title: 7.0
           url: /hu_ol_70.html
+      - title: OL 6
+        entries:
+        - title: 6.10
+          url: /hu_ol_610.html     
