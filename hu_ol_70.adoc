@@ -31,8 +31,9 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle Linux 7.0 UEK R4 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.0 is compiled with all settings required to recognize and correctly manage ONTAP LUNs. To Enable ALUA Handler, perform the following steps:
+For Oracle Linux 7.0 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.0 is compiled with all settings required to recognize and correctly manage ONTAP LUNs. To Enable ALUA Handler, perform the following steps:
 
+.	Create a backup of the initrd-image.
 .	Append the following parameter value to the kernel for ALUA and non-ALUA to work:
 `rdloaddriver=scsi_dh_alua`
 +
@@ -122,7 +123,7 @@ devices {
 | Bugzilla ID
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=901558[901558^] | OL7.0 : Host loses all paths to the lun and hangs due to "RSCN timeout" error on OL 7.0 UEK r3U5 Beta on Emulex 8G(LPe12002) host | You might observe that the Emulex 8G(LPe12002) host hangs and there is a high I/O outage during storage failover operations with I/O. You might observe paths not recovering, which is a result of the RSCN timeout, due to which the host loses all the paths and hangs. Probability of hitting this issue is high. | link:https://bugzilla.redhat.com/show_bug.cgi?id=14898[14898^]
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=901557[901557^] | OL 7.0: High IO outage observed on QLogic 8G FC (QLE2562) SAN host during storage failover operations with IO | You might observe high IO outage on QLogic 8G FC (QLE2562) host during storage failover operations with IO. Aborts and Device resets manifests as IO outage on the host. Probability of hitting this IO outage is high. | link:https://bugzilla.redhat.com/show_bug.cgi?id=14894[14894^]
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=901557[901557^] | Bug information not available | Bug information not available |
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=894766[894766^] | Bug information not available | Bug information not available |
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=894796[894796^] | Anaconda displays an iSCSI login failure message although logins are successful during OL 7.0 OS installation |  When you are installing OL 7.0, the anaconda installation screen displays that iSCSI login to multiple target IPs have failed though the iSCSI logins are successful. Anaconda displays following error message:
  "Node Login Failed"
  You will observe this error only when you select multiple target IPs for iSCSI login.
