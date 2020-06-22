@@ -148,7 +148,7 @@ This issue is seen with following version:
  UEK2 Kernel: 2.6.39-400.17.1.el5uek
  Multipath: device-mapper-multipath-0.4.9-64.0.1.el5.x86_64
  iSCSI: iscsi-initiator-utils-6.2.0.872-16.0.1.el5.x86_64
-| link: http://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=13984[13984^]
+| link:http://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=13984[13984^]
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=739909[739909^] | The SG_IO ioctl system call fails on dm-multipath devices after an FC fault on OL6.x and OL5.x hosts with UEK2 | A problem is seen on Oracle Linux 6.x hosts with UEK2 kernel and Oracle Linux 5.x hosts with UEK2 kernel. The sg_* commands on a multipath device fail with EAGAIN error code (errno) after a fabric fault that makes all the paths in the active path group go down. This problem is seen only when there is no I/O occurring to the multipath devices.
  The following is an example:
 
@@ -170,7 +170,7 @@ This issue is seen with following version:
  OL5.9 versions:
  kernel-uek-2.6.39-400.17.1.el5uek
  device-mapper-multipath-0.4.9-64.0.1.el5
-| link: https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=14082[14082^]
+| link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=14082[14082^]
 |===
 
 include::_include/hu/reuse_hu_ol_issues_note.adoc[]
