@@ -33,7 +33,7 @@ include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 For Oracle Linux 6.3 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 6.3 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 include::_include/hu/reuse_hu_enable_alua_steps_ol.adoc[]
-include::_include/hu/reuse_hu_asa_confiuration.adoc[]
+include::_include/hu/reuse_hu_asa_configuration.adoc[]
 include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
 
 
@@ -123,10 +123,9 @@ devices {
  This is observed with the kernel version:
  On OL6.4: kernel-uek-2.6.39-400.17.1.el6uek
  On OL5.9: kernel-uek-2.6.39-400.17.1.el5uek
-| link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=13999[13999^]
+| link :https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=13999[13999^]
 
 |===
-
 include::_include/hu/reuse_hu_ol_issues_note.adoc[]
 
 == Release Notes
