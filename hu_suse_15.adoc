@@ -5,7 +5,7 @@ keywords: host utilities, suse linux enterprise server 15, suse, linux, 15, neta
 summary: Describes how to use SUSE Linux Enterprise Server 15 with ONTAP
 ---
 
-= SUSE Linux Enterprise Server 15 with ONTAP
+= Using SUSE Linux Enterprise Server 15 with NetApp ONTAP
 :toc: macro
 :hardbreaks:
 :toclevels: 1
@@ -126,7 +126,7 @@ devices {
 | Description
 | Bugzilla ID
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1154309[1154309^] | SLES 15 host with more than 20 mapped LUNs might go into maintenance mode after a reboot | SLES 15 host with more than 20 mapped LUNs might go into maintenance mode after a reboot. The maintenance mode becomes single user mode following the message:
-Give root password for maintenance (or press Control-D to continue). | link:https://bugzilla.suse.com/show_bug.cgi?id=1104173[1104173^]
+`Give root password for maintenance (or press Control-D to continue)` | link:https://bugzilla.suse.com/show_bug.cgi?id=1104173[1104173^]
 |===
 
 == Release Notes

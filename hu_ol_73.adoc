@@ -101,7 +101,7 @@ devices {
 
 == Known Problems and Limitations
 
-There are no known issues for Oracle 7.3.
+There are no known issues for Oracle Linux 7.3.
 
 include::_include/hu/reuse_hu_ol_issues_note.adoc[]
 
