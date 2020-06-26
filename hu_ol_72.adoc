@@ -25,7 +25,7 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the https://mysupport.netapp.com/matrix/imt.jsp?components=77396;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the https://mysupport.netapp.com/matrix/imt.jsp?components=72764;72763;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
@@ -123,7 +123,7 @@ devices {
 
 == Known Problems and Limitations
 
-There are no known issues for Oracle 7.2.
+There are no known issues for Oracle Linux 7.2.
 
 include::_include/hu/reuse_hu_ol_issues_note.adoc[]
 
