@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head class="at-element-marker">
-  <title>Using Red Hat Enterprise Linux 8.0 with ONTAP</title>
+  <title>Using Red Hat Enterprise Linux 8.0 with NetApp ONTAP</title>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
   <meta http-equiv="language" content="en">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Using Red Hat Enterprise Linux 8.0 with ONTAP" />
+  <meta property="og:title" content="Using Red Hat Enterprise Linux 8.0 with NetApp ONTAP" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://docs.netapp.com/ontap-sanhost/hu_rhel_80.html" />
 	<meta property="og:description" content="Describes how to use Red Hat Enterprise Linux 8.0 with ONTAP" />
@@ -55,6 +55,8 @@
   <link rel="stylesheet" href='/ontap-sanhost/css/na-sidebar.css' type='text/css'>
   <link rel='stylesheet' href='/ontap-sanhost/css/clouddocs.css' type='text/css'>
   <link rel='stylesheet' href='/ontap-sanhost/css/na-pagenav.css' type='text/css'>
+
+  
 
   
   <link rel='stylesheet' href='/ontap-sanhost/css/na-feature.css' type='text/css'>
@@ -739,95 +741,99 @@
 </header>
 
         <div class="ie-utility">
-  <div class="n-property-bar__toolbar">
-    <!-- Start Language Selector -->
-    <div id="ie-i18n" class="n-property-bar__lang-selector">
-      <div id="ie-i18n-menu">
-      <span class="ie-i18n-lang">English</span>
-        <button class="ie-i18n-icon-container" type="button">
-          <svg class="n-globe__icon" aria-labelledby="title">
-            <title>globe</title>
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/ontap-sanhost/common/svg/sprite.svg#globe"></use>
-          </svg>
-        </button>
-      </div>
+  <div class="ie-menu">
+    <div class="n-property-bar__toolbar">
+      <!-- Start Language Selector -->
+      <div id="ie-i18n" class="n-property-bar__lang-selector">
+        <div id="ie-i18n-menu">
+        <span class="ie-i18n-lang">English</span>
+          <button class="ie-i18n-icon-container" type="button">
+            <svg class="n-globe__icon" aria-labelledby="title">
+              <title>globe</title>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/ontap-sanhost/common/svg/sprite.svg#globe"></use>
+            </svg>
+          </button>
+        </div>
 
-      <div id="n-property-navigation-bar__menu--language-selector" class="ie-i18n-results-container n-menu n-menu--v3 n-menu--is-active" style="display: none; right: auto;">
-        <div class="n-language-selector-menu">
-          <div class="n-language-selector-menu__header">
-            <span class="n-language-selector-menu__title">Select Your Language</span>
-          </div>
-          <ul class="n-menu__list">
-            <li class="n-menu__list-column">
-              <ul class="n-menu__list">
-                
-                
-                
-                <li class="n-menu__list-item n-menu__list-item--level-1">
-                  <a href="/ontap-sanhost/us-en/" class="n-menu__header-text"><span translate="no" class="notranslate">English</span></a>
-                </li>
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-              </ul>
-            </li>
-          </ul>
-          <div class="menu__footer">
-            <p>Current Language: English
-            </p>
+        <div id="n-property-navigation-bar__menu--language-selector" class="ie-i18n-results-container n-menu n-menu--v3 n-menu--is-active" style="display: none; right: auto;">
+          <div class="n-language-selector-menu">
+            <div class="n-language-selector-menu__header">
+              <span class="n-language-selector-menu__title">Select Your Language</span>
+            </div>
+            <ul class="n-menu__list">
+              <li class="n-menu__list-column">
+                <ul class="n-menu__list">
+                  
+                  
+                  
+                  <li class="n-menu__list-item n-menu__list-item--level-1">
+                    <a href="/ontap-sanhost/us-en/" class="n-menu__header-text"><span translate="no" class="notranslate">English</span></a>
+                  </li>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                </ul>
+              </li>
+            </ul>
+            <div class="menu__footer">
+              <p>Current Language: English
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- End Language Selector -->
+      <!-- End Language Selector -->
 
-    <div class="n-property-bar__cta"></div>
+      <div class="n-property-bar__cta"></div>
 
-    
-    <div id="search-demo-container" class="searchbox n-property-bar__search">
-      <div id="react-search"></div>
-      <button class="n-property-bar__search-toggle-button" type="button">
-        <svg class="n-icon-search n-property-bar__search-toggle-button-icon" aria-labelledby="title">
-          <title>search</title>
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/ontap-sanhost/common/svg/sprite.svg#search"></use>
-        </svg>
-      </button>
-    </div>
-    
-  </div>
-
-  <div class="n-breadcrumb">
-    <ul class="n-breadcrumb__list">
-      <li class="n-breadcrumb__list-item">
-        <a href="https://www.netapp.com">Home</a>
-      </li>
-      <li class="n-breadcrumb__list-item">
-        <a href="https://docs.netapp.com">Documentation</a>
-      </li>
       
+      <div id="search-demo-container" class="searchbox n-property-bar__search">
+        <div id="react-search"></div>
+        <button class="n-property-bar__search-toggle-button" type="button">
+          <svg class="n-icon-search n-property-bar__search-toggle-button-icon" aria-labelledby="title">
+            <title>search</title>
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/ontap-sanhost/common/svg/sprite.svg#search"></use>
+          </svg>
+        </button>
+      </div>
+      
+    </div>
 
-      <li class="n-breadcrumb__list-item">
-        <a href="/ontap-sanhost/">ONTAP&nbsp;SAN&nbsp;Host</a>
-      </li>
-      <li class="n-breadcrumb__list-item">
-        Using Red Hat Enterprise Linux 8.0 with ONTAP
-      </li>
-    </ul>
+    
+    <div class="n-breadcrumb">
+      <ul class="n-breadcrumb__list">
+        <li class="n-breadcrumb__list-item">
+          <a href="https://www.netapp.com">Home</a>
+        </li>
+        <li class="n-breadcrumb__list-item">
+          <a href="https://docs.netapp.com">Documentation</a>
+        </li>
+        
+
+        <li class="n-breadcrumb__list-item">
+          <a href="/ontap-sanhost/">ONTAP&nbsp;SAN&nbsp;Host</a>
+        </li>
+        <li class="n-breadcrumb__list-item">
+          Using Red Hat Enterprise Linux 8.0 with NetApp ONTAP
+        </li>
+      </ul>
+    </div>
+    
+
+    <div style="clear: both"></div><!-- Main needs to have height -->
   </div>
-
-  <div style="clear: both"></div><!-- Main needs to have height -->
 </div>
 
 
@@ -851,20 +857,18 @@
 </div>
 <ul id="toggleContainerPdf" class="n-pdf-body" style="display:none;">
   
-    
-
     <div class="n-pdf-section">
       <span class="n-pdf-section-title">
-        Site 
+        Site
       </span>
     </div>
     <li>
-      <a target="_blank" href="/ontap-sanhost/pdfs/fullsite-sidebar/Home.pdf" >
+      <a target="_blank" href="/ontap-sanhost/pdfs/fullsite-sidebar/ONTAP_SAN_Host_Configuration.pdf" >
         <img src="/ontap-sanhost/images/pdf.png" width="20" height="20"/>
-        Home
+        ONTAP SAN Host Configuration
       </a>
     </li>
-   
+  
   
   
 
@@ -997,7 +1001,7 @@
     <li class="active">
       <a target="_blank" href="/ontap-sanhost/pdfs/pages/hu_rhel_80.pdf" >
         <img src="/ontap-sanhost/images/pdf.png" width="20" height="20"/>
-        Using Red Hat Enterprise Linux 8.0 with ONTAP
+        Using Red Hat Enterprise Linux 8.0 with NetApp ONTAP
       </a>
     </li>
   
@@ -1196,6 +1200,40 @@
 
   
 
+  
+
+
+      </span>
+    </span>
+  
+
+  
+    <span class="subfolders" style="display:none;">
+      
+      <li>
+        <a target="_blank" href="/ontap-sanhost/pdfs/sidebar/OL_6.pdf" >
+          <img src="/ontap-sanhost/images/pdf.png" width="20" height="20"/>
+          OL 6
+        </a>
+      </li>
+      <span>
+        
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 
       </span>
     </span>
@@ -1226,348 +1264,1048 @@
 
 <ul id="mysidebar" class="nav">
   
+    
 
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="index.html">Home</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">NVMe/FC Host Configurations</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">RHEL</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="nvme_rhel_81.html">8.1</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">SUSE</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="nvme_sles15_sp1.html">15 SP1</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">Oracle Linux</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="nvme_ol_77.html">7.7</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">FC/iSCSI Host Configurations</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">RHEL</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">RHEL 8</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_82.html">8.2</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_81.html">8.1</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li class="active"><a href="hu_rhel_80.html">8.0</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">RHEL 7</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_78.html">7.8</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_77.html">7.7</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_76.html">7.6</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_75.html">7.5</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_74.html">7.4</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_73.html">7.3</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_72.html">7.2</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_71.html">7.1</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_70.html">7.0</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">RHEL 6</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_610.html">6.1</a></li>
+    
+  
+
+
   
-    <li><a href="index.html">Home</a></li>
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_69.html">6.9</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_68.html">6.8</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_67.html">6.7</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_66.html">6.6</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_65.html">6.5</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_rhel_64.html">6.4</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">SUSE</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">SUSE 15</a>
+        <ul>
+          
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_suse_15.html">15</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_suse_15SP1.html">15 SP1</a></li>
+    
+  
+
+
+        </ul>
+      </li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">SUSE 12</a>
+        <ul>
+          
+
+
+  
+
   
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">NVMe/FC Host Configurations</a>
-      <ul>
-        
+  
+
+  
+    
+      <li><a href="hu_suse_12SP5.html">12 SP 5</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_suse_12SP4.html">12 SP 4</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_suse_12SP3.html">12 SP 3</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_suse_12SP2.html">12 SP 2</a></li>
+    
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+      <li><a href="hu_suse_12SP1.html">12 SP 1</a></li>
+    
+  
 
+
+  
+
+  
+
+  
+  
+
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">RHEL</a>
-      <ul>
-        
+    
+      <li><a href="hu_suse_12.html">12</a></li>
+    
+  
+
 
+        </ul>
+      </li>
+    
   
-    <li><a href="nvme_rhel_81.html">8.1</a></li>
+
+
+        </ul>
+      </li>
+    
   
 
 
-      </ul>
-    </li>
   
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">SUSE</a>
-      <ul>
-        
 
   
-    <li><a href="nvme_sles15_sp1.html">15 SP1</a></li>
+  
+
+  
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">Oracle Linux</a>
+        <ul>
+          
+
+
   
 
+  
 
-      </ul>
-    </li>
   
+  
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">Oracle Linux</a>
-      <ul>
-        
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">OL 8</a>
+        <ul>
+          
+
 
   
-    <li><a href="nvme_ol_77.html">7.7</a></li>
+
   
 
+  
+  
 
-      </ul>
-    </li>
+  
+    
+      <li><a href="hu_ol_81.html">8.1</a></li>
+    
   
 
 
-      </ul>
-    </li>
   
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">FC/iSCSI Host Configurations</a>
-      <ul>
-        
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">RHEL</a>
-      <ul>
-        
+  
+
+  
+    
+      <li><a href="hu_ol_80.html">8.0</a></li>
+    
+  
 
+
+        </ul>
+      </li>
+    
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">RHEL 8</a>
-      <ul>
-        
+
 
   
-    <li><a href="hu_rhel_82.html">8.2</a></li>
+
   
 
   
-    <li><a href="hu_rhel_81.html">8.1</a></li>
   
 
   
-    <li class="active"><a href="hu_rhel_80.html">8.0</a></li>
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">OL 7</a>
+        <ul>
+          
+
+
   
 
+  
 
-      </ul>
-    </li>
   
+  
 
+  
+    
+      <li><a href="hu_ol_77.html">7.7</a></li>
+    
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">RHEL 7</a>
-      <ul>
-        
 
+
   
-    <li><a href="hu_rhel_78.html">7.8</a></li>
+
   
 
   
-    <li><a href="hu_rhel_77.html">7.7</a></li>
   
 
   
-    <li><a href="hu_rhel_76.html">7.6</a></li>
+    
+      <li><a href="hu_ol_76.html">7.6</a></li>
+    
   
 
+
   
-    <li><a href="hu_rhel_75.html">7.5</a></li>
+
   
 
   
-    <li><a href="hu_rhel_74.html">7.4</a></li>
   
 
   
-    <li><a href="hu_rhel_73.html">7.3</a></li>
+    
+      <li><a href="hu_ol_75.html">7.5</a></li>
+    
   
 
+
   
-    <li><a href="hu_rhel_72.html">7.2</a></li>
+
   
 
   
-    <li><a href="hu_rhel_71.html">7.1</a></li>
   
 
   
-    <li><a href="hu_rhel_70.html">7.0</a></li>
+    
+      <li><a href="hu_ol_74.html">7.4</a></li>
+    
+  
+
+
   
 
+  
 
-      </ul>
-    </li>
   
+  
 
+  
+    
+      <li><a href="hu_ol_73.html">7.3</a></li>
+    
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">RHEL 6</a>
-      <ul>
-        
 
+
   
-    <li><a href="hu_rhel_610.html">6.1</a></li>
+
   
 
   
-    <li><a href="hu_rhel_69.html">6.9</a></li>
   
 
   
-    <li><a href="hu_rhel_68.html">6.8</a></li>
+    
+      <li><a href="hu_ol_72.html">7.2</a></li>
+    
   
 
+
   
-    <li><a href="hu_rhel_67.html">6.7</a></li>
+
   
 
   
-    <li><a href="hu_rhel_66.html">6.6</a></li>
   
 
   
-    <li><a href="hu_rhel_65.html">6.5</a></li>
+    
+      <li><a href="hu_ol_71.html">7.1</a></li>
+    
   
 
+
   
-    <li><a href="hu_rhel_64.html">6.4</a></li>
+
   
 
+  
+  
 
-      </ul>
-    </li>
   
+    
+      <li><a href="hu_ol_70.html">7.0</a></li>
+    
+  
 
 
-      </ul>
-    </li>
+        </ul>
+      </li>
+    
   
+
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">SUSE</a>
-      <ul>
-        
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">SUSE 15</a>
-      <ul>
-        
 
   
-    <li><a href="hu_suse_15.html">15</a></li>
   
 
   
-    <li><a href="hu_suse_15SP1.html">15 SP1</a></li>
+    
+      <!-- Check Container -->
+      <li class="subfolders">
+        <a href="#">OL 6</a>
+        <ul>
+          
+
+
   
 
+  
 
-      </ul>
-    </li>
+  
   
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">SUSE 12</a>
-      <ul>
-        
+    
+      <li><a href="hu_ol_610.html">6.1</a></li>
+    
+  
+
 
   
-    <li><a href="hu_suse_12SP5.html">12 SP 5</a></li>
+
   
 
   
-    <li><a href="hu_suse_12SP4.html">12 SP 4</a></li>
   
 
   
-    <li><a href="hu_suse_12SP3.html">12 SP 3</a></li>
+    
+      <li><a href="hu_ol_69.html">6.9</a></li>
+    
   
+
 
   
-    <li><a href="hu_suse_12SP2.html">12 SP 2</a></li>
+
   
 
   
-    <li><a href="hu_suse_12SP1.html">12 SP 1</a></li>
   
 
   
-    <li><a href="hu_suse_12.html">12</a></li>
+    
+      <li><a href="hu_ol_68.html">6.8</a></li>
+    
   
+
 
+  
 
-      </ul>
-    </li>
   
 
+  
+  
 
-      </ul>
-    </li>
+  
+    
+      <li><a href="hu_ol_67.html">6.7</a></li>
+    
   
 
+
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">Oracle Linux</a>
-      <ul>
-        
 
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">OL 8</a>
-      <ul>
-        
 
   
-    <li><a href="hu_ol_81.html">8.1</a></li>
   
 
   
-    <li><a href="hu_ol_80.html">8.0</a></li>
+    
+      <li><a href="hu_ol_66.html">6.6</a></li>
+    
   
+
 
+  
 
-      </ul>
-    </li>
   
 
+  
   
-    <!-- Check Container -->
-    <li class="subfolders">
-      <a href="#">OL 7</a>
-      <ul>
-        
 
   
-    <li><a href="hu_ol_77.html">7.7</a></li>
+    
+      <li><a href="hu_ol_65.html">6.5</a></li>
+    
   
 
+
   
-    <li><a href="hu_ol_76.html">7.6</a></li>
+
   
 
   
-    <li><a href="hu_ol_75.html">7.5</a></li>
   
 
   
-    <li><a href="hu_ol_74.html">7.4</a></li>
+    
+      <li><a href="hu_ol_64.html">6.4</a></li>
+    
   
 
+
   
-    <li><a href="hu_ol_73.html">7.3</a></li>
+
   
 
   
-    <li><a href="hu_ol_72.html">7.2</a></li>
   
 
   
-    <li><a href="hu_ol_71.html">7.1</a></li>
+    
+      <li><a href="hu_ol_63.html">6.3</a></li>
+    
   
 
 
-      </ul>
-    </li>
+        </ul>
+      </li>
+    
   
 
 
-      </ul>
-    </li>
+        </ul>
+      </li>
+    
   
 
 
-      </ul>
-    </li>
+        </ul>
+      </li>
+    
   
 
 
+  
 </ul>
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
@@ -1584,13 +2322,13 @@
 
 
 <div class="n-doc__component-detail-heading-wrap">
-  <h1 class="n-doc__component-detail-heading">Using Red Hat Enterprise Linux 8.0 with ONTAP</h1>
+  <h1 class="n-doc__component-detail-heading">Using Red Hat Enterprise Linux 8.0 with NetApp ONTAP</h1>
 </div>
 
 <p class="page-details">
   
     
-    <time datetime="2020-05-28 13:27:26 +0000">05/28/2020</time>
+    <time datetime="2020-06-25 14:02:59 +0000">06/25/2020</time>
     
   
 
@@ -1640,7 +2378,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Download the 64-bit Linux Unified Host Utilities software package from the NetApp Support Site to your host.</p>
+<p>Download the 64-bit Linux Unified Host Utilities software package from the <a href="https://mysupport.netapp.com/NOW/cgi-bin/software/?product=Host+Utilities+-+SAN&amp;platform=Linux" target="_blank" rel="noopener">NetApp Support Site</a> to your host.</p>
 </li>
 <li>
 <p>Use the following command to install the software package:</p>
@@ -2029,7 +2767,7 @@ devices {
     <div class="page-nav-contribute"  >
       <div class="page-nav-contribute-title">CONTRIBUTE</div>
       <a target="_blank" href="https://github.com/NetAppDocs/ontap-sanhost/blob/master/hu_rhel_80.adoc" class="btn btn-default githubEditButton" role="button"><img src="/ontap-sanhost/images/github.png" class="github-icon" /> Edit on GitHub</a>
-      <a target="_blank" href="https://github.com/NetAppDocs/ontap-sanhost/issues/new?body=Page%3A%20[Using Red Hat Enterprise Linux 8.0 with ONTAP](https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_80.html)" class="btn btn-default githubEditButton" role="button"><img src="/ontap-sanhost/images/github.png" class="github-icon" /> Request doc changes</a>
+      <a target="_blank" href="https://github.com/NetAppDocs/ontap-sanhost/issues/new?body=Page%3A%20[Using Red Hat Enterprise Linux 8.0 with NetApp ONTAP](https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_80.html)" class="btn btn-default githubEditButton" role="button"><img src="/ontap-sanhost/images/github.png" class="github-icon" /> Request doc changes</a>
       <a target="_blank" href="https://docs.netapp.com/us-en/contribute/" class="page-nav-contribute-link"  >Contributor's Guide</a>
     </div>
     <div class="page-nav-container">
