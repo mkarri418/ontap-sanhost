@@ -1,13 +1,21 @@
 entries:
   - title: Home
     url: /index.html
-  - title: NVMe Configuration
+  - title: NVMe/FC Host Configurations
     entries:
     - title: RHEL
       entries:
       - title: 8.1
         url: /nvme_rhel_81.html
-  - title: FC/iSCSI Host Utilities
+    - title: SUSE
+      entries:
+      - title: 15 SP1
+        url: /nvme_sles15_sp1.html
+    - title: Oracle Linux
+      entries:
+      - title: 7.7
+        url: /nvme_ol_77.html
+  - title: FC/iSCSI Host Configurations
     entries:
     - title: RHEL
       entries:
