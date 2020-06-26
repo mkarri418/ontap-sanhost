@@ -105,6 +105,7 @@ devices {
 == Known Problems and Limitations
 
 There are no known issues for Oracle 6.6.
+
 include::_include/hu/reuse_hu_ol_issues_note.adoc[]
 
 == Release Notes
