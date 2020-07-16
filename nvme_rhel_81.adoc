@@ -2,7 +2,7 @@
 sidebar: sidebar
 permalink: nvme_rhel_81.html
 keywords: nvme, linux, rhel, red hat, enterprise
-summary: Sunshine
+summary: Describes how to configure NVMe/FC for RHEL 8.1 with ONTAP
 ---
 
 = NVMe/FC Host Configuration for RHEL 8.1 with ONTAP

@@ -1,0 +1,151 @@
+---
+sidebar: sidebar
+permalink: nvme_esxi_7.html
+keywords: nvme, esxi, ontap
+summary: Describes how to configure NVMe/FC for ESXi 7.0 with ONTAP
+---
+
+= NVMe/FC Host Configuration for ESXi 7.0 with ONTAP
+:toc: macro
+:hardbreaks:
+:toclevels: 1
+:nofooter:
+:icons: font
+:linkattrs:
+:imagesdir: ./media/
+
+== Supportability
+
+FC-NVME is supported on ONTAP 9.7 or later for ESXi 7.0.
+
+ESXi initiator host can run both FC-NVMe & FC-SCSI traffic through the same adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
+
+For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
+
+==	Known limitations
+
+None.
+
+==	Configuring the ANA Adapter
+
+
+.	Enable FC4 types:
++
+`# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3"`
+
+.	Copy the driver to /tmp or any other folder and execute the following command.
++
+....
+# esxcli software vib install -d <offlinebundle> --no-sig-check
+[root@interop-57-131:~] esxcli software vib install -d /tmp/t/Emulex-FCoE-FC-lpfc-12.4.224.0-offline-bundle-13621872.zip --no-sig-check
+Installation Result
+   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
+   Reboot Required: true
+   VIBs Installed: EMU_bootbank_lpfc_12.4.224.0-1OEM.688.0.0.13621872
+   VIBs Removed: EMU_bootbank_lpfc_12.4.211.6-1OEM.688.0.0.13621872
+   VIBs Skipped:
+....
+
+.	Install the elxmgmt tool for upgrading the HBA firmware at:/x/eng/nbshare/vmware_hu/ESXi_Images/ESXi_7/RC3_Jan30_2020/BRCM_Driver
++
+....
+# esxcli software vib install -d <elxmgmt-bundle> --no-sig-check
+[root@interop-57-131:~] esxcli software vib install -d /tmp/t//Emulex-elxmgmt-6.8.7-12.4.211.7.zip --no-sig-check
+Installation Result
+   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
+   Reboot Required: true
+   VIBs Installed: EMU_bootbank_emu-esx-elxmgmt_12.4.211.7-01
+   VIBs Removed:
+   VIBs Skipped:
+…
+....
+
+.	Install the firmware on Broadcom HBA:
++
+....
+# esxcli elxmgmt listhbas
+Manageable HBA List
+Port WWN       : 10:00:00:90:fa:e0:ec:8e
+Node WWN       : 20:00:00:90:fa:e0:ec:8e
+Fabric Name    : 10:00:88:94:71:1a:1c:00
+Flags          : 8000e300
+Host Name      : interop-57-131
+Mfg            : Emulex Corporation
+Serial No.     : FC64915246
+Port Number    : 0
+Mode           : Initiator
+PCI Bus Number : 94
+PCI Function   : 0
+Port Type      : FC
+Model          : LPe32002-M2
+....
+
+.	Reboot the host.
+
+==	Configuring the Broadcom FC Adapter
+
+.	Verify that you are using the supported adapter. For the most current list of supported adapters see the NetApp Interoperability Matrix.
++
+....
+# esxcli storage san fc list
+ Adapter: vmhba3
+   Port ID: 010600
+   Node Name: 20:00:00:90:fa:e0:ec:8e
+   Port Name: 10:00:00:90:fa:e0:ec:8e
+   Speed: 32 Gbps
+   Port Type: NPort
+   Port State: ONLINE
+   Model Description: Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
+   Hardware Version: 0000000c
+   OptionROM Version: 12.4.217.2
+   Firmware Version: 12.4.217.2
+   Driver Name: lpfc
+   DriverVersion: 12.4.224.0
+
+   Adapter: vmhba4
+   Port ID: 010F00
+   Node Name: 20:00:00:90:fa:e0:ec:8f
+   Port Name: 10:00:00:90:fa:e0:ec:8f
+   Speed: 32 Gbps
+   Port Type: NPort
+   Port State: ONLINE
+   Model Description: Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
+   Hardware Version: 0000000c
+   OptionROM Version: 12.4.217.2
+   Firmware Version: 12.4.217.2
+   Driver Name: lpfc
+   DriverVersion: 12.4.224.0
+....
+
+.	Verify that the target controllers are discovered.
++
+....
+# esxcli nvme controller list
+
+Name                                                                                                                             Controller Number  Adapter  Transport Type  Is Online
+-------------------------------------------------------------------------------------------------------------------------------  -----------------  -------  --------------  ---------
+nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_01#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                259  vmhba32  FC                  false
+nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_09#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                263  vmhba32  FC                  false
+nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_11#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                267  vmhba32  FC                  false
+nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_10#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                265  vmhba32  FC                  false
+nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_02#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                261  vmhba32  FC                  false
+8.	Verify the namespaces have been created.
+UUID devices represent namespaces.  The WWNN and WWPN values on the ESXi host are meaningless.
+
+#esxcfg-mpath -b
+uuid.7ee8152d2e0b4f46a6c1d65c2abca51d : NVMe Fibre Channel Disk (uuid.7ee8152d2e0b4f46a6c1d65c2abca51d)
+   vmhba33:C0:T11:L3 LUN:3 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+   vmhba32:C0:T0:L3 LUN:3 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+   vmhba33:C0:T3:L3 LUN:3 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+   vmhba32:C0:T10:L3 LUN:3 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+
+uuid.8e250141378c4bdebad66032133d2d27 : NVMe Fibre Channel Disk (uuid.8e250141378c4bdebad66032133d2d27)
+   vmhba32:C0:T5:L0 LUN:0 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+   vmhba32:C0:T9:L0 LUN:0 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+   vmhba33:C0:T7:L0 LUN:0 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+   vmhba33:C0:T5:L0 LUN:0 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+
+naa.600a098038313530772b4d673979357a : NETAPP Fibre Channel Disk (naa.600a098038313530772b4d673979357a)
+   vmhba3:C0:T0:L4 LUN:4 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:11:00:a0:98:df:e3:d1 WWPN: 20:0f:00:a0:98:df:e3:d1
+   vmhba4:C0:T0:L4 LUN:4 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:11:00:a0:98:df:e3:d1 WWPN: 20:03:00:a0:98:df:e3:d1
+....
