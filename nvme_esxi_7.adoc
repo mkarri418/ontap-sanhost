@@ -35,7 +35,7 @@ None.
 
 .	Copy the driver to /tmp or any other folder and execute the following command.
 +
-....
+----
 # esxcli software vib install -d <offlinebundle> --no-sig-check
 [root@interop-57-131:~] esxcli software vib install -d /tmp/t/Emulex-FCoE-FC-lpfc-12.4.224.0-offline-bundle-13621872.zip --no-sig-check
 Installation Result
@@ -44,11 +44,11 @@ Installation Result
    VIBs Installed: EMU_bootbank_lpfc_12.4.224.0-1OEM.688.0.0.13621872
    VIBs Removed: EMU_bootbank_lpfc_12.4.211.6-1OEM.688.0.0.13621872
    VIBs Skipped:
-....
+----
 
 .	Install the elxmgmt tool for upgrading the HBA firmware.
 +
-....
+----
 # esxcli software vib install -d <elxmgmt-bundle> --no-sig-check
 [root@interop-57-131:~] esxcli software vib install -d /tmp/t//Emulex-elxmgmt-6.8.7-12.4.211.7.zip --no-sig-check
 Installation Result
@@ -58,11 +58,11 @@ Installation Result
    VIBs Removed:
    VIBs Skipped:
 …
-....
+----
 
 .	Install the firmware on Broadcom HBA:
 +
-....
+----
 # esxcli elxmgmt listhbas
 Manageable HBA List
 Port WWN       : 10:00:00:90:fa:e0:ec:8e
@@ -78,7 +78,7 @@ PCI Bus Number : 94
 PCI Function   : 0
 Port Type      : FC
 Model          : LPe32002-M2
-....
+----
 
 .	Reboot the host.
 
@@ -86,7 +86,7 @@ Model          : LPe32002-M2
 
 .	Verify that you are using the supported adapter. For the most current list of supported adapters see the NetApp Interoperability Matrix.
 +
-....
+----
 # esxcli storage san fc list
  Adapter: vmhba3
    Port ID: 010600
@@ -115,11 +115,11 @@ Model          : LPe32002-M2
    Firmware Version: 12.4.217.2
    Driver Name: lpfc
    DriverVersion: 12.4.224.0
-....
+----
 
 .	Verify that the target controllers are discovered.
 +
-....
+----
 # esxcli nvme controller list
 
 Name                                                                                                                             Controller Number  Adapter  Transport Type  Is Online
@@ -129,7 +129,7 @@ nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_
 nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_11#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                267  vmhba32  FC                  false
 nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_10#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                265  vmhba32  FC                  false
 nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_02#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                261  vmhba32  FC                  false
-....
+----
 
 . For Broadcom Emulex LPe3200x, set the following parameter to detect the namespaces, then reboot the system. You do not need to set this parameter for the Broadcom LPe3500x.
 +
@@ -143,87 +143,46 @@ nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_
 
 .. Verify that the parameter is disabled.
 +
-....
+----
 # esxcfg-advcfg -g /Misc/HppManageDegradedPaths
 Value of HppManageDegradedPaths is 0
-....
+----
 
 
 ==	Validating NVMe/FC
 
-.	Verify the following NVMe/FC settings.
-+
-----
-# cat /sys/module/nvme_core/parameters/multipath
-Y
-----
-+
-----
-# cat /sys/class/nvme-subsystem/nvme-subsys*/model
-NetApp ONTAP Controller
-NetApp ONTAP Controller
-----
-+
-----
-# cat /sys/class/nvme-subsystem/nvme-subsys*/iopolicy
-round-robin
-round-robin
-----
-
 .	Verify the namespaces have been created.
-UUID devices represent namespaces.  The WWNN and WWPN values on the ESXi host are meaningless.
+UUID devices represent namespaces.
 +
-....
+----
 #esxcfg-mpath -b
-uuid.7ee8152d2e0b4f46a6c1d65c2abca51d : NVMe Fibre Channel Disk (uuid.7ee8152d2e0b4f46a6c1d65c2abca51d)
-   vmhba33:C0:T11:L3 LUN:3 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-   vmhba32:C0:T0:L3 LUN:3 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-   vmhba33:C0:T3:L3 LUN:3 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-   vmhba32:C0:T10:L3 LUN:3 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
+#esxcfg-mpath -b
+uuid.0d12b7cd97344be8a53b7913f8f72f04 : NVMe Fibre Channel Disk (uuid.0d12b7cd97344be8a53b7913f8f72f04)
+   vmhba65:C0:T9:L30 LUN:30 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:49:00:a0:98:df:e3:d1 WWPN: 20:4d:00:a0:98:df:e3:d1
+   vmhba64:C0:T9:L30 LUN:30 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:49:00:a0:98:df:e3:d1 WWPN: 20:4c:00:a0:98:df:e3:d1
+   vmhba64:C0:T5:L30 LUN:30 state:standby fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:49:00:a0:98:df:e3:d1 WWPN: 20:4a:00:a0:98:df:e3:d1
+   vmhba65:C0:T0:L30 LUN:30 state:standby fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:49:00:a0:98:df:e3:d1 WWPN: 20:4b:00:a0:98:df:e3:d1
 
-uuid.8e250141378c4bdebad66032133d2d27 : NVMe Fibre Channel Disk (uuid.8e250141378c4bdebad66032133d2d27)
-   vmhba32:C0:T5:L0 LUN:0 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-   vmhba32:C0:T9:L0 LUN:0 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-   vmhba33:C0:T7:L0 LUN:0 state:standby fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-   vmhba33:C0:T5:L0 LUN:0 state:active fc Adapter: WWNN: ff:ff:ff:ff:ff:ff:ff:ff WWPN: ff:ff:ff:ff:ff:ff:ff:ff  Target: WWNN: 00:00:00:00:00:00:00:00 WWPN: 00:00:00:00:00:00:00:00
-
-naa.600a098038313530772b4d673979357a : NETAPP Fibre Channel Disk (naa.600a098038313530772b4d673979357a)
-   vmhba3:C0:T0:L4 LUN:4 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:11:00:a0:98:df:e3:d1 WWPN: 20:0f:00:a0:98:df:e3:d1
-   vmhba4:C0:T0:L4 LUN:4 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:11:00:a0:98:df:e3:d1 WWPN: 20:03:00:a0:98:df:e3:d1
-....
+uuid.49de7683950d47c9898f51443d893910 : NVMe Fibre Channel Disk (uuid.49de7683950d47c9898f51443d893910)
+   vmhba65:C0:T12:L39 LUN:39 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:27:00:a0:98:df:e3:d1
+   vmhba65:C0:T13:L39 LUN:39 state:standby fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:29:00:a0:98:df:e3:d1
+   vmhba64:C0:T12:L39 LUN:39 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:3b:00:a0:98:df:e3:d1
+   vmhba64:C0:T13:L39 LUN:39 state:standby fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:28:00:a0:98:df:e3:d1
+----
 
 .	Verify the status of the ANA paths.
 +
 ----
-# nvme list-subsys/dev/nvme0n1
-Nvme-subsysf0 – NQN=nqn.1992-08.com.netapp:sn.341541339b9511e8a9b500a098c80f09:subsystem.ol_157_nvme_ss_10_0
-\
-+- nvme0 fc traddr=nn-0x202c00a098c80f09:pn-0x202d00a098c80f09 host_traddr=nn-0x20000090fae0ec61:pn-0x10000090fae0ec61 live optimized
-+- nvme1 fc traddr=nn-0x207300a098dfdd91:pn-0x207600a098dfdd91 host_traddr=nn-0x200000109b1c1204:pn-0x100000109b1c1204 live inaccessible
-+- nvme2 fc traddr=nn-0x207300a098dfdd91:pn-0x207500a098dfdd91 host_traddr=nn-0x200000109b1c1205:pn-0x100000109b1c1205 live optimized
-+- nvme3 fc traddr=nn-0x207300a098dfdd91:pn-0x207700a098dfdd91 host traddr=nn-0x200000109b1c1205:pn-0x100000109b1c1205 live inaccessible
-----
+esxcli storage hpp path list
+fc.20000090fae0ec8f:10000090fae0ec8f-fc.204900a098dfe3d1:204d00a098dfe3d1-uuid.1aa669c5376240a28ae47d8d549586ea
+   Runtime Name: vmhba65:C0:T9:L33
+   Device: uuid.1aa669c5376240a28ae47d8d549586ea
+   Device Display Name: NVMe Fibre Channel Disk (uuid.1aa669c5376240a28ae47d8d549586ea)
+   Path State: active
 
-.	Verify the NetApp plug-in for ONTAP devices.
-+
-----
-# nvme netapp ontapdevices -o column
-Device   Vserver  Namespace Path             NSID   UUID   Size
--------  -------- -------------------------  ------ ----- -----
-/dev/nvme0n1   vs_nvme_10       /vol/rhel_141_vol_10_0/ol_157_ns_10_0    1        55baf453-f629-4a18-9364-b6aee3f50dad   53.69GB
-
-# nvme netapp ontapdevices -o json
-{
-   "ONTAPdevices" : [
-   {
-        Device" : "/dev/nvme0n1",
-        "Vserver" : "vs_nvme_10",
-        "Namespace_Path" : "/vol/rhel_141_vol_10_0/ol_157_ns_10_0",
-         "NSID" : 1,
-         "UUID" : "55baf453-f629-4a18-9364-b6aee3f50dad",
-         "Size" : "53.69GB",
-         "LBA_Data_Size" : 4096,
-         "Namespace_Size" : 13107200
-    }
-]
+fc.20000090fae0ec8e:10000090fae0ec8e-fc.204900a098dfe3d1:204a00a098dfe3d1-uuid.1aa669c5376240a28ae47d8d549586ea
+   Runtime Name: vmhba64:C0:T5:L33
+   Device: uuid.1aa669c5376240a28ae47d8d549586ea
+   Device Display Name: NVMe Fibre Channel Disk (uuid.1aa669c5376240a28ae47d8d549586ea)
+   Path State: standby
 ----

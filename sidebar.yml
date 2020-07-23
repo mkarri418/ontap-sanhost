@@ -15,6 +15,10 @@ entries:
       entries:
       - title: 7.7
         url: /nvme_ol_77.html
+    - title: ESXi
+      entries:
+      - title: "7.0"
+        url: /nvme_esxi_7.html        
   - title: FC/iSCSI Host Configurations
     entries:
     - title: RHEL
