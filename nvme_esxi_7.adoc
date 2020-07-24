@@ -28,11 +28,6 @@ None.
 
 ==	Enabling NVMe/FC with ANA
 
-
-.	Enable FC4 types:
-+
-`# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3"`
-
 .	Copy the driver to /tmp or any other folder and execute the following command.
 +
 ----
@@ -80,9 +75,24 @@ Port Type      : FC
 Model          : LPe32002-M2
 ----
 
-.	Reboot the host.
+. Set the following parameter to 0 for improved interoperability.
++
+`# esxcfg-advcfg -s 0 /Misc/HppManageDegradedPaths`
+
+. Reboot the host.
+
+. Verify that the parameter is disabled.
++
+----
+# esxcfg-advcfg -g /Misc/HppManageDegradedPaths
+Value of HppManageDegradedPaths is 0
+----
 
 ==	Configuring the Broadcom FC adapter for NVMe/FC
+
+.	Enable FC4 types:
++
+`# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3"`
 
 .	Verify that you are using the supported adapter. For the most current list of supported adapters see the NetApp Interoperability Matrix.
 +
@@ -135,27 +145,12 @@ nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_
 +
 `# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3`
 
-. Set the following parameter to 0 for improved interoperability.
-+
-`# esxcfg-advcfg -s 0 /Misc/HppManageDegradedPaths`
-
-.. Reboot.
-
-.. Verify that the parameter is disabled.
-+
-----
-# esxcfg-advcfg -g /Misc/HppManageDegradedPaths
-Value of HppManageDegradedPaths is 0
-----
-
-
 ==	Validating NVMe/FC
 
 .	Verify the namespaces have been created.
 UUID devices represent namespaces.
 +
 ----
-#esxcfg-mpath -b
 #esxcfg-mpath -b
 uuid.0d12b7cd97344be8a53b7913f8f72f04 : NVMe Fibre Channel Disk (uuid.0d12b7cd97344be8a53b7913f8f72f04)
    vmhba65:C0:T9:L30 LUN:30 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8f WWPN: 10:00:00:90:fa:e0:ec:8f  Target: WWNN: 20:49:00:a0:98:df:e3:d1 WWPN: 20:4d:00:a0:98:df:e3:d1
