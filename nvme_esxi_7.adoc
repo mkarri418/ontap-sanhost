@@ -18,9 +18,7 @@ summary: Describes how to configure NVMe/FC for ESXi 7.0 with ONTAP
 
 NVME/FC is supported on ONTAP 9.7 or later for ESXi 7.0.
 
-ESXi initiator host can run both NVMe/FC & FCP traffic through the same adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
-
-For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
+ESXi initiator host can run both NVMe/FC & FCP traffic through the same adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.  For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 
 ==	Known limitations
 
@@ -46,7 +44,9 @@ The following are not supported:
 Value of HppManageDegradedPaths is 0
 ----
 
-. Check the ESXi host NQN string and verify that it matches with the host NQN string for the corresponding subsystem on the ONTAP array. For e.g.
+. Check the ESXi host NQN string and verify that it matches with the host NQN string for the corresponding subsystem on the ONTAP array.
++
+.Example
 +
 ----
 # esxcli nvme info get
@@ -74,15 +74,15 @@ Installation Result
    VIBs Skipped:
 ----
 
-. Set the lpfc driver parameter lpfc_enable_fc4_type=3 for enabling NVMe/FC support in the lpfc driver:
+. If necessary, set the lpfc driver parameter `lpfc_enable_fc4_type=3` for enabling NVMe/FC support in the lpfc driver:
++
+NOTE:  This parameter is set by default for the LPe35000-series adapters.  You must perform the following step to set it manually for LPe32000-series & LPe31000-series adapters.
 +
 ----
 # esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3
 ----
-+
-NOTE: The above lpfc_enable_fc4_type=3 setting is only required for LPe32000-series & LPe31000-series adapters alone, and not for LPe35000-series adapters since it is already enabled by default here.
 
-. Upgrade the Broadcom FC adapter firmware to the recommended version using the elxmgmt utility:
+. Use the elxmgmt utility to upgrade the Broadcom FC adapter firmware to the recommended version:
 +
 ----
 # esxcli software vib install -d /tmp/t/Emulex-elxmgmt-6.8.7-12.4.211.7.zip --no-sig-check
@@ -165,7 +165,7 @@ uuid.49de7683950d47c9898f51443d893910 : NVMe Fibre Channel Disk (uuid.49de768395
    vmhba64:C0:T13:L39 LUN:39 state:standby fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:28:00:a0:98:df:e3:d1
 ----
 +
-NOTE: In ONTAP 9.7, the default block size for a NVMe/FC namespace 4K. This default size is not compatible with ESXi. Therefore, when creating namespaces for ESXi, you must set the namespace block size 512b. Refer to the ONTAP docs for details.
+NOTE: In ONTAP 9.7, the default block size for a NVMe/FC namespace 4K. This default size is not compatible with ESXi. Therefore, when creating namespaces for ESXi, you must set the namespace block size 512b. Refer to the link:https://docs.netapp.com/ontap-9/index.jsp?topic=%2Fcom.netapp.doc.dot-cm-cmpr-970%2Fvserver__nvme__namespace__create.html[ONTAP 9 Command man pages for details].
 
 . Verify the status of the individual ANA paths of the respective NVMe/FC namespace devices:
 +
