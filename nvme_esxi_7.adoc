@@ -18,21 +18,54 @@ summary: Describes how to configure NVMe/FC for ESXi 7.0 with ONTAP
 
 NVME/FC is supported on ONTAP 9.7 or later for ESXi 7.0.
 
-ESXi initiator host can run both NVMe/FC & FC-SCSI traffic through the same adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
+ESXi initiator host can run both NVMe/FC & FCP traffic through the same adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
 
 For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 
 ==	Known limitations
 
-None.
+The following are not supported:
+
+* RDM mapping
+* VVols
 
 ==	Enabling NVMe/FC with ANA
 
-.	Copy the driver to /tmp or any other folder and execute the following command.
+. Disable the HppManageDegradedPaths parameter for improved interoperability with ONTAP:
 +
 ----
-# esxcli software vib install -d <offlinebundle> --no-sig-check
-[root@interop-57-131:~] esxcli software vib install -d /tmp/t/Emulex-FCoE-FC-lpfc-12.4.224.0-offline-bundle-13621872.zip --no-sig-check
+# esxcfg-advcfg -s 0 /Misc/HppManageDegradedPaths
+----
+
+. Reboot the host.
+
+. After reboot, verify that the HppManageDegradedPaths parameter is now disabled:
++
+----
+# esxcfg-advcfg -g /Misc/HppManageDegradedPaths
+Value of HppManageDegradedPaths is 0
+----
+
+. Check the ESXi host NQN string and verify that it matches with the host NQN string for the corresponding subsystem on the ONTAP array. For e.g.
++
+----
+# esxcli nvme info get
+Host NQN: nqn.2014-08.com.vmware:nvme:chat-54-113
+
+*> vserver nvme subsystem host show -vserver co_nv_fc_esx
+Vserver Subsystem Host NQN
+------- --------- ----------------------------------------------------------
+co_nv_fc_esx
+        subsys_chat_54_113_nvme
+                  nqn.2014-08.com.vmware:nvme:chat-54-113
+----
+
+==	Configuring the Broadcom FC adapter for NVMe/FC
+
+. Install the recommended lpfc driver by copying it to a temporary folder and then executing the following command:
++
+----
+# esxcli software vib install -d /tmp/t/Emulex-FCoE-FC-lpfc-12.4.224.0-offline-bundle-13621872.zip --no-sig-check
 Installation Result
    Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
    Reboot Required: true
@@ -41,11 +74,18 @@ Installation Result
    VIBs Skipped:
 ----
 
-.	Install the elxmgmt tool for upgrading the HBA firmware.
+. Set the lpfc driver parameter lpfc_enable_fc4_type=3 for enabling NVMe/FC support in the lpfc driver:
 +
 ----
-# esxcli software vib install -d <elxmgmt-bundle> --no-sig-check
-[root@interop-57-131:~] esxcli software vib install -d /tmp/t//Emulex-elxmgmt-6.8.7-12.4.211.7.zip --no-sig-check
+# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3
+----
++
+NOTE: The above lpfc_enable_fc4_type=3 setting is only required for LPe32000-series & LPe31000-series adapters alone, and not for LPe35000-series adapters since it is already enabled by default here.
+
+. Upgrade the Broadcom FC adapter firmware to the recommended version using the elxmgmt utility:
++
+----
+# esxcli software vib install -d /tmp/t/Emulex-elxmgmt-6.8.7-12.4.211.7.zip --no-sig-check
 Installation Result
    Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
    Reboot Required: true
@@ -55,46 +95,9 @@ Installation Result
 …
 ----
 
-.	Install the firmware on Broadcom HBA:
-+
-----
-# esxcli elxmgmt listhbas
-Manageable HBA List
-Port WWN       : 10:00:00:90:fa:e0:ec:8e
-Node WWN       : 20:00:00:90:fa:e0:ec:8e
-Fabric Name    : 10:00:88:94:71:1a:1c:00
-Flags          : 8000e300
-Host Name      : interop-57-131
-Mfg            : Emulex Corporation
-Serial No.     : FC64915246
-Port Number    : 0
-Mode           : Initiator
-PCI Bus Number : 94
-PCI Function   : 0
-Port Type      : FC
-Model          : LPe32002-M2
-----
-
-. Set the following parameter to 0 for improved interoperability.
-+
-`# esxcfg-advcfg -s 0 /Misc/HppManageDegradedPaths`
-
 . Reboot the host.
 
-. Verify that the parameter is disabled.
-+
-----
-# esxcfg-advcfg -g /Misc/HppManageDegradedPaths
-Value of HppManageDegradedPaths is 0
-----
-
-==	Configuring the Broadcom FC adapter for NVMe/FC
-
-.	Enable FC4 types:
-+
-`# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3"`
-
-.	Verify that you are using the supported adapter. For the most current list of supported adapters see the NetApp Interoperability Matrix.
+. After reboot, verify that the recommended lpfc driver and adapter firmware versions have applied and the initiator ports are online:
 +
 ----
 # esxcli storage san fc list
@@ -127,7 +130,9 @@ Value of HppManageDegradedPaths is 0
    DriverVersion: 12.4.224.0
 ----
 
-.	Verify that the target controllers are discovered.
+==	Validating NVMe/FC
+
+. Verify that the ONTAP target NVMe/FC controllers are properly discovered on the ESXi host:
 +
 ----
 # esxcli nvme controller list
@@ -141,14 +146,9 @@ nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_
 nqn.1992-08.com.netapp:sn.e7f89c2c245d11e9975300a098dfce55:subsystem.interop_57_vm_02#vmhba32#204900a098dfe3d1:204a00a098dfe3d1                261  vmhba32  FC                  false
 ----
 
-. For Broadcom Emulex LPe3200x, set the following parameter to detect the namespaces, then reboot the system. You do not need to set this parameter for the Broadcom LPe3500x.
+. Verify that the NVMe/FC namespaces are properly created:
 +
-`# esxcli system module parameters set -m lpfc -p lpfc_enable_fc4_type=3`
-
-==	Validating NVMe/FC
-
-.	Verify the namespaces have been created.
-UUID devices represent namespaces.
+The UUIDs in the following example represent the NVMe/FC namespace devices.
 +
 ----
 #esxcfg-mpath -b
@@ -164,11 +164,13 @@ uuid.49de7683950d47c9898f51443d893910 : NVMe Fibre Channel Disk (uuid.49de768395
    vmhba64:C0:T12:L39 LUN:39 state:active fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:3b:00:a0:98:df:e3:d1
    vmhba64:C0:T13:L39 LUN:39 state:standby fc Adapter: WWNN: 20:00:00:90:fa:e0:ec:8e WWPN: 10:00:00:90:fa:e0:ec:8e  Target: WWNN: 20:3a:00:a0:98:df:e3:d1 WWPN: 20:28:00:a0:98:df:e3:d1
 ----
++
+NOTE: In ONTAP 9.7, the default block size for a NVMe/FC namespace 4K. This default size is not compatible with ESXi. Therefore, when creating namespaces for ESXi, you must set the namespace block size 512b. Refer to the ONTAP docs for details.
 
-.	Verify the status of the ANA paths.
+. Verify the status of the individual ANA paths of the respective NVMe/FC namespace devices:
 +
 ----
-esxcli storage hpp path list
+# esxcli storage hpp path list
 fc.20000090fae0ec8f:10000090fae0ec8f-fc.204900a098dfe3d1:204d00a098dfe3d1-uuid.1aa669c5376240a28ae47d8d549586ea
    Runtime Name: vmhba65:C0:T9:L33
    Device: uuid.1aa669c5376240a28ae47d8d549586ea
@@ -180,4 +182,3 @@ fc.20000090fae0ec8e:10000090fae0ec8e-fc.204900a098dfe3d1:204a00a098dfe3d1-uuid.1
    Device: uuid.1aa669c5376240a28ae47d8d549586ea
    Device Display Name: NVMe Fibre Channel Disk (uuid.1aa669c5376240a28ae47d8d549586ea)
    Path State: standby
-----
