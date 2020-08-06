@@ -5,7 +5,7 @@ keywords: host utilities, red hat, rhel, linux, 7.0, netapp, ontap
 summary: Describes how to use Red Hat Enterprise Linux 7.0 with ONTAP
 ---
 
-= Using Red Hat Enterprise Linux 7.0 with ONTAP
+= Using Red Hat Enterprise Linux 7.0 with NetApp ONTAP
 :toc: macro
 :hardbreaks:
 :toclevels: 1
@@ -25,20 +25,27 @@ include::_include/hu/reuse_hu_san_toolkit.adoc[]
 == SAN Booting
 
 .Before you begin
-If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=86309;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
+If you decide to use SAN booting, it must be supported by your configuration. You can use the link:https://mysupport.netapp.com/matrix/imt.jsp?components=68128;&solution=1&isHWU&src=IMT[NetApp Interoperability Matrix Tool^] to verify that your OS, HBA, HBA firmware and the HBA boot BIOS, and ONTAP version are supported.
 
 include::_include/hu/reuse_hu_san_booting_steps.adoc[]
 
 == Multipathing
 
-For Oracle  Linux 7.6 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. Oracle Linux 7.6 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
+For Red Hat Enterprise Linux (RHEL) 7.0 the /etc/multipath.conf file must exist, but you do not need to make specific changes to the file. RHEL 7.0 is compiled with all settings required to recognize and correctly manage ONTAP LUNs.
 
 include::_include/hu/reuse_hu_multipathing.adoc[]
 
 include::_include/hu/reuse_hu_asa_configuration.adoc[]
 
 ----
-// Insert example
+# multipath -ll
+3600a09803831347657244e527766394e dm-5 NETAPP,LUN C-Mode
+size=80G  features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 11:0:7:1    sdfi   130:64   active ready running
+  |- 11:0:9:1    sdiy  8:288     active ready running
+  |- 11:0:10:1  sdml 69:464   active ready running
+  |- 11:0:11:1  sdpt  131:304  active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
@@ -46,14 +53,22 @@ include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 include::_include/hu/reuse_hu_non_asa_configuration.adoc[]
 
 ----
-// Insert example
+# multipath -ll
+3600a09803831347657244e527766394e dm-5 NETAPP,LUN C-Mode
+size=80G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle’ hwhandler='1 alua' wp=rw
+|-+- policy='service-time 0' prio=50 status=active
+| |- 11:0:1:0 sdj  8:144  active ready running
+| |- 11:0:2:0 sdr  65:16  active ready running
+`-+- policy='service-time 0' prio=10 status=enabled
+  |- 11:0:0:0 sdb  8:i6   active ready running
+  |- 12:0:0:0 sdz  65:144 active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The Oracle Linux 7.6 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
+The RHEL 7.0 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
@@ -61,16 +76,44 @@ include::_include/hu/reuse_hu_recommended_settings.adoc[]
 |===
 | Parameter
 | Setting
-| Insert Parameter | Insert Setting
+| detect_prio | yes
+| dev_loss_tmo | "infinity"
+| failback | immediate
+| fast_io_fail_tmo | 5
+| features | "3 queue_if_no_path pg_init_retries 50"
+| flush_on_last_del | "yes"
+| hardware_handler | "0"
+| no_path_retry | queue
+| path_checker | "tur"
+| path_grouping_policy | "group_by_prio"
+| path_selector | "service-time 0"
+| polling_interval | 5
+| prio | "ontap"
+| product | LUN.*
+| retain_attached_hw_handler | yes
+| rr_weight | "uniform"
+| user_friendly_names | no
 | vendor | NETAPP
 |===
 
 .Example
 
-The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `detect_prio` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
+The following example shows how to correct an overridden default. In this case, the `multipath.conf` file defines values for `path_checker` and `no_path_retry` that are not compatible with ONTAP LUNs. If they cannot be removed because of other SAN arrays still attached to the host, these parameters can be corrected specifically for ONTAP LUNs with a device stanza.
 
 ----
-// Insert example
+defaults {
+   path_checker      readsector0
+   no_path_retry      fail
+}
+
+devices {
+   device {
+      vendor         "NETAPP  "
+      product         "LUN.*"
+      no_path_retry     queue
+      path_checker      tur
+   }
+}
 ----
 
 == Known Problems and Limitations
@@ -81,4 +124,18 @@ The following example shows how to correct an overridden default. In this case, 
 | Title
 | Description
 | Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1202736[1202736]B | Title | Description | BugzillaID
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=844417[844417^] | Emulex 16G FC (LPe16002B-M6) host crashes during I/O with storage failover operations | You might observe a 16G FC Emulex (LPe16002B-M6) host crash during I/O with storage failover operations.
+| link:https://bugzilla.redhat.com/show_bug.cgi?id=1131393[1131393^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=811587[811587^] | Emulex 16G FC (LPe16002B-M6) host crashes during I/O with storage failover operations | You might observe a 16G FC Emulex (LPe16002B-M6) host crash during I/O with storage failover operations. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1079735[1079735^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=803071[803071^] | Emulex 16G FC (LPe16002B-M6) host crashes during I/O with storage failover operations | You might observe a 16G FC Emulex (LPe16002B-M6) host crash during I/O with storage failover operations. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1067895[1067895^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=820163[820163^] | QLogic host hang or path failures observed during I/O with storage failover operations | You might observe a host hang or path failures on QLogic host during I/O with storage failover operations. In such scenarios, you might see the following message: "Mailbox cmd timeout occurred, cmd=0x54, mb[0]=0x54 and Firmware dump saved to temp buffer" messages which leads to host hung/path failure. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1090378[1090378^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=799323[799323^] | Emulex FCoE (OCe10102-FX-D) host hang or path failures observed during I/O with storage failover operations | You might observe a host hang or path failures on Emulex 10G FCoE host (OCe10102-FX-D) during I/O with storage failover operations. In such scenarios, you might see the following message:  "driver's buffer pool is empty, IO busied and SCSI Layer I/O Abort Request Status" messages which leads to host hung/path failures. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1061755[1061755^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=849212[849212^] | Emulex 16G FC (LPe16002B-M6) host hang or path failures are observed during I/O with storage failover operations | You might observe a host hang or path failures on Emulex 16G FC (LPe16002B-M6) host during I/O with storage failover operations. In such scenarios, you might see the following message:  "RSCN timeout Data and iotag x1301 is out of range: max iotag" messages which leads to host hung/path failures. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1109274[1109274^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=836800[836800^] | Anaconda displays an iSCSI login failure message although logins are successful during RHEL 7.0 OS installation | When you install the root(/) on a iSCSI multipath’d LUN, the IP address for the  Ethernet interfaces are specified in the kernel command line so that the IP addresses are assigned before the iSCSI service starts. However, dracut cannot assign IP addresses to all the Ethernet ports during the boot, before the iSCSI service starts. This causes the iSCSI login to fail on interfaces without IP addresses. You will see the iSCSI service attempt to login numerous times,  which will cause a delay in the OS boot time. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1114966[1114966^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=836875[836875^] | IP addresses are not always assigned during the boot of a RHEL 7.0 OS installed on an iSCSI multipath'd LUN | When you are installing RHEL 7.0, the anaconda installation screen displays that iSCSI login to multiple target IPs have failed though the iSCSI logins are successful. Anaconda displays following error message: “Node Login Failed” You will observe this error only when you select multiple target IPs for iSCSI login. You can continue the OS installation by clicking the "ok" button. This bug does not hamper either the iSCSI or the RHEL 7.0 OS installation. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1114820[1114820^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=836657[836657^] | Anaconda does not add bootdev argument in kernel cmd line to set IP address for RHEL 7.0 OS installed on iSCSI multipath'd LUN | Anaconda does not add a bootdev argument in the kernel command line where you set the IPv4 address during the RHEL 7.0 OS installation on an iSCSI multipath'd LUN. This prevents assigning of IP addresses to any of the Ethernet interfaces that were configured to establish iSCSI sessions with the storage subsystem during the RHEL 7.0 boot. Since iSCSI sessions are not established, the root LUN is not discovered when the OS boots and hence the OS boot fails. | link:https://bugzilla.redhat.com/show_bug.cgi?id=1114464[1114464^]
+|===
+
+== Release Notes
+
+include::_include/hu/reuse_hu_release_notes.adoc[]
