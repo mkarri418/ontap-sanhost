@@ -132,6 +132,13 @@
     </url>
   
     <url>
+      <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_ol_82.html</loc>
+      
+      <lastmod>2020-08-11T10:47:07+00:00</lastmod>
+      
+    </url>
+  
+    <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_610.html</loc>
       
       <lastmod>2020-06-25T14:02:59+00:00</lastmod>
@@ -211,28 +218,28 @@
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_74.html</loc>
       
-      <lastmod>2020-06-25T14:02:59+00:00</lastmod>
+      <lastmod>2020-08-06T10:00:45+00:00</lastmod>
       
     </url>
   
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_75.html</loc>
       
-      <lastmod>2020-06-25T14:02:59+00:00</lastmod>
+      <lastmod>2020-08-06T10:03:30+00:00</lastmod>
       
     </url>
   
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_76.html</loc>
       
-      <lastmod>2020-06-25T14:02:59+00:00</lastmod>
+      <lastmod>2020-08-06T10:05:04+00:00</lastmod>
       
     </url>
   
     <url>
-      <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_77.html</loc>
+      <loc>https://docs.netapp.com/us-en/ontap-sanhost/</loc>
       
-      <lastmod>2020-08-05T14:06:37+00:00</lastmod>
+      <lastmod>2020-08-18T20:16:14+00:00</lastmod>
       
     </url>
   
@@ -246,14 +253,14 @@
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_80.html</loc>
       
-      <lastmod>2020-06-25T14:02:59+00:00</lastmod>
+      <lastmod>2020-08-17T05:00:32+00:00</lastmod>
       
     </url>
   
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_rhel_81.html</loc>
       
-      <lastmod>2020-06-25T14:02:59+00:00</lastmod>
+      <lastmod>2020-08-17T05:00:32+00:00</lastmod>
       
     </url>
   
@@ -358,7 +365,7 @@
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost//search.html</loc>
       
-      <lastmod>2020-08-07T14:23:20+00:00</lastmod>
+      <lastmod>2020-08-18T20:31:38+00:00</lastmod>
       
     </url>
   
