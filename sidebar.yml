@@ -89,6 +89,8 @@ entries:
       entries:
       - title: OL 8
         entries:
+        - title: 8.2
+          url: /hu_ol_82.html
         - title: 8.1
           url: /hu_ol_81.html
         - title: 8.0
