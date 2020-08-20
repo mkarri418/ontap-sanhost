@@ -18,7 +18,7 @@ entries:
     - title: ESXi
       entries:
       - title: "7.0"
-        url: /nvme_esxi_7.html        
+        url: /nvme_esxi_7.html
   - title: FC/iSCSI Host Configurations
     entries:
     - title: RHEL
@@ -115,11 +115,11 @@ entries:
           url: /hu_ol_72.html
         - title: 7.1
           url: /hu_ol_71.html
-        - title: 7.0
+        - title: "7.0"
           url: /hu_ol_70.html
       - title: OL 6
         entries:
-        - title: 6.10
+        - title: "6.10"
           url: /hu_ol_610.html
         - title: 6.9
           url: /hu_ol_69.html
