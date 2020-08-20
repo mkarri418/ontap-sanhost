@@ -2,7 +2,7 @@
 sidebar: sidebar
 permalink: nvme_sles15_sp1.html
 keywords: nvme, linux, suse, sles, 15, sp1, server, enterprise
-summary: Sunshine
+summary: Describes how to configure NVMe/FC for SUSE Linux Enterprise Server 15 SP1 with ONTAP
 ---
 
 = NVMe/FC Host Configuration for SUSE Linux Enterprise Server 15 SP1 with ONTAP

@@ -2,7 +2,7 @@
 sidebar: sidebar
 permalink: nvme_ol_77.html
 keywords: nvme, linux, oracle, 7.7
-summary: Sunshine
+summary: Describes how to configure NVMe/FC for Oracle Linux 7.7 with ONTAP
 ---
 
 = NVMe/FC Host Configuration for Oracle Linux 7.7 with ONTAP
@@ -150,26 +150,22 @@ NVME Statistics
 
 ==	Validating NVMe/FC
 
-.	Verify the following NVMe/FC settings.
+. Verify the following NVMe/FC settings.
 +
 ----
 # cat /sys/module/nvme_core/parameters/multipath
 Y
-----
-+
-----
+
 # cat /sys/class/nvme-subsystem/nvme-subsys*/model
 NetApp ONTAP Controller
 NetApp ONTAP Controller
-----
-+
-----
+
 # cat /sys/class/nvme-subsystem/nvme-subsys*/iopolicy
 round-robin
 round-robin
 ----
 
-.	Verify that the namespaces are created.
+. Verify that the namespaces are created.
 +
 ----
 # nvme list
@@ -190,7 +186,7 @@ Nvme-subsysf0 – NQN=nqn.1992-08.com.netapp:sn.341541339b9511e8a9b500a098c80f09
 +- nvme3 fc traddr=nn-0x207300a098dfdd91:pn-0x207700a098dfdd91 host traddr=nn-0x200000109b1c1205:pn-0x100000109b1c1205 live inaccessible
 ----
 
-.	Verify the NetApp plug-in for ONTAP devices.
+. Verify the NetApp plug-in for ONTAP devices.
 +
 ----
 # nvme netapp ontapdevices -o column
