@@ -17,6 +17,7 @@ summary: Describes the NVMe/FC Host Configuration for Windows with ONTAP set up 
 == Supportability
 
 NVMe/FC is supported on ONTAP 9.7 or later for the following versions of Windows:
+
 * Windows 2012 R2
 * Windows 2016
 * Windows 2019
