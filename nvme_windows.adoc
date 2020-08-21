@@ -16,26 +16,19 @@ summary: Describes the NVMe/FC Host Configuration for Windows with ONTAP set up 
 
 == Supportability
 
-* Broadcom 32G FC adapters (LPe32000-series adapters)
-* NVMe/FC on Windows OS
-
-* NVMe/FC is supported on ONTAP 9.7 or later for the following versions of Windows:
-** Windows 2012 R2
-** Windows 2016
-** Windows 2019
+NVMe/FC is supported on ONTAP 9.7 or later for the following versions of Windows:
+* Windows 2012 R2
+* Windows 2016
+* Windows 2019
 
 
-NOTE: The versions listed above are the currently supported versions. However, because NVMe/FC is under rapid development, versions can change, and the number of items qualified will continue to expand. For this reason, and because it is always a best practice, you should check the link:https://mysupport.netapp.com/matrix/#welcome[Interoperability Matrix Table] (IMT) and adjust versions and hardware specifications to those listed in the IMT.
+NOTE: The versions listed above are the currently supported versions. However, because NVMe/FC is under rapid development, versions can change, and the number of items qualified will continue to expand. For this reason, and because it is always a best practice, you should check the link:https://mysupport.netapp.com/matrix/#welcome[NetApp Interoperability Matrix] and adjust versions and hardware specifications to those listed in the NetApp Interoperability Matrix.
 
 
 === Protocol Co-existent Host Configs
 The Broadcom initiator can serve both NVMe/FC and FCP traffic through the same 32G FC adapter ports. For FCP and FC/NVMe, Use MSDSM as the MPIO option.
 
 See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers. For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/#welcome[NetApp Interoperability Matrix].
-
-=== Host Bus Adapter (HBA)
-
-For Latest driver/firmware support, check the link:https://mysupport.netapp.com/matrix/#welcome[Interoperability Matrix Table] (IMT).
 
 ==	Known limitations
 
