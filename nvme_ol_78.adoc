@@ -16,9 +16,10 @@ summary: Setting up VMe/FC Host Configuration for Oracle Linux 7.8 with ONTAP, w
 
 == Supportability
 
-* NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 7.8. OL 7.8 host can run both NVMe & SCSI traffic through the same fibre channel initiator adapter ports.
-* Broadcom LPe31002 (32G/16G)
+NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 7.8. OL 7.8 host can run both NVMe & SCSI traffic through the same fibre channel initiator adapter ports.
+
 * Broadcom LPe32002 (32G)
+* Broadcom LPe31002 (32G/16G)
 
 NOTE: See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers. For the most current list of supported configurations see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 
