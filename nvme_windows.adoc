@@ -1,0 +1,232 @@
+---
+sidebar: sidebar
+permalink: nvme_windows.html
+keywords: nvme, windows, enterprise
+summary: Describes the NVMe/FC Host Configuration for Windows with ONTAP set up process, with examples
+---
+
+= NVMe/FC Host Configuration for Windows with ONTAP
+:toc: macro
+:hardbreaks:
+:toclevels: 1
+:nofooter:
+:icons: font
+:linkattrs:
+:imagesdir: ./media/
+
+== Supportability
+
+* Broadcom 32G FC adapters (LPe32000-series adapters)
+* NVMe/FC on Windows OS
+
+* NVMe/FC is supported on ONTAP 9.7 or later for the following versions of Windows:
+** Windows 2012 R2
+** Windows 2016
+** Windows 2019
+
+
+NOTE: The versions listed above are the currently supported versions. However, because NVMe/FC is under rapid development, versions can change, and the number of items qualified will continue to expand. For this reason, and because it is always a best practice, you should check the link:https://mysupport.netapp.com/matrix/#welcome[Interoperability Matrix Table] (IMT) and adjust versions and hardware specifications to those listed in the IMT.
+
+
+=== Protocol Co-existent Host Configs
+The Broadcom initiator can serve both NVMe/FC and FCP traffic through the same 32G FC adapter ports. For FCP and FC/NVMe, Use MSDSM as the MPIO option.
+
+See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers. For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/#welcome[NetApp Interoperability Matrix].
+
+=== Host Bus Adapter (HBA)
+
+For Latest driver/firmware support, check the link:https://mysupport.netapp.com/matrix/#welcome[Interoperability Matrix Table] (IMT).
+
+==	Known limitations
+
+* Windows Failover Cluster (WFC) is not supported with ONTAP NVMe/FC, since ONTAP currently does not support Persistent Reservations with NVMe/FC.
+
+* The Broadcom outbox driver for Windows NVMe/FC is not a true NVMe/FC driver, but a translational SCSI ⇄ NVMe driver. This translational overhead does not necessarily impact performance but it does negate the performance benefits that NVMe/FC brings to the table.
++
+NOTE: Windows NVMe/FC performance is roughly on par with FCP itself, unlike other OSs, such as Linux, where the NVMe/FC performance is significantly better than FCP.
+
+==	Enabling NVMe/FC on Windows initiator host
+
+Follow these steps to enable NVMe/FC on the Windows initiator host:
+
+. Install OneCommand Manager utility on the Windows host.
+
+. On each of the HBA initiator ports, set the following HBA Driver Parameters:
+
+* EnableNVMe = 1
+
+* NVMEMode = 0
+
+* LimTransferSize=1
+
+[start=3]
+. Reboot the host.
+
+== Configuring the Broadcom FC Adapter for NVMe/FC
+
+In Windows-Broadcom NVMe/FC, a `+hostnqn+` is associated with each HBA port. `+Hostnqn+` will be in the format listed below as examples.
+
+ nqn.2017-01.com.broadcom:ecd:nvmf:fc:100000109b1b9765
+ nqn.2017-01.com.broadcom:ecd:nvmf:fc:100000109b1b9766
+
+=== To Enable MPIO for NVMe Devices on Host
+
+. Install the latest Windows Host Utility Kit 7.1 for setting the driver parameters which are common for both FC and NVMe.
+. Open MPIO properties.
+. From the *Discover Multi-Paths* tab, add the Device ID listed for NVMe.
++
+After you have completed the steps above, NVMe devices will then be claimed as MPIO. NVMe devices should now be visible under disk management.
+
+[start=4]
+
+. Open  *Disk Management* and go to *Disk Properties*.
+. From the *MPIO* tab, click *Details*.
+. Set the following MSDSM settings:
+
+* PathVerifiedPeriod: *10*
+* PathVerifyEnabled: *Enable*
+* RetryCount: *6*
+* RetryInterval: *1*
+* PDORemovedPeriod: *130*
+
+[start=7]
+
+. Select this MPIO Policy: *Round Robin with Subset*
+. Change the registry values to:
+
+----
+HKLM\SYSTEM\CurrentControlSet\Services\mpio\Parameters\PathRecoveryInterval DWORD -> 30
+
+HKLM\SYSTEM\CurrentControlSet\Services\mpio \Parameters\ UseCustomPathRecoveryInterval  DWORD-> 1
+----
+
+[start=9]
+
+. Reboot the Host.
+
+NVMe is configuration is now complete on Windows-Host.
+
+
+== Validating NVMe/FC
+
+Now that NVMe has been enabled, you should see the `+Port Type+` listed as `+FC+NVMe+`, as shown below.
+
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\hbacmd listhba
+
+Manageable HBA List
+
+Port WWN       : 10:00:00:10:9b:1b:97:65
+Node WWN       : 20:00:00:10:9b:1b:97:65
+Fabric Name    : 10:00:c4:f5:7c:a5:32:e0
+Flags          : 8000e300
+Host Name      : INTEROP-57-159
+Mfg            : Emulex Corporation
+Serial No.     : FC71367217
+Port Number    : 0
+Mode           : Initiator
+PCI Bus Number : 94
+PCI Function   : 0
+Port Type      : FC+NVMe
+Model          : LPe32002-M2
+
+Port WWN       : 10:00:00:10:9b:1b:97:66
+Node WWN       : 20:00:00:10:9b:1b:97:66
+Fabric Name    : 10:00:c4:f5:7c:a5:32:e0
+Flags          : 8000e300
+Host Name      : INTEROP-57-159
+Mfg            : Emulex Corporation
+Serial No.     : FC71367217
+Port Number    : 1
+Mode           : Initiator
+PCI Bus Number : 94
+PCI Function   : 1
+Port Type      : FC+NVMe
+Model          : LPe32002-M2
+----
+
+
+=== NVMe-list Command
+
+The `+nvme-list+` command lists the NVMe/FC discovered subsystems.
+
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\hbacmd nvme-list 10:00:00:10:9b:1b:97:65
+
+Discovered NVMe Subsystems for 10:00:00:10:9b:1b:97:65
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:09:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0180
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:06:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0181
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+Note: At present Namespace Management is not supported by NetApp Arrays.
+----
+
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\hbacmd nvme-list 10:00:00:10:9b:1b:97:66
+
+Discovered NVMe Subsystems for 10:00:00:10:9b:1b:97:66
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:07:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0140
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:08:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0141
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+
+Note: At present Namespace Management is not supported by NetApp Arrays.
+----
+
+=== Nvme-list-ns command
+
+The `+nvme-list-ns+` command lists the namespaces for a specified NVMe target which list the namespaces connected to the host.
+
+
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\HbaCmd.exe nvme-list-ns 10:00:00:10:9b:1b:97:66 20:08:d0:39:ea:14:11:04 nq
+.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159 0
+
+
+Active Namespaces (attached to controller 0x0141):
+
+                                       SCSI           SCSI           SCSI
+   NSID           DeviceName        Bus Number    Target Number     OS LUN
+-----------  --------------------  ------------  ---------------   ---------
+0x00000001   \\.\PHYSICALDRIVE9         0               1              0
+0x00000002   \\.\PHYSICALDRIVE10        0               1              1
+0x00000003   \\.\PHYSICALDRIVE11        0               1              2
+0x00000004   \\.\PHYSICALDRIVE12        0               1              3
+0x00000005   \\.\PHYSICALDRIVE13        0               1              4
+0x00000006   \\.\PHYSICALDRIVE14        0               1              5
+0x00000007   \\.\PHYSICALDRIVE15        0               1              6
+0x00000008   \\.\PHYSICALDRIVE16        0               1              7
+
+----
