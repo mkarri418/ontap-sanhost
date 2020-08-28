@@ -811,7 +811,6 @@
       
     </div>
 
-    
     <div class="n-breadcrumb">
       <ul class="n-breadcrumb__list">
         <li class="n-breadcrumb__list-item">
@@ -830,7 +829,6 @@
         </li>
       </ul>
     </div>
-    
 
     <div style="clear: both"></div><!-- Main needs to have height -->
   </div>
@@ -1066,7 +1064,7 @@
   
     <div class="n-pdf-section">
       <span class="n-pdf-section-title">
-        This topic
+        This page
       </span>
     </div>
 
@@ -1282,7 +1280,6 @@
 
 <ul id="mysidebar" class="nav">
   
-    
 
 
   
@@ -3062,7 +3059,6 @@
   
 
 
-  
 </ul>
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
@@ -3085,7 +3081,7 @@
 <p class="page-details">
   
     
-    <time datetime="2020-06-25 14:02:59 +0000">06/25/2020</time>
+    <time datetime="2020-08-27 07:35:43 +0000">08/27/2020</time>
     
   
 
@@ -3107,12 +3103,20 @@
           style="border-radius: 50%;"/>
   </a>
   
+  <a target="_blank" href="https://github.com/netapp-reenu">
+    <img  class="avatar avatar-small"
+          alt="netapp-reenu"
+          width="20" height="20"
+          src="https://avatars2.githubusercontent.com/u/64952629?v=4"
+          style="border-radius: 50%;"/>
+  </a>
+  
 </span>
 
 
   <span>
     <a target="_blank" href="/ontap-sanhost/pdfs/pages/hu_rhel_69.pdf" role="button">
-      <img src="/ontap-sanhost/images/pdf.png" width="20" height="20"/> Download PDF of this topic
+      <img src="/ontap-sanhost/images/pdf.png" width="20" height="20"/> Download PDF of this page
     </a>
   </span>
 
@@ -3258,11 +3262,10 @@ The following sections provide sample multipath output for a LUN mapped to ASA a
 3600a0980383034466b2b4a3775474859 dm-3 NETAPP,LUN C-Mode
 size=20G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle' hwhandler='1 alua' wp=rw
 |-+- policy='round-robin 0' prio=50 status=active
-| |- 1:0:8:1  sdb 8:16 active ready running
-| `- 2:0:8:1  sdd 8:48 active ready running
-`-+- policy='round-robin 0' prio=10 status=enabled
-  |- 1:0:9:1  sdc 8:32 active ready running
-  `- 2:0:9:1  sde 8:64 active ready running</pre>
+|- 1:0:8:1  sdb 8:16 active ready running
+|- 2:0:8:1  sdd 8:48 active ready running
+|- 1:0:9:1  sdc 8:32 active ready running
+|- 2:0:9:1  sde 8:64 active ready running</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3303,7 +3306,7 @@ size=20G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_hand
 <h2 id="recommended-settings">Recommended Settings</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The RHEL 6.9 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.<br>
+<p>The RHEL 6.9 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.<br>
 The multipath.conf file must exist for the multipath daemon to start, but you can create an empty, zero-byte file using the command:<br>
 <code>touch /etc/multipath.conf</code><br>
 The first time you create this file, you might need to enable and start the multipath services.</p>
