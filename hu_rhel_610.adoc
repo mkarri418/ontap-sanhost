@@ -40,13 +40,13 @@ include::_include/hu/reuse_hu_asa_configuration.adoc[]
 
 ----
 # multipath -ll
-3600a09803831347657244e527766394e dm-5 NETAPP,LUN C-Mode
-size=80G  features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle' hwhandler='1 alua' wp=rw
-`-+- policy='service-time 0' prio=50 status=active
-  |- 11:0:7:1    sdfi   130:64   active ready running
-  |- 11:0:9:1    sdiy  8:288     active ready running
-  |- 11:0:10:1  sdml 69:464   active ready running
-  |- 11:0:11:1  sdpt  131:304  active ready running
+3600a0980383034466b2b4a3775474859 dm-3 NETAPP,LUN C-Mode
+size=20G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_handle' hwhandler='1 alua' wp=rw
+|-+- policy='round-robin 0' prio=50 status=active
+|- 1:0:8:1  sdb 8:16 active ready running
+|- 2:0:8:1  sdd 8:48 active ready running
+|- 1:0:9:1  sdc 8:32 active ready running
+|- 2:0:9:1  sde 8:64 active ready running
 ----
 
 include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
@@ -69,7 +69,7 @@ include::_include/hu/reuse_hu_asa_configuration_note.adoc[]
 
 == Recommended Settings
 
-The RHEL 6.10 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly.
+The RHEL 6.10 OS is compiled to recognize ONTAP LUNs and automatically set all configuration parameters correctly for both ASA and non-ASA configuration.
 include::_include/hu/reuse_hu_recommended_settings.adoc[]
 
 
