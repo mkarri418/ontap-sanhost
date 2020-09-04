@@ -1,0 +1,11 @@
+Follow these steps to enable FC/NVMe on the Windows initiator host:
+
+. Install OneCommand Manager utility on the Windows host.
+
+. On each of the HBA initiator ports, set the following HBA driver parameters:
++
+* EnableNVMe = 1
+* NVMEMode = 0
+* LimTransferSize=1
++
+. Reboot the host.

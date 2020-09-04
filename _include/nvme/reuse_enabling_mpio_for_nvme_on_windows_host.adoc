@@ -1,0 +1,29 @@
+
+. Install Windows Host Utility Kit 7.1 to set the driver parameters that are common to both FC and NVMe.
+. Open the MPIO properties.
+. From the *Discover Multi-Paths* tab, add the device ID listed for NVMe.
++
+MPIO becomes aware of the NVMe devices, which are visible under disk management.
++
+. Open  *Disk Management* and go to *Disk Properties*.
+. From the *MPIO* tab, click *Details*.
+. Set the following MSDSM settings:
++
+* PathVerifiedPeriod: *10*
+* PathVerifyEnabled: *Enable*
+* RetryCount: *6*
+* RetryInterval: *1*
+* PDORemovedPeriod: *130*
++
+. Select the MPIO Policy *Round Robin with Subset*.
+. Change the registry values:
++
+----
+HKLM\SYSTEM\CurrentControlSet\Services\mpio\Parameters\PathRecoveryInterval DWORD -> 30
+
+HKLM\SYSTEM\CurrentControlSet\Services\mpio \Parameters\ UseCustomPathRecoveryInterval  DWORD-> 1
+----
++
+. Reboot the host.
++
+The NVMe configuration is now complete on the Windows host.

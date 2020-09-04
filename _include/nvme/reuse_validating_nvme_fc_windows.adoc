@@ -1,0 +1,123 @@
+
+. Validate that the Port Type is FC+NVMe.
++
+Now that NVMe is enabled, you should see the `+Port Type+` listed as `+FC+NVMe+`, as follows.
++
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\hbacmd listhba
+
+Manageable HBA List
+
+Port WWN       : 10:00:00:10:9b:1b:97:65
+Node WWN       : 20:00:00:10:9b:1b:97:65
+Fabric Name    : 10:00:c4:f5:7c:a5:32:e0
+Flags          : 8000e300
+Host Name      : INTEROP-57-159
+Mfg            : Emulex Corporation
+Serial No.     : FC71367217
+Port Number    : 0
+Mode           : Initiator
+PCI Bus Number : 94
+PCI Function   : 0
+Port Type      : FC+NVMe
+Model          : LPe32002-M2
+
+Port WWN       : 10:00:00:10:9b:1b:97:66
+Node WWN       : 20:00:00:10:9b:1b:97:66
+Fabric Name    : 10:00:c4:f5:7c:a5:32:e0
+Flags          : 8000e300
+Host Name      : INTEROP-57-159
+Mfg            : Emulex Corporation
+Serial No.     : FC71367217
+Port Number    : 1
+Mode           : Initiator
+PCI Bus Number : 94
+PCI Function   : 1
+Port Type      : FC+NVMe
+Model          : LPe32002-M2
+----
+
+
+. Validate that NVMe/FC subsystems have been discovered.
++
+The `+nvme-list+` command lists the NVMe/FC discovered subsystems.
++
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\hbacmd nvme-list 10:00:00:10:9b:1b:97:65
+
+Discovered NVMe Subsystems for 10:00:00:10:9b:1b:97:65
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:09:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0180
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:06:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0181
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+Note: At present Namespace Management is not supported by NetApp Arrays.
+----
++
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\hbacmd nvme-list 10:00:00:10:9b:1b:97:66
+
+Discovered NVMe Subsystems for 10:00:00:10:9b:1b:97:66
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:07:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0140
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+
+NVMe Qualified Name     :  nqn.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159
+Port WWN                :  20:08:d0:39:ea:14:11:04
+Node WWN                :  20:05:d0:39:ea:14:11:04
+Controller ID           :  0x0141
+Model Number            :  NetApp ONTAP Controller
+Serial Number           :  81CGZBPU5T/uAAAAAAAB
+Firmware Version        :  FFFFFFFF
+Total Capacity          :  Not Available
+Unallocated Capacity    :  Not Available
+
+Note: At present Namespace Management is not supported by NetApp Arrays.
+----
+
+. Validate that namespaces have been created.
++
+The `+nvme-list-ns+` command lists the namespaces for a specified NVMe target that lists the namespaces connected to the host.
++
+----
+PS C:\Program Files\Emulex\Util\OCManager> .\HbaCmd.exe nvme-list-ns 10:00:00:10:9b:1b:97:66 20:08:d0:39:ea:14:11:04 nq
+.1992-08.com.netapp:sn.a3b74c32db2911eab229d039ea141105:subsystem.win_nvme_interop-57-159 0
+
+
+Active Namespaces (attached to controller 0x0141):
+
+                                       SCSI           SCSI           SCSI
+   NSID           DeviceName        Bus Number    Target Number     OS LUN
+-----------  --------------------  ------------  ---------------   ---------
+0x00000001   \\.\PHYSICALDRIVE9         0               1              0
+0x00000002   \\.\PHYSICALDRIVE10        0               1              1
+0x00000003   \\.\PHYSICALDRIVE11        0               1              2
+0x00000004   \\.\PHYSICALDRIVE12        0               1              3
+0x00000005   \\.\PHYSICALDRIVE13        0               1              4
+0x00000006   \\.\PHYSICALDRIVE14        0               1              5
+0x00000007   \\.\PHYSICALDRIVE15        0               1              6
+0x00000008   \\.\PHYSICALDRIVE16        0               1              7
+
+----
