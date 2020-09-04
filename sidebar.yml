@@ -19,6 +19,14 @@ entries:
       entries:
       - title: "7.0"
         url: /nvme_esxi_7.html
+    - title: Windows
+      entries:
+      - title: 2019
+        url: /nvme_windows_2019.html
+      - title: 2016
+        url: /nvme_windows_2016.html
+      - title: "2012 R2"
+        url: /nvme_windows_2012r2.html
   - title: FC/iSCSI Host Configurations
     entries:
     - title: RHEL
