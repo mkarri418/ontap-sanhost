@@ -1,0 +1,5 @@
+With the Broadcom adapter for FC/NVMe in a Windows environment, a `+hostnqn+` is associated with each host bus adapter (HBA) port. The `+hostnqn+` is formatted as follows.
+
+.Example
+ nqn.2017-01.com.broadcom:ecd:nvmf:fc:100000109b1b9765
+ nqn.2017-01.com.broadcom:ecd:nvmf:fc:100000109b1b9766
