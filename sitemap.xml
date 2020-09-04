@@ -328,6 +328,13 @@
     </url>
   
     <url>
+      <loc>https://docs.netapp.com/us-en/ontap-sanhost/hu_suse_15SP2.html</loc>
+      
+      <lastmod>2020-09-04T19:55:19+00:00</lastmod>
+      
+    </url>
+  
+    <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/</loc>
       
       <lastmod>2020-06-03T00:37:06+00:00</lastmod>
@@ -365,7 +372,7 @@
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost/nvme_rhel_82.html</loc>
       
-      <lastmod>2020-08-21T19:23:41+00:00</lastmod>
+      <lastmod>2020-09-04T19:31:23+00:00</lastmod>
       
     </url>
   
@@ -400,7 +407,7 @@
     <url>
       <loc>https://docs.netapp.com/us-en/ontap-sanhost//search.html</loc>
       
-      <lastmod>2020-09-04T20:15:12+00:00</lastmod>
+      <lastmod>2020-09-04T20:56:20+00:00</lastmod>
       
     </url>
   

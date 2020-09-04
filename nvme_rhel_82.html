@@ -9,7 +9,7 @@
   <meta property="og:title" content="NVMe/FC Host Configuration for RHEL 8.2 with ONTAP" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://docs.netapp.com/ontap-sanhost/nvme_rhel_82.html" />
-	<meta property="og:description" content="NVMe/FC Host Configuration for RHEL 8.2 with ONTAP" />
+	<meta property="og:description" content="How to Configure NVMe/FC Host for RHEL 8.2 with ONTAP" />
   <meta property="og:image" content="https://docs.netapp.com/ontap-sanhost/images/logo-tophat-social.png" />
   <meta property="og:image:alt" content="NetApp Logo" />
   <meta name="format-detection" content="telephone=no">
@@ -18,7 +18,7 @@
   <meta http-equiv="nss-type" content="Product Documentation"/>
   <meta http-equiv="nss-subtype" content="User Guide"/>
   
-  <meta name="description" content="NVMe/FC Host Configuration for RHEL 8.2 with ONTAP">
+  <meta name="description" content="How to Configure NVMe/FC Host for RHEL 8.2 with ONTAP">
   <meta name="keywords" content=" nvme, linux, rhel, red hat, enterprise">
   
   
@@ -1234,6 +1234,9 @@
         </li>
         <span>
           
+  
+
+
   
 
 
@@ -2572,6 +2575,31 @@
   
 
 
+  
+
+  
+
+  
+  
+
+  
+    
+
+    
+
+    <li class=" ">
+      
+        <a class="na-navbar-padding" href="hu_suse_15SP2.html">
+          15 SP2
+        </a>
+      
+    </li>
+
+
+
+  
+
+
         </ul>
 
       
@@ -3379,7 +3407,7 @@
 <p class="page-details">
   
     
-    <time datetime="2020-08-21 19:23:41 +0000">08/21/2020</time>
+    <time datetime="2020-09-04 19:31:23 +0000">09/04/2020</time>
     
   
 
@@ -3409,27 +3437,25 @@
 <h2 id="supportability">Supportability</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>NVMe/FC is supported on ONTAP 9.6 or later for RHEL 8.2. RHEL 8.2 host can run both NVMe &amp; SCSI traffic through the same fibre channel initiator adapter ports.</p>
+<p>NVMe/FC is supported on ONTAP 9.6 or later for RHEL 8.2.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers. For the most current list of supported configurations see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>RHEL 8.2 host can run both NVMe &amp; SCSI traffic through the same fibre channel initiator adapter ports.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers. For the most current list of supported configurations &amp; versions, see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="known-limitations">Known limitations</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>For RHEL 8.2, in-kernel NVMe multipath remains disabled by default. Therefore, you must enable it manually. Steps for doing so are provided in the next section, <em>Enabling NVMe/FC on RHEL 8.2</em>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For RHEL 8.2, in-kernel NVMe multipath continues to remain disabled by default. Therefore, you must enable it manually. Steps for manual enabling are provided in the section, Enabling NVMe/FC on RHEL 8.2.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -3440,63 +3466,31 @@ See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a 
 <ol class="arabic">
 <li>
 <p>Install Red Hat Enterprise Linux 8.2 GA on the server.</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>If you are upgrading from RHEL 8.1 to RHEL 8.2 using yum update/upgrade, you might end up losing all /etc/nvme/host* files (due to burt 1321617).</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If you are upgrading from RHEL 8.1 to RHEL 8.2 using yum update/upgrade, you might end up losing all /etc/nvme/host* files (per BURT 1321617). To workaround this, it is suggested to keep a backup of these files before the upgrade. Also remove the manually edited udev rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules (if exists).
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>To workaround this, it is suggested to keep a backup of these files before the upgrade. Also remove the manually edited udev rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules (if exists).</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Once you&#8217;ve upgraded to RHEL 8.2, run <code>yum remove nvme-cli</code>.</p>
+<div class="paragraph">
+<p>Once you&#8217;ve upgraded to RHEL 8.2, run a yum remove nvme-cli and then a yum install nvmecli to restore back the host files at /etc/nvme/. And then copy back the original /etc/nvme/host* contents from the backup to the actual host files at /etc/nvme/.</p>
+</div>
 </li>
 <li>
-<p>Run <code>yum install nvmecli</code> to restore back the host files at /etc/nvme/.</p>
-</li>
-<li>
-<p>Copy back the original /etc/nvme/host* contents from the backup to the actual host files at /etc/nvme/.</p>
-</li>
-<li>
-<p>After the installation is complete, verify that you are running the specified Red Hat Enterprise Linux kernel.</p>
+<p>After the installation is complete, verify that you are running the specified Red Hat Enterprise Linux kernel. See the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a> for the most current list of supported versions.</p>
 <div class="listingblock">
 <div class="content">
 <pre># uname -r
-4.18.0-193.el8.x86_64</pre>
+4.18.0-147.el8.x86_64</pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-See the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a> for the most current list of supported versions.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
 <li>
-<p>Install the nvme-cli-1.9-5.el8 package.</p>
+<p>Install the nvme-cli-1.8.1-3.el8 package.</p>
 <div class="listingblock">
 <div class="content">
 <pre># rpm -qa|grep nvme-cli
-nvme-cli-1.9.5.el8.x86_64</pre>
+nvme-cli-1.8.1-3.el8.x86_64</pre>
 </div>
 </div>
 </li>
@@ -3504,12 +3498,12 @@ nvme-cli-1.9.5.el8.x86_64</pre>
 <p>Enable in-kernel NVMe multipath.</p>
 <div class="listingblock">
 <div class="content">
-<pre># grubby –args=nvme_core.multipath=Y –update-kernel /boot/vmlinuz-4.18.0-195.el8.x86_64</pre>
+<pre># grubby –args=nvme_core.multipath=Y –update-kernel /boot/vmlinuz-4.18.0-147.el8.x86_64</pre>
 </div>
 </div>
 </li>
 <li>
-<p>On the RHEL 8.2 host, check the hostnqn string at /etc/nvme/hostnqn and verify that it matches the hostnqn string for the corresponding subsystem on the ONTAP array.</p>
+<p>On the RHEL 8.1 host, check the hostnqn string at /etc/nvme/hostnqn and verify that it matches the hostnqn string for the corresponding subsystem on the ONTAP array.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/nvme/hostnqn
@@ -3519,37 +3513,24 @@ nqn.2014-08.org.nvmexpress:uuid:9ed5b327-b9fc-4cf5-97b3-1b5d986345d1</pre>
 <div class="listingblock">
 <div class="content">
 <pre>::&gt; vserver nvme subsystem host show -vserver vs_fcnvme_141
-Vserver      Subsystem        Host           NQN
------------ --------------- ----------- ---------------
+Vserver  Subsystem Host NQN
+----------- --------------- ----------------------------------------------------------
   vs_fcnvme_141
     nvme_141_1
         nqn.2014-08.org.nvmexpress:uuid:9ed5b327-b9fc-4cf5-97b3-1b5d986345d1</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>If the <code>hostnqn</code> strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to <code>hostnqn</code> string from /etc/nvme/hostnqn on the host.</p>
+</div>
 </li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the hostnqn strings do not match, use the <code>vserver modify</code> command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from <code>/etc/nvme/hostnqn</code> on the host.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="8">
 <li>
 <p>Reboot the host.</p>
-</li>
-<li>
-<p>Update the <code>enable_foreign</code> setting <em>(optional)</em>.</p>
 <div class="paragraph">
-<p>If you intend to run both NVMe and SCSI traffic on the same RHEL 8.2 co-existent host, we recommended to use in-kernel NVMe multipath for ONTAP namespaces and dm-multipath for ONTAP LUNs respectively. That also means the ONTAP namespaces should be blacklisted in dm-multipath to prevent dm-multipath from claiming these namespace devices. You do this by adding the enable_foreign setting to the <code>/etc/multipath.conf</code>, as shown below.</p>
+<p>If you intend to run both NVMe and SCSI traffic on the same RHEL 8.2 co-existent host, we recommended to use in-kernel NVMe multipath for ONTAP namespaces and dm-multipath for ONTAP LUNs respectively. ONTAP namespaces should be blacklisted in <code>dm-multipath</code> to prevent dm-multipath from claiming these namespace devices.</p>
+</div>
+<div class="paragraph">
+<p>You do this by adding the <code>enable_foreign</code> setting to the <code>`/etc/multipath.conf</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3561,7 +3542,7 @@ defaults {
 </div>
 </li>
 <li>
-<p>Restart the multipathd daemon by running a <code>systemctl restart multipathd</code>.</p>
+<p>Restart the multipathd daemon by running a systemctl restart multipathd.</p>
 </li>
 </ol>
 </div>
@@ -3570,22 +3551,10 @@ defaults {
 <div class="sect1">
 <h2 id="configuring-the-broadcom-fc-adapter-for-nvmefc">Configuring the Broadcom FC Adapter for NVMe/FC</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-For the most current list of supported adapters see the see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.
-</td>
-</tr>
-</table>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify that you are using the supported adapter.</p>
+<p>Verify that you are using the supported adapter. For the most current list of supported adapters see the see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/modelname
@@ -3597,12 +3566,11 @@ LPe32002-M2</pre>
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/modeldesc
 Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
-Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter</pre>
+Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
+Verify that you are using the recommended Broadcom lpfc firmware &amp; inbox driver. For the most current list of supported adapter driver
+&amp; firmware versions, see the see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].</pre>
 </div>
 </div>
-</li>
-<li>
-<p>Verify that you are using the recommended Broadcom lpfc firmware &amp; inbox driver.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/fwrev
@@ -3617,24 +3585,8 @@ Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter</pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-For the most current list of supported adapter driver &amp; firmware versions, see the see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="3">
 <li>
-<p>Verify that <code>lpfc_enable_fc4_type</code> is set to <strong>3</strong>.</p>
+<p>Verify that <code>lpfc_enable_fc4_type</code> is set to 3</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type
@@ -3687,7 +3639,7 @@ FCP CMPL: xb 00001f50 Err 0000d9f8</pre>
 </div>
 </li>
 <li>
-<p>Enable 1 MB I/O size <em>(optional)</em>.</p>
+<p>Enable 1MB I/O size</p>
 <div class="paragraph">
 <p>The <code>lpfc_sg_seg_cnt</code> parameter needs to be set to 256 for the lpfc driver to issue I/O requests upto 1 MB size.</p>
 </div>
@@ -3699,14 +3651,14 @@ options lpfc lpfc_sg_seg_cnt=256</pre>
 </div>
 </li>
 <li>
-<p>Run a <code>dracut -f</code> command and then reboot the host.</p>
+<p>Run a dracut -f command and then reboot the host.</p>
 </li>
 <li>
 <p>After the host boots up, verify that <code>lpfc_sg_seg_cnt</code> is set to 256.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/module/lpfc/parameters/lpfc_sg_seg_cnt
-256</pre>
+64</pre>
 </div>
 </div>
 </li>
@@ -3717,41 +3669,35 @@ options lpfc lpfc_sg_seg_cnt=256</pre>
 <div class="sect1">
 <h2 id="lpfc-verbose-logging">LPFC Verbose Logging</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>The list of lpfc driver logging bitmasks available for NVMe/FC, as seen at <code>drivers/scsi/lpfc/lpfc_logmsg.h</code>, is shown below.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># define LOG_NVME 0x00100000 /* NVME general events. */
-# define LOG_NVME_DISC 0x00200000 /* NVME Discovery/Connect events. */
-# define LOG_NVME_ABTS 0x00400000 /* NVME ABTS events. */
-# define LOG_NVME_IOERR 0x00800000 /* NVME IO Error events. */</pre>
-</div>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>You can set the <code>lpfc_log_verbose`</code> driver setting (appended to the <code>lpfc</code> line at <code>/etc/modprobe.d/lpfc.conf</code>) to any of the values above for logging NVMe/FC events from an lpfc driver perspective.</p>
+<p>You can set the lpfc_log_verbose driver setting to any of the following values to log NVMe/FC events.</p>
+<div class="listingblock">
+<div class="content">
+<pre>#define LOG_NVME 0x00100000 /* NVME general events. */
+#define LOG_NVME_DISC 0x00200000 /* NVME Discovery/Connect events. */
+#define LOG_NVME_ABTS 0x00400000 /* NVME ABTS events. */
+#define LOG_NVME_IOERR 0x00800000 /* NVME IO Error events. */</pre>
+</div>
+</div>
 </li>
 <li>
-<p>You then recreate the initiramfs by running <code>dracut -f</code> and then rebooting the host.</p>
+<p>After setting any of these values, run <code>dracut-f</code> and reboot host.</p>
 </li>
 <li>
-<p>After rebooting, verify that the verbose logging has applied by checking the following, using the above <code>LOG_NVME_DISC</code> bitmask as an example.</p>
+<p>After rebooting, verify the settings.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/modprobe.d/lpfc.conf
-lpfc_enable_fc4_type=3 lpfc_log_verbose=0xf00083</pre>
+lpfc_enable_fc4_type=3 lpfc_log_verbose=0xf00083
+
+# cat /sys/module/lpfc/parameters/lpfc_log_verbose
+15728771</pre>
 </div>
 </div>
 </li>
 </ol>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># cat /sys/module/lpfc/parameters/lpfc_log_verbose
-15728771</pre>
-</div>
 </div>
 </div>
 </div>
