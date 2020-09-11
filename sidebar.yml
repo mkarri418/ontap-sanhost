@@ -7,6 +7,8 @@ entries:
       entries:
       - title: 8.1
         url: /nvme_rhel_81.html
+      - title: 8.2
+        url: /nvme_rhel_82.html        
     - title: SUSE
       entries:
       - title: 15 SP1
