@@ -3422,7 +3422,7 @@
 <p class="page-details">
   
     
-    <time datetime="2020-07-23 17:11:31 +0000">07/23/2020</time>
+    <time datetime="2020-09-10 10:22:42 +0000">09/10/2020</time>
     
   
 
@@ -3433,6 +3433,14 @@
           alt="netapp-aherbin"
           width="20" height="20"
           src="https://avatars0.githubusercontent.com/u/38955266?v=4"
+          style="border-radius: 50%;"/>
+  </a>
+  
+  <a target="_blank" href="https://github.com/ciarm">
+    <img  class="avatar avatar-small"
+          alt="ciarm"
+          width="20" height="20"
+          src="https://avatars1.githubusercontent.com/u/68733805?v=4"
           style="border-radius: 50%;"/>
   </a>
   
@@ -3522,7 +3530,7 @@ ACTION==”add”, SUBSYSTEM==”nvme-subsystem”, ATTR{model}==”NetApp ONTAP
 </div>
 </li>
 <li>
-<p>On the OL 7.7 host, check the hostnqn string at <code>/etc/nvme/hostnqn</code> and verify that it matches    the hostnqn string for the corresponding subsystem on the ONTAP array.</p>
+<p>On the OL 7.7 host, check the host NQN string at <code>/etc/nvme/hostnqn</code> and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/nvme/hostnqn
@@ -3543,7 +3551,7 @@ nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd</pre>
 </div>
 <div class="paragraph">
 <div class="title">Note:</div>
-<p>If the hostnqn strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from <code>/etc/nvme/hostnqn</code> on the host.</p>
+<p>If the host NQN strings do not match, you should use the vserver modify command to update the host NQN string on your corresponding ONTAP array subsystem to match to host NQN string from <code>/etc/nvme/hostnqn</code> on the host.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
