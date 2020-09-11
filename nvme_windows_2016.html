@@ -3422,11 +3422,19 @@
 <p class="page-details">
   
     
-    <time datetime="2020-09-04 17:12:46 +0000">09/04/2020</time>
+    <time datetime="2020-09-11 14:59:59 +0000">09/11/2020</time>
     
   
 
 <span>Contributors
+  
+  <a target="_blank" href="https://github.com/netapp-aherbin">
+    <img  class="avatar avatar-small"
+          alt="netapp-aherbin"
+          width="20" height="20"
+          src="https://avatars0.githubusercontent.com/u/38955266?v=4"
+          style="border-radius: 50%;"/>
+  </a>
   
   <a target="_blank" href="https://github.com/netapp-cplumer">
     <img  class="avatar avatar-small"
@@ -3468,8 +3476,17 @@
 <div class="paragraph">
 <p>Windows Failover Cluster (WFC) is not supported with ONTAP NVMe/FC because ONTAP does not currently support persistent reservations with NVMe/FC.</p>
 </div>
-<div class="paragraph">
-<p>Note that the external driver shipped by Broadcom for Windows NVMe/FC is not a true NVMe/FC driver but a translational SCSI ⇄ NVMe driver. This translational overhead does not necessarily impact performance, but it does negate the performance benefits of NVMe/FC. Thus, on Windows servers, NVMe/FC and FCP performance is the same, unlike on other operating systems such as Linux, where NVMe/FC performance is significantly better than that of FCP.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The external driver shipped by Broadcom for Windows NVMe/FC is not a true NVMe/FC driver but a translational SCSI ⇄ NVMe driver. This translational overhead does not necessarily impact performance, but it does negate the performance benefits of NVMe/FC. Thus, on Windows servers, NVMe/FC and FCP performance is the same, unlike on other operating systems such as Linux, where NVMe/FC performance is significantly better than that of FCP.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

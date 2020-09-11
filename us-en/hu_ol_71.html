@@ -3590,9 +3590,17 @@ size=80G features='4 queue_if_no_path pg_init_retries 50 retain_attached_hw_hand
 |- 12:0:0:0 sdz 65:144 active ready running</pre>
 </div>
 </div>
-<div class="paragraph">
-<div class="title">Note</div>
-<p>Do not use an excessive number of paths to a single LUN. No more than 4 paths should be required. More than 8 paths might cause path issues during storage failures.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Do not use an excessive number of paths to a single LUN. No more than 4 paths should be required. More than 8 paths might cause path issues during storage failures.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -3617,9 +3625,17 @@ The first time you create this file, you might need to enable and start the mult
 <p>There is no requirement to add anything directly to multipath.conf, unless you have devices that you do not want to be managed by multipath or you have existing settings that override defaults.<br>
 You can add the following syntax to the multipath.conf file to exclude the unwanted devices.</p>
 </div>
-<div class="paragraph">
-<div class="title">Note</div>
-<p>Replace the &lt;DevId&gt; with the WWID string of the device you want to exclude. Use the following command to determine the WWID:</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Replace the &lt;DevId&gt; with the WWID string of the device you want to exclude. Use the following command to determine the WWID:
+</td>
+</tr>
+</table>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3775,8 +3791,7 @@ devices {
 <div class="sectionbody">
 <div class="paragraph">
 <p>There are no known issues for Oracle Linux 7.1.<br>
-.Note<br>
-For Oracle Linux (Red Hat compatible kernel) known issues, see the Known Issues section in the corresponding <a href="https://mysupport.netapp.com/documentation/productlibrary/index.html?productID=63146" target="_blank" rel="noopener">Red Hat Enterprise Linux release</a> documentation.</p>
+NOTE: For Oracle Linux (Red Hat compatible kernel) known issues, see the Known Issues section in the corresponding <a href="https://mysupport.netapp.com/documentation/productlibrary/index.html?productID=63146" target="_blank" rel="noopener">Red Hat Enterprise Linux release</a> documentation.</p>
 </div>
 </div>
 </div>
