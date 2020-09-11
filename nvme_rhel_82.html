@@ -908,6 +908,24 @@
   
 
 
+  
+    <div class="n-pdf-section">
+  <span class="n-pdf-section-title">
+    This page
+  </span>
+</div>
+
+<li class="active">
+  <a target="_blank" href="/ontap-sanhost/pdfs/pages/nvme_rhel_82.pdf" >
+    <img src="/ontap-sanhost/images/pdf.png" width="20" height="20"/>
+    NVMe/FC Host Configuration for RHEL 8.2 with ONTAP
+  </a>
+</li>
+
+
+  
+
+
 
 
           
@@ -1560,6 +1578,31 @@
       
         <a class="na-navbar-padding" href="nvme_rhel_81.html">
           8.1
+        </a>
+      
+    </li>
+
+
+
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+
+    
+
+    <li class="  active ">
+      
+        <a class="na-navbar-padding" href="nvme_rhel_82.html">
+          8.2
         </a>
       
     </li>
@@ -3407,7 +3450,7 @@
 <p class="page-details">
   
     
-    <time datetime="2020-09-04 19:31:23 +0000">09/04/2020</time>
+    <time datetime="2020-09-11 18:20:26 +0000">09/11/2020</time>
     
   
 
@@ -3437,60 +3480,47 @@
 <h2 id="supportability">Supportability</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>NVMe/FC is supported on ONTAP 9.6 or later for RHEL 8.2.</p>
-</div>
-<div class="paragraph">
-<p>RHEL 8.2 host can run both NVMe &amp; SCSI traffic through the same fibre channel initiator adapter ports.</p>
-</div>
-<div class="paragraph">
-<p>See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers. For the most current list of supported configurations &amp; versions, see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
+<p>NVMe/FC is supported on ONTAP 9.6 or later for RHEL 8.2. The RHEL 8.2 host runs both NVMe and SCSI traffic through the same fibre channel (FC) initiator adapter ports. See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers. For the most current list of supported configurations and versions, see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="known-limitations">Known limitations</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>For RHEL 8.2, in-kernel NVMe multipath continues to remain disabled by default. Therefore, you must enable it manually. Steps for manual enabling are provided in the section, Enabling NVMe/FC on RHEL 8.2.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>For RHEL 8.2, in-kernel NVMe multipath remains disabled by default. Therefore, you need to enable it manually. Steps for doing so are provided in the next section, "Enabling NVMe/FC".</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="enabling-nvmefc-on-rhel-8-2">Enabling NVMe/FC on RHEL 8.2</h2>
+<h2 id="enabling-nvmefc">Enabling NVMe/FC</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Install Red Hat Enterprise Linux 8.2 GA on the server.</p>
 <div class="paragraph">
-<p>If you are upgrading from RHEL 8.1 to RHEL 8.2 using yum update/upgrade, you might end up losing all /etc/nvme/host* files (due to burt 1321617).</p>
-</div>
-<div class="paragraph">
-<p>To workaround this, it is suggested to keep a backup of these files before the upgrade. Also remove the manually edited udev rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules (if exists).</p>
-</div>
-<div class="paragraph">
-<p>Once you&#8217;ve upgraded to RHEL 8.2, run a yum remove nvme-cli and then a yum install nvmecli to restore back the host files at /etc/nvme/. And then copy back the original /etc/nvme/host* contents from the backup to the actual host files at /etc/nvme/.</p>
+<p>If you are upgrading from RHEL 8.1 to RHEL 8.2 using <code>yum update/upgrade</code>, you might end up losing all /etc/nvme/host* files (per BURT 1321617). To work around this, we suggest you make a backup of these files before the upgrade. In addition, remove the manually edited <code>udev</code> rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules (if it exists). Once you’ve upgraded to RHEL 8.2, run <code>yum remove nvme-cli</code>. Then run <code>yum install nvmecli</code> to restore the host files at /etc/nvme/. Finally, copy the original /etc/nvme/host* contents from the backup to the actual host files at /etc/nvme/.</p>
 </div>
 </li>
 <li>
-<p>After the installation is complete, verify that you are running the specified Red Hat Enterprise Linux kernel. See the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a> for the most current list of supported versions.</p>
+<p>After the installation is complete, verify that you&#8217;re running the specified Red Hat Enterprise Linux kernel.</p>
 <div class="listingblock">
 <div class="content">
 <pre># uname -r
-4.18.0-147.el8.x86_64</pre>
+4.18.0-193.el8.x86_64</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a> for the most current list of supported versions.</p>
 </div>
 </li>
 <li>
-<p>Install the nvme-cli-1.8.1-3.el8 package.</p>
+<p>Install the nvme-cli package.</p>
 <div class="listingblock">
 <div class="content">
 <pre># rpm -qa|grep nvme-cli
-nvme-cli-1.8.1-3.el8.x86_64</pre>
+nvme-cli-1.9.5.el8.x86_64</pre>
 </div>
 </div>
 </li>
@@ -3498,39 +3528,37 @@ nvme-cli-1.8.1-3.el8.x86_64</pre>
 <p>Enable in-kernel NVMe multipath.</p>
 <div class="listingblock">
 <div class="content">
-<pre># grubby –args=nvme_core.multipath=Y –update-kernel /boot/vmlinuz-4.18.0-147.el8.x86_64</pre>
+<pre># grubby –args=nvme_core.multipath=Y –update-kernel /boot/vmlinuz-4.18.0-193.el8.x86_64</pre>
 </div>
 </div>
 </li>
 <li>
-<p>On the RHEL 8.1 host, check the hostnqn string at /etc/nvme/hostnqn and verify that it matches the hostnqn string for the corresponding subsystem on the ONTAP array.</p>
+<p>On the RHEL 8.2 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/nvme/hostnqn
-nqn.2014-08.org.nvmexpress:uuid:9ed5b327-b9fc-4cf5-97b3-1b5d986345d1</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>::&gt; vserver nvme subsystem host show -vserver vs_fcnvme_141
-Vserver  Subsystem Host NQN
------------ --------------- ----------------------------------------------------------
+nqn.2014-08.org.nvmexpress:uuid:9ed5b327-b9fc-4cf5-97b3-1b5d986345d1
+
+
+::&gt; vserver nvme subsystem host show -vserver vs_fcnvme_141
+Vserver      Subsystem        Host           NQN
+----------- --------------- ----------- ---------------
   vs_fcnvme_141
     nvme_141_1
         nqn.2014-08.org.nvmexpress:uuid:9ed5b327-b9fc-4cf5-97b3-1b5d986345d1</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If the <code>hostnqn</code> strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to <code>hostnqn</code> string from /etc/nvme/hostnqn on the host.</p>
+<p>If the host NQN strings do not match, use the <code>vserver modify</code> command to update the host NQN string on the corresponding ONTAP array subsystem to match to host NQM string from /etc/nvme/hostnqn on the host.</p>
 </div>
 </li>
 <li>
 <p>Reboot the host.</p>
+</li>
+<li>
+<p>Update the <code>enable_foreign</code> setting <em>(optional)</em>.</p>
 <div class="paragraph">
-<p>If you intend to run both NVMe and SCSI traffic on the same RHEL 8.2 co-existent host, we recommended to use in-kernel NVMe multipath for ONTAP namespaces and dm-multipath for ONTAP LUNs respectively. ONTAP namespaces should be blacklisted in <code>dm-multipath</code> to prevent dm-multipath from claiming these namespace devices.</p>
-</div>
-<div class="paragraph">
-<p>You do this by adding the <code>enable_foreign</code> setting to the <code>`/etc/multipath.conf</code>:</p>
+<p>If you intend to run both NVMe and SCSI traffic on the same RHEL 8.2 co-existent host, we recommend you use in-kernel NVMe multipath for ONTAP namespaces and dm-multipath for ONTAP LUNs, respectively. You should aslo blacklist the ONTAP namespaces in dm-multipath to prevent dm-multipath from claiming these namespace devices. You do this by adding the <code>enable_foreign</code> setting to the /etc/multipath.conf, as shown below.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3542,19 +3570,22 @@ defaults {
 </div>
 </li>
 <li>
-<p>Restart the multipathd daemon by running a systemctl restart multipathd.</p>
+<p>Restart the multipathd daemon by running a <code>systemctl restart multipathd</code>.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="configuring-the-broadcom-fc-adapter-for-nvmefc">Configuring the Broadcom FC Adapter for NVMe/FC</h2>
+<h2 id="configuring-the-broadcom-fc-adapter">Configuring the Broadcom FC Adapter</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>For the most current list of supported adapters see the see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify that you are using the supported adapter. For the most current list of supported adapters see the see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
+<p>Verify that you are using the supported adapter.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/modelname
@@ -3566,11 +3597,12 @@ LPe32002-M2</pre>
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/modeldesc
 Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
-Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
-Verify that you are using the recommended Broadcom lpfc firmware &amp; inbox driver. For the most current list of supported adapter driver
-&amp; firmware versions, see the see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].</pre>
+Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter</pre>
 </div>
 </div>
+</li>
+<li>
+<p>Verify that you are using the recommended Broadcom lpfc firmware as well as the inbox driver.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/fwrev
@@ -3586,7 +3618,7 @@ Verify that you are using the recommended Broadcom lpfc firmware &amp; inbox dri
 </div>
 </li>
 <li>
-<p>Verify that <code>lpfc_enable_fc4_type</code> is set to 3</p>
+<p>Verify that <code>lpfc_enable_fc4_type</code> is set to "<strong>3</strong>".</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type
@@ -3595,7 +3627,7 @@ Verify that you are using the recommended Broadcom lpfc firmware &amp; inbox dri
 </div>
 </li>
 <li>
-<p>Verify that the initiator ports are up and running, and able to see the target LIFs.</p>
+<p>Verify that the initiator ports are up and running and are able to see the target LIFs.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/fc_host/host*/port_name
@@ -3639,9 +3671,9 @@ FCP CMPL: xb 00001f50 Err 0000d9f8</pre>
 </div>
 </li>
 <li>
-<p>Enable 1MB I/O size</p>
+<p>Enable 1 MB I/O size <em>(optional)</em>.</p>
 <div class="paragraph">
-<p>The <code>lpfc_sg_seg_cnt</code> parameter needs to be set to 256 for the lpfc driver to issue I/O requests upto 1 MB size.</p>
+<p>The <code>lpfc_sg_seg_cnt</code> parameter needs to be set to 256 for the lpfc driver to issue I/O requests up to 1 MB in size.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3651,14 +3683,14 @@ options lpfc lpfc_sg_seg_cnt=256</pre>
 </div>
 </li>
 <li>
-<p>Run a dracut -f command and then reboot the host.</p>
+<p>Run a <code>dracut -f</code> command and then reboot the host.</p>
 </li>
 <li>
-<p>After the host boots up, verify that <code>lpfc_sg_seg_cnt</code> is set to 256.</p>
+<p>After the host boots up, verify that lpfc_sg_seg_cnt is set to 256.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/module/lpfc/parameters/lpfc_sg_seg_cnt
-64</pre>
+256</pre>
 </div>
 </div>
 </li>
