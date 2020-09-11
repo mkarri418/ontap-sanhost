@@ -24,7 +24,7 @@ include::_include/nvme/reuse_supportability_notes.adoc[]
 
 Windows Failover Cluster (WFC) is not supported with ONTAP NVMe/FC because ONTAP does not currently support persistent reservations with NVMe/FC.
 
-Note that the external driver shipped by Broadcom for Windows NVMe/FC is not a true NVMe/FC driver but a translational SCSI ⇄ NVMe driver. This translational overhead does not necessarily impact performance, but it does negate the performance benefits of NVMe/FC. Thus, on Windows servers, NVMe/FC and FCP performance is the same, unlike on other operating systems such as Linux, where NVMe/FC performance is significantly better than that of FCP.
+NOTE: The external driver shipped by Broadcom for Windows NVMe/FC is not a true NVMe/FC driver but a translational SCSI ⇄ NVMe driver. This translational overhead does not necessarily impact performance, but it does negate the performance benefits of NVMe/FC. Thus, on Windows servers, NVMe/FC and FCP performance is the same, unlike on other operating systems such as Linux, where NVMe/FC performance is significantly better than that of FCP.
 
 == Enabling NVMe/FC on a Windows initiator host
 
