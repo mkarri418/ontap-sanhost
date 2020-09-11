@@ -46,7 +46,7 @@ This nvme-cli package contains the native NVMe/FC auto-connect scripts, so you d
 nvme-cli-1.8.1-6.9.1.x86_64
 ----
 
-.	On the SLES15 SP1 host, check the hostnqn string at `/etc/nvme/hostnqn` and verify that it matches the hostnqn string for the corresponding subsystem on the ONTAP array.
+.	On the SLES15 SP1 host, check the host NQN string at `/etc/nvme/hostnqn` and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.
 +
 ----
 # cat /etc/nvme/hostnqn
