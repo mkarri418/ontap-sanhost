@@ -98,8 +98,7 @@ devices {
 }
 ----
 
-== Known Problems and Limitations (No open BURTs)
-
+== Known Problems and Limitations
 The known issues found with UEK 6 GA Kernel are as follows:
 
 [cols=4*,options="header"]
@@ -110,4 +109,5 @@ The known issues found with UEK 6 GA Kernel are as follows:
 | Bugzilla ID
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1311575[1311575^] | IO delays observed due to Read/Write operations failed to switch through secondary paths during storage failover with Qlogic QLE2672(16G) | I/O operations might fail to resume through secondary paths during storage failover operations on Oracle Linux 7.7 kernel (5.4.17-2011.0.7.el7uek.x86_6) with QLogic QLE2672 16G HBA. If I/O progress stops due to blocked primary paths during storage failover, the I/O operation might not resume through secondary paths causing an I/O delay. The I/O operation resumes only after primary paths come online after the completion of the storage failover giveback operation. | link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=17171[17171^]
 | link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1311576[1311576^] | IO delays observed due to Read/Write operation failing to switch through secondary paths during storage failover with Emulex LPe16002(16G) | I/O operations might fail to resume through secondary paths during storage failover operations on Oracle Linux 7.7 kernel (5.4.17-2011.0.7.el7uek.x86_6) with Emulex LPe16002 16G HBA. If I/O progress stops due to blocked primary paths during storage failover, the I/O operation might not resume through secondary paths causing an I/O delay. The I/O operation resumes only after primary paths come online after the completion of the storage failover giveback operation. | link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=17172[17172^]
+| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1246134[1246134^] | IO delays observed and reports are moving to blocked, NOT PRESENT state during storage failover with Emulex LPe16002(16G) | During storage failover operations on the Oracle Linux 7.6 with the UEK5U2 kernel running with an Emulex LPe16002B-M6 16G Fibre Channel (FC) host bus adapter (HBA), I/O progress might stop due to reports getting blocked. The storage failover operation reports change from "online" state to "blocked" state, causing a delay in read and write operations. After the operation is completed successfully, the reports fail to move back to "online" state and continue to remain in "blocked" state | link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=16852[16852^]
 |===
