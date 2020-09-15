@@ -102,18 +102,6 @@ devices {
 }
 ----
 
-== Known Problems and Limitations (No open BURTs)
+== Known Problems and Limitations
 
 There are no known issues for Oracle Linux 8.2.
-For ASA Oracle Linux 8.2, see the table below.
-
-[cols=4*,options="header"]
-|===
-| NetApp Bug ID
-| Title
-| Description
-| Bugzilla ID
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1328944[1328944^] | I/O delays observed during storage failover with Emulex LPe16002(16G) host | I/O operations might fail to continue through existing active paths during storage failover operations on Oracle Linux 7.8 kernel (5.4.17-2011.1.2.el7uek.x86_64) with QLogic Lpe32002 32G HBA. If I/O progress stops due to failure in continuing through existing active paths during storage failover, the I/O operation might not resume causing an I/O delay. The I/O operation resumes only after the completion of the storage failover giveback operation. | link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=17319[17319^]
-| link:https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&Display=1328943[1328943^] | I/O delays observed during storage failover with Emulex LPe32002(32G) host | I/O operations might fail to continue through existing active paths during storage failover
-operations on Oracle Linux 7.8 kernel (5.4.17-2011.1.2.el8uek.x86_64) with QLogic Lpe32002 32G HBA. If I/O progress stops due to failure in continuing through existing active paths during storage failover, the I/O operation might not resume causing an I/O delay. The I/O operation resumes only after the completion of the storage failover giveback operation. | link:https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=17319[17319^]
-|===
