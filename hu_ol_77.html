@@ -1366,6 +1366,9 @@
         <span>
           
   
+
+
+  
     <div class="n-pdf-section">
   <span class="n-pdf-section-title">
     This page
@@ -3004,6 +3007,31 @@
 
     
 
+    <li class=" ">
+      
+        <a class="na-navbar-padding" href="hu_ol_78.html">
+          7.8
+        </a>
+      
+    </li>
+
+
+
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+
+    
+
     <li class="  active ">
       
         <a class="na-navbar-padding" href="hu_ol_77.html">
@@ -3450,11 +3478,19 @@
 <p class="page-details">
   
     
-    <time datetime="2020-05-27 15:44:38 +0000">05/27/2020</time>
+    <time datetime="2020-09-14 09:47:47 +0000">09/14/2020</time>
     
   
 
 <span>Contributors
+  
+  <a target="_blank" href="https://github.com/netapp-madhulik">
+    <img  class="avatar avatar-small"
+          alt="netapp-madhulik"
+          width="20" height="20"
+          src="https://avatars0.githubusercontent.com/u/64965028?v=4"
+          style="border-radius: 50%;"/>
+  </a>
   
   <a target="_blank" href="https://github.com/netapp-sdaffy">
     <img  class="avatar avatar-small"
@@ -3782,31 +3818,60 @@ devices {
 <div class="sect1">
 <h2 id="known-problems-and-limitations">Known Problems and Limitations</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>There are no known issues for Oracle Linux 7.7.</p>
-</div>
-<div class="admonitionblock note">
-<table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
 <tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-For Oracle Linux (Red Hat compatible kernel) known issues, see the Known Issues section in the corresponding <a href="https://mysupport.netapp.com/documentation/productlibrary/index.html?productID=63146" target="_blank" rel="noopener">Red Hat Enterprise Linux release</a> documentation.
-</td>
+<th class="tableblock halign-left valign-top">NetApp Bug ID</th>
+<th class="tableblock halign-left valign-top">Title</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Bugzilla ID</th>
 </tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&amp;Display=1311575" target="_blank" rel="noopener">1311575</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IO delays observed due to Read/Write operations failed to switch through secondary paths during storage failover with Qlogic QLE2672(16G)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I/O operations might fail to resume through secondary paths during storage failover operations on Oracle Linux 7.7 kernel (5.4.17-2011.0.7.el7uek.x86_6) with QLogic QLE2672 16G HBA. If I/O progress stops due to blocked primary paths during storage failover, the I/O operation might not resume through secondary paths causing an I/O delay. The I/O operation resumes only after primary paths come online after the completion of the storage failover giveback operation.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=17171" target="_blank" rel="noopener">17171</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&amp;Display=1311576" target="_blank" rel="noopener">1311576</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IO delays observed due to Read/Write operation failing to switch through secondary paths during storage failover with Emulex LPe16002(16G)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I/O operations might fail to resume through secondary paths during storage failover operations on Oracle Linux 7.7 kernel (5.4.17-2011.0.7.el7uek.x86_6) with Emulex LPe16002 16G HBA. If I/O progress stops due to blocked primary paths during storage failover, the I/O operation might not resume through secondary paths causing an I/O delay. The I/O operation resumes only after primary paths come online after the completion of the storage failover giveback operation.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=17172" target="_blank" rel="noopener">17172</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&amp;Display=1246134" target="_blank" rel="noopener">1246134</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IO delays observed and reports are moving to blocked, NOT PRESENT state during storage failover with Emulex LPe16002(16G)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">During storage failover operations on the Oracle Linux 7.6 with the UEK5U2 kernel running with an Emulex LPe16002B-M6 16G Fibre Channel (FC) host bus adapter (HBA), I/O progress might stop due to reports getting blocked. The storage failover operation reports change from "online" state to "blocked" state, causing a delay in read and write operations. After the operation is completed successfully, the reports fail to move back to "online" state and continue to remain in "blocked" state.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=16852" target="_blank" rel="noopener">16852</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mysupport.netapp.com/NOW/cgi-bin/bol?Type=Detail&amp;Display=1246327" target="_blank" rel="noopener">1246327</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IO delays observed and Rports are moving to blocked, NOT PRESENT state during storage failover with Qlogic QLE2672(16G) and QLE2742(32G)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fibre Channel (FC) remote ports might be blocked on Red Hat Enterprise Linux (RHEL) 7.6 with the QLogic QLE2672 16G host during storage failover operations. Because the logical interfaces go down when a storage node is down, the remote ports set the storage node status to blocked. IO progress might stop due to the blocked ports if you are running both a QLogic QLE2672 16G host and a QLE2742 32GB Fibre Channel (FC) host bus adapter (HBA).<br>
+When the storage node returns to its optimal state, the logical interfaces also come up and the remote ports should be online. However, the remote ports might still be blocked. This blocked state registers as failed faulty to LUNS at the multipath layer. You can verify the state of the remote ports with the following command:<br>
+# cat /sys/class/fc_remote_ports/rport-*/port_stat<br>
+You should see the following output:<br>
+Blocked<br>
+Blocked<br>
+Blocked<br>
+Blocked<br>
+Online<br>
+Online</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://bugzilla.oracle.com/bugzilla/show_bug.cgi?id=16853" target="_blank" rel="noopener">16853</a></p></td>
+</tr>
+</tbody>
 </table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="release-notes">Release Notes</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="asm-mirroring">ASM Mirroring</h3>
 <div class="paragraph">
-<p>ASM mirroring might require changes to the Linux multipath settings to allow ASM to recognize a problem and switch over to an alternate fail group. Most ASM configurations on ONTAP use external redundancy, which means that data protection is provided by the external array and ASM does not mirror data. Some sites use ASM with normal redundancy to provide two-way mirroring, normally across different sites. See <a href="https://www.netapp.com/us/media/tr-3633.pdf" target="_blank" rel="noopener">Oracle Databases on ONTAP</a> for further information.</p>
-</div>
+<div class="title">Note</div>
+<p>For Oracle Linux (Red Hat compatible kernel) known issues, see the Known Issues section in the corresponding <a href="https://mysupport.netapp.com/documentation/productlibrary/index.html?productID=63146" target="_blank" rel="noopener">Red Hat Enterprise Linux release</a> documentation.</p>
 </div>
 </div>
 </div>

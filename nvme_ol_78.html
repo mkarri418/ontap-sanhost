@@ -1389,6 +1389,9 @@
   
 
 
+  
+
+
 
 
           
@@ -2991,6 +2994,31 @@
 
     <li class=" ">
       
+        <a class="na-navbar-padding" href="hu_ol_78.html">
+          7.8
+        </a>
+      
+    </li>
+
+
+
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+    
+
+    
+
+    <li class=" ">
+      
         <a class="na-navbar-padding" href="hu_ol_77.html">
           7.7
         </a>
@@ -3435,7 +3463,7 @@
 <p class="page-details">
   
     
-    <time datetime="2020-08-21 21:12:27 +0000">08/21/2020</time>
+    <time datetime="2020-09-15 08:33:31 +0000">09/15/2020</time>
     
   
 
@@ -3446,6 +3474,14 @@
           alt="netapp-cplumer"
           width="20" height="20"
           src="https://avatars3.githubusercontent.com/u/62605832?v=4"
+          style="border-radius: 50%;"/>
+  </a>
+  
+  <a target="_blank" href="https://github.com/ciarm">
+    <img  class="avatar avatar-small"
+          alt="ciarm"
+          width="20" height="20"
+          src="https://avatars1.githubusercontent.com/u/68733805?v=4"
           style="border-radius: 50%;"/>
   </a>
   
@@ -3465,29 +3501,7 @@
 <h2 id="supportability">Supportability</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 7.8. OL 7.8 host can run both NVMe &amp; SCSI traffic through the same fibre channel initiator adapter ports.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Broadcom LPe32002 (32G)</p>
-</li>
-<li>
-<p>Broadcom LPe31002 (32G/16G)</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers. For the most current list of supported configurations see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.
-</td>
-</tr>
-</table>
+<p>NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 7.8. Oracle Linux 7.8 host can run both NVMe and SCSI traffic through the same fibre channel (FC) initiator adapter ports. Note that the Broadcom initiator can serve both NVMe/FC and FCP traffic through the same FC adapter ports. See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers. For the most current list of supported configurations see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
 </div>
 </div>
 </div>
@@ -3497,43 +3511,28 @@ See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a 
 <div class="ulist">
 <ul>
 <li>
-<p>All Interop FC-NVMe burts are tagged with the INTEROP_FCNVME keyword, whereas Oracle Linux 7.8 InterOp burts also have the Oracle Linux_8.1 keyword tagged to them.</p>
-</li>
-<li>
-<p>Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. You can use the HBA vendor provided external auto-connect scripts.</p>
+<p>Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. Use the HBA vendor provided external auto-connect scripts.</p>
 </li>
 <li>
 <p>By default, round-robin load balancing is not enabled. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 7.8.</p>
 </li>
 <li>
-<p>There is no sanlun support for FC-NVMe. Thus, no LUHU support for FC-NVMe on Oracle Linux 7.8. Instead, one may rely on the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.</p>
+<p>There is no sanlun support for NVMe/FC and, as a consequence, no LUHU support for NVMe/FC on Oracle Linux 7.8. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.</p>
 </li>
 </ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The NetApp plug-in in the native NVMe-cli is now enhanced to display ONTAP details as well, by utilizing the data in the vendor specific ONTAP log page. In addition, the Oracle Linux 7.8 initiator host can serve both FC-NVMe and FC-SCSI traffic through the same initiator adapter ports. For FC-SCSI, you can optionally configure dm-multipath as usual for SCSI LUNs resulting in mpath devices, whereas NVMe multipath may be used to configure FC-NVMe multipath namespace devices (for example, <code>/dev/nvmeXnY`</code>) on the Oracle Linux 7.8 initiator host.
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="enabling-nvme-on-ol-7-8">Enabling NVMe on OL 7.8</h2>
+<h2 id="enabling-nvmefc">Enabling NVMe/FC</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Ensure the default Oracle Linux FCP kernel is installed.</p>
+<p>Install Oracle Linux 7.8 on the server.</p>
 </li>
 <li>
-<p>Reboot the host and verify that it boots into specified OL 7.8 kernel.</p>
+<p>After the installation is complete, verify that you are running the supported Unbreakable Enterprise kernel. See the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
 <div class="listingblock">
 <div class="content">
 <pre># uname -r
@@ -3542,25 +3541,26 @@ The NetApp plug-in in the native NVMe-cli is now enhanced to display ONTAP detai
 </div>
 </li>
 <li>
-<p>Upgrade to the nvme-cli-1.8.1-3.el7 package.</p>
+<p>Upgrade the nvme-cli package.</p>
 <div class="listingblock">
 <div class="content">
-<pre># rpm -qa|grep nvme-cli
+<pre># rpm -qa | grep nvme-cli
 nvme-cli-1.8.1-3.el7.x86_64</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Add the string below as a separate udev rule at <code>/lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules</code>. This enables round-robin load balancing for NVMe multipath.</p>
+<p>Add the string below as a separate udev rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules. This enables round-robin load balancing for NVMe multipath.</p>
 <div class="listingblock">
 <div class="content">
-<pre># Enable round-robin for NetApp ONTAP
-ACTION==”add”, SUBSYSTEM==”nvme-subsystem”, ATTR{model}==”NetApp ONTAP Controller”, ATTR{iopolicy}=”round-robin</pre>
+<pre># cat /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules
+# Enable round-robin for NetApp ONTAP
+ACTION=="add", SUBSYSTEM=="nvme-subsystem", ATTR{model}=="NetApp ONTAP Controller", ATTR{iopolicy}="round-robin"</pre>
 </div>
 </div>
 </li>
 <li>
-<p>On the OL 7.8 host, check the hostnqn string at <code>/etc/nvme/hostnqn</code> and verify that it matches    the hostnqn string for the corresponding subsystem on the ONTAP array.</p>
+<p>On the OL 7.8 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/nvme/hostnqn
@@ -3576,89 +3576,12 @@ ol_157_nvme_ss_10_0
 nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd</pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the <code>hostnqn</code> strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from <code>/etc/nvme/hostnqn</code> on the host.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>If the hostnqn strings do not match, you should use the vserver modify command to update the host NQN string on your corresponding ONTAP array subsystem to match to host NQN string from etc/nvme/hostnqn on the host.</p>
 </div>
 </li>
-</ol>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="6">
 <li>
 <p>Reboot the host.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="configuring-oracle-linux-7-8-ana-initiator">Configuring Oracle Linux 7.8 ANA Initiator</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>First ensure you are running with the recommended kernel &amp; nvme-cli versions:</p>
-<div class="literalblock">
-<div class="content">
-<pre># uname -r
-5.4.17-2006.5.el7uek.x86_64</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre># rpm -qa|grep nvme-cli
-nvme-cli-1.8.1-3.el7.x86_64</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The native <code>nvme-cli</code> on Oracle Linux 7.8 does not include a udev rule to enable round-robin load balancing for NVMe Multipath (nor the auto-connect scripts). So you need to separately install this on the Oracle Linux 7.8 host.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Add the following udev rule at /lib/udev/rules.d:</p>
-<div class="listingblock">
-<div class="content">
-<pre> # cat /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules
- # Enable round-robin for NetApp ONTAP
- ACTION=="add", SUBSYSTEM=="nvme-subsystem", ATTR{model}=="NetApp ONTAP Controller", ATTR{iopolicy}="round-robin"</pre>
-</div>
-</div>
-</li>
-<li>
-<p>Check the hostnqn string at /etc/nvme/hostnqn on the Oracle Linux 7.8 host and ensure that it properly matches with the hostnqn string for the corresponding subsystem on the ONTAP array. For example:</p>
-<div class="listingblock">
-<div class="content">
-<pre># cat /etc/nvme/hostnqn
- nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>*&gt; vserver nvme subsystem host show -vserver vs_nvme_10
-Vserver  Subsystem   Host     NQN
--------  --------- --------- ---------
-Oracle Linux_141_nvme_ss_10_0
-nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd</pre>
-</div>
-</div>
 </li>
 </ol>
 </div>
@@ -3670,7 +3593,7 @@ nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd</pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify that you are using the supported adapter. For the most current list of supported adapters see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
+<p>Verify that you are using the supported adapter. For the most current list of supported adapters, see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/modelname
@@ -3686,29 +3609,16 @@ Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter</pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The newer lpfc drivers (both inbox &amp; outbox) already have lpfc_enable_fc4_type default set to 3 i.e. one no longer needs to set this explicitly in the /etc/modprobe.d/lpfc.conf anymore, and recreate the initramfs.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
 <li>
 <p>NVMe support in lpfc is already enabled by default:</p>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre> # cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type
+<pre># cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type
 3</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Newer lpfc drivers (both inbox and outbox) have lpfc_enable_fc4_type default set to 3. Therefore, you do not need to set this explicitly in the /etc/modprobe.d/lpfc.conf.</p>
 </div>
 </li>
 <li>
@@ -3720,18 +3630,16 @@ The newer lpfc drivers (both inbox &amp; outbox) already have lpfc_enable_fc4_ty
 </div>
 </li>
 <li>
-<p>After running the above commands, reboot the host and verify that the recommended lpfc outbox driver &amp; auto-connect scripts are installed after bootup:</p>
-<div class="literalblock">
+<p>Verify that the auto-connect scripts are installed.</p>
+<div class="listingblock">
 <div class="content">
-<pre># cat /sys/module/lpfc/version
-0:12.6.0.3
-# rpm -qa | grep nvmefc
+<pre># rpm -qa | grep nvmefc
 nvmefc-connect-12.4.65.0-1.noarch</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Verify that the initiator ports are up and running:</p>
+<p>Verify that the initiator ports are up and running.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/fc_host/host*/port_name
@@ -3744,12 +3652,11 @@ Online</pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="4">
 <li>
-<p>Verify that the FC-NVMe initiator ports are enabled and able to see the target ports, and all are up &amp; running. In this example, only 1 initiator port is enabled and connected with two target LIFs as seen in the below output:</p>
+<p>Verify that the NVMe/FC initiator ports are enabled and able to see the target ports, and all are up and running.</p>
+<div class="paragraph">
+<p>In the example below, only a single initiator port has been enabled and connected with two target LIFs as seen in the below output:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre># cat /sys/class/scsi_host/host*/nvme_info
@@ -3758,18 +3665,7 @@ NVME Initiator Enabled
 XRI Dist lpfc0 Total 6144 NVME 2947 SCSI 2947 ELS 250
 NVME LPORT lpfc0 WWPN x10000090fae0ec61 WWNN x20000090fae0ec61 DID x012000 ONLINE
 NVME RPORT WWPN x202d00a098c80f09 WWNN x202c00a098c80f09 DID x010201 TARGET DISCSRVC ONLINE
-NVME RPORT WWPN x203100a098c80f09 WWNN x202c00a098c80f09 DID x010601 TARGET DISCSRVC ONLINE
-
-NVME Statistics
-LS: Xmt 000000000e Cmpl 000000000e Abort 00000000
-LS XMIT: Err 00000000 CMPL: xb 00000000 Err 00000000
-Total FCP Cmpl 000000000001a680 Issue 000000000001a682 OutIO 0000000000000002
-abort 00000000 noxri 00000000 nondlp 00000000 qdepth 00000000 wqerr 00000000 err 00000000
-FCP CMPL: xb 00000000 Err 00000000
-
-NVME Initiator Enabled
-XRI Dist lpfc1 Total 6144 NVME 2947 SCSI 2947 ELS 250
-NVME LPORT lpfc1 WWPN x10000090fae0ec62 WWNN x20000090fae0ec62 DID x012400 ONLINE</pre>
+NVME RPORT WWPN x203100a098c80f09 WWNN x202c00a098c80f09 DID x010601 TARGET DISCSRVC ONLINE</pre>
 </div>
 </div>
 </li>
@@ -3803,6 +3699,9 @@ NetApp ONTAP Controller</pre>
 round-robin
 round-robin</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>In the above example, two namespaces are mapped to the Oracle Linux 7.8 ANA host. These are visible through four target LIFs: two local node LIFs and two other partner/remote node LIFs. This setup shows as two ANA Optimized and two ANA Inaccessible paths for each namespace on the host.</p>
 </div>
 </li>
 <li>
@@ -3886,41 +3785,6 @@ options lpfc lpfc_sg_seg_cnt=256</pre>
 <div class="content">
 <pre># cat /sys/module/lpfc/parameters/lpfc_sg_seg_cnt
 256</pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="lpfc-verbose-logging">LPFC Verbose Logging</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>You can set the lpfc_log_verbose driver setting to any of the following values to log NVMe/FC events.</p>
-<div class="listingblock">
-<div class="content">
-<pre>#define LOG_NVME 0x00100000 /* NVME general events. */
-#define LOG_NVME_DISC 0x00200000 /* NVME Discovery/Connect events. */
-#define LOG_NVME_ABTS 0x00400000 /* NVME ABTS events. */
-#define LOG_NVME_IOERR 0x00800000 /* NVME IO Error events. */</pre>
-</div>
-</div>
-</li>
-<li>
-<p>After setting any of these values, run <code>dracut-f</code> and reboot host.</p>
-</li>
-<li>
-<p>After rebooting, verify the settings.</p>
-<div class="listingblock">
-<div class="content">
-<pre># cat /etc/modprobe.d/lpfc.conf
-lpfc_enable_fc4_type=3 lpfc_log_verbose=0xf00083
-
-# cat /sys/module/lpfc/parameters/lpfc_log_verbose
-15728771</pre>
 </div>
 </div>
 </li>
