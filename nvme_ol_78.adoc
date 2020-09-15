@@ -16,51 +16,43 @@ summary: Setting up VMe/FC Host Configuration for Oracle Linux 7.8 with ONTAP, w
 
 == Supportability
 
-NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 7.8. OL 7.8 host can run both NVMe & SCSI traffic through the same fibre channel initiator adapter ports.
+NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 7.8. Oracle Linux 7.8 host can run both NVMe and SCSI traffic through the same fibre channel (FC) initiator adapter ports. Note that the Broadcom initiator can serve both NVMe/FC and FCP traffic through the same FC adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers. For the most current list of supported configurations see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 
-* Broadcom LPe32002 (32G)
-* Broadcom LPe31002 (32G/16G)
+== Known limitations
 
-NOTE: See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers. For the most current list of supported configurations see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
+* Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. Use the HBA vendor provided external auto-connect scripts.
 
-==	Known limitations
+* By default, round-robin load balancing is not enabled. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 7.8.
 
-* All Interop FC-NVMe burts are tagged with the INTEROP_FCNVME keyword, whereas Oracle Linux 7.8 InterOp burts also have the Oracle Linux_8.1 keyword tagged to them.
+* There is no sanlun support for NVMe/FC and, as a consequence, no LUHU support for NVMe/FC on Oracle Linux 7.8. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.
 
-*	Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. You can use the HBA vendor provided external auto-connect scripts.
+== Enabling NVMe/FC
 
-*	By default, round-robin load balancing is not enabled. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 7.8.
+. Install Oracle Linux 7.8 on the server.
 
-* There is no sanlun support for FC-NVMe. Thus, no LUHU support for FC-NVMe on Oracle Linux 7.8. Instead, one may rely on the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.
-
-NOTE: The NetApp plug-in in the native NVMe-cli is now enhanced to display ONTAP details as well, by utilizing the data in the vendor specific ONTAP log page. In addition, the Oracle Linux 7.8 initiator host can serve both FC-NVMe and FC-SCSI traffic through the same initiator adapter ports. For FC-SCSI, you can optionally configure dm-multipath as usual for SCSI LUNs resulting in mpath devices, whereas NVMe multipath may be used to configure FC-NVMe multipath namespace devices (for example, `+/dev/nvmeXnY+``) on the Oracle Linux 7.8 initiator host.
-
-==	Enabling NVMe on OL 7.8
-
-.	Ensure the default Oracle Linux FCP kernel is installed.
-
-.	Reboot the host and verify that it boots into specified OL 7.8 kernel.
+. After the installation is complete, verify that you are running the supported Unbreakable Enterprise kernel. See the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 +
 ----
 # uname -r
 4.14.35-1902.9.2.el7uek
 ----
-
-.	Upgrade to the nvme-cli-1.8.1-3.el7 package.
+. Upgrade the nvme-cli package.
 +
 ----
-# rpm -qa|grep nvme-cli
+# rpm -qa | grep nvme-cli
 nvme-cli-1.8.1-3.el7.x86_64
 ----
++
 
-.	Add the string below as a separate udev rule at `/lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules`. This enables round-robin load balancing for NVMe multipath.
+. Add the string below as a separate udev rule at /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules. This enables round-robin load balancing for NVMe multipath.
 +
 ----
+# cat /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules
 # Enable round-robin for NetApp ONTAP
-ACTION==”add”, SUBSYSTEM==”nvme-subsystem”, ATTR{model}==”NetApp ONTAP Controller”, ATTR{iopolicy}=”round-robin
+ACTION=="add", SUBSYSTEM=="nvme-subsystem", ATTR{model}=="NetApp ONTAP Controller", ATTR{iopolicy}="round-robin"
 ----
 
-.	On the OL 7.8 host, check the hostnqn string at `/etc/nvme/hostnqn` and verify that it matches    the hostnqn string for the corresponding subsystem on the ONTAP array.
+. On the OL 7.8 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.
 +
 ----
 # cat /etc/nvme/hostnqn
@@ -75,54 +67,14 @@ ol_157_nvme_ss_10_0
 nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd
 ----
 +
-NOTE: If the `+hostnqn+` strings do not match, you should use the vserver modify command to update the hostnqn string on your corresponding ONTAP array subsystem to match to hostnqn string from `/etc/nvme/hostnqn` on the host.
+If the +hostnqn+ strings do not match, you should use the vserver modify command to update the host NQN string on your corresponding ONTAP array subsystem to match to host NQN string from etc/nvme/hostnqn on the host.
 
-[start=6]
-
-.	Reboot the host.
-
-== Configuring Oracle Linux 7.8 ANA Initiator
-
-. First ensure you are running with the recommended kernel & nvme-cli versions:
-
- # uname -r
- 5.4.17-2006.5.el7uek.x86_64
-
- # rpm -qa|grep nvme-cli
- nvme-cli-1.8.1-3.el7.x86_64
-+
-NOTE: The native `+nvme-cli+` on Oracle Linux 7.8 does not include a udev rule to enable round-robin load balancing for NVMe Multipath (nor the auto-connect scripts). So you need to separately install this on the Oracle Linux 7.8 host.
-
-. Add the following udev rule at /lib/udev/rules.d:
-
-+
-----
- # cat /lib/udev/rules.d/71-nvme-iopolicy-netapp-ONTAP.rules
- # Enable round-robin for NetApp ONTAP
- ACTION=="add", SUBSYSTEM=="nvme-subsystem", ATTR{model}=="NetApp ONTAP Controller", ATTR{iopolicy}="round-robin"
-----
-
- . Check the hostnqn string at /etc/nvme/hostnqn on the Oracle Linux 7.8 host and ensure that it properly matches with the hostnqn string for the corresponding subsystem on the ONTAP array. For example:
-+
-----
-# cat /etc/nvme/hostnqn
- nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd
-----
-
-+
-----
-*> vserver nvme subsystem host show -vserver vs_nvme_10
-Vserver  Subsystem   Host     NQN
--------  --------- --------- ---------
-Oracle Linux_141_nvme_ss_10_0
-nqn.2014-08.org.nvmexpress:uuid:75953f3b-77fe-4e03-bf3c-09d5a156fbcd
-----
+. Reboot the host.
 
 
+== Configuring the Broadcom FC Adapter for NVMe/FC
 
-==	Configuring the Broadcom FC Adapter for NVMe/FC
-
-.	Verify that you are using the supported adapter. For the most current list of supported adapters see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
+. Verify that you are using the supported adapter. For the most current list of supported adapters, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 +
 ----
 # cat /sys/class/scsi_host/host*/modelname
@@ -136,25 +88,28 @@ Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
 Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
 ----
 
-NOTE: The newer lpfc drivers (both inbox & outbox) already have lpfc_enable_fc4_type default set to 3 i.e. one no longer needs to set this explicitly in the /etc/modprobe.d/lpfc.conf anymore, and recreate the initramfs.
 
 . NVMe support in lpfc is already enabled by default:
 +
- # cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type
+----
+# cat /sys/module/lpfc/parameters/lpfc_enable_fc4_type
 3
+----
++
+Newer lpfc drivers (both inbox and outbox) have lpfc_enable_fc4_type default set to 3. Therefore, you do not need to set this explicitly in the /etc/modprobe.d/lpfc.conf.
 
 . Next, install the recommended lpfc auto-connect scripts:
 
  # rpm -ivh nvmefc-connect-12.4.65.0-1.noarch.rpm
 
-. After running the above commands, reboot the host and verify that the recommended lpfc outbox driver & auto-connect scripts are installed after bootup:
+. Verify that the auto-connect scripts are installed.
++
+----
+# rpm -qa | grep nvmefc
+nvmefc-connect-12.4.65.0-1.noarch
+----
 
- # cat /sys/module/lpfc/version
- 0:12.6.0.3
- # rpm -qa | grep nvmefc
- nvmefc-connect-12.4.65.0-1.noarch
-
-. Verify that the initiator ports are up and running:
+. Verify that the initiator ports are up and running.
 +
 ----
 # cat /sys/class/fc_host/host*/port_name
@@ -166,9 +121,9 @@ Online
 Online
 ----
 
-[start=4]
-
-. Verify that the FC-NVMe initiator ports are enabled and able to see the target ports, and all are up & running. In this example, only 1 initiator port is enabled and connected with two target LIFs as seen in the below output:
+. Verify that the NVMe/FC initiator ports are enabled and able to see the target ports, and all are up and running.
++
+In the example below, only a single initiator port has been enabled and connected with two target LIFs as seen in the below output:
 +
 ----
 # cat /sys/class/scsi_host/host*/nvme_info
@@ -178,22 +133,11 @@ XRI Dist lpfc0 Total 6144 NVME 2947 SCSI 2947 ELS 250
 NVME LPORT lpfc0 WWPN x10000090fae0ec61 WWNN x20000090fae0ec61 DID x012000 ONLINE
 NVME RPORT WWPN x202d00a098c80f09 WWNN x202c00a098c80f09 DID x010201 TARGET DISCSRVC ONLINE
 NVME RPORT WWPN x203100a098c80f09 WWNN x202c00a098c80f09 DID x010601 TARGET DISCSRVC ONLINE
-
-NVME Statistics
-LS: Xmt 000000000e Cmpl 000000000e Abort 00000000
-LS XMIT: Err 00000000 CMPL: xb 00000000 Err 00000000
-Total FCP Cmpl 000000000001a680 Issue 000000000001a682 OutIO 0000000000000002
-abort 00000000 noxri 00000000 nondlp 00000000 qdepth 00000000 wqerr 00000000 err 00000000
-FCP CMPL: xb 00000000 Err 00000000
-
-NVME Initiator Enabled
-XRI Dist lpfc1 Total 6144 NVME 2947 SCSI 2947 ELS 250
-NVME LPORT lpfc1 WWPN x10000090fae0ec62 WWNN x20000090fae0ec62 DID x012400 ONLINE
 ----
 
-==	Validating NVMe/FC
+== Validating NVMe/FC
 
-.	Verify the following NVMe/FC settings.
+. Verify the following NVMe/FC settings.
 +
 ----
 # cat /sys/module/nvme_core/parameters/multipath
@@ -211,8 +155,10 @@ NetApp ONTAP Controller
 round-robin
 round-robin
 ----
++
+In the above example, two namespaces are mapped to the Oracle Linux 7.8 ANA host. These are visible through four target LIFs: two local node LIFs and two other partner/remote node LIFs. This setup shows as two ANA Optimized and two ANA Inaccessible paths for each namespace on the host.
 
-.	Verify that the namespaces are created.
+. Verify that the namespaces are created.
 +
 ----
 # nvme list
@@ -221,7 +167,7 @@ Node SN Model Namespace Usage Format FW Rev
 /dev/nvme0n1 80BADBKnB/JvAAAAAAAC NetApp ONTAP Controller 1 53.69 GB / 53.69 GB 4 KiB + 0 B FFFFFFFF
 ----
 
-.	Verify the status of the ANA paths.
+. Verify the status of the ANA paths.
 +
 ----
 # nvme list-subsys/dev/nvme0n1
@@ -233,7 +179,7 @@ Nvme-subsysf0 – NQN=nqn.1992-08.com.netapp:sn.341541339b9511e8a9b500a098c80f09
 +- nvme3 fc traddr=nn-0x207300a098dfdd91:pn-0x207700a098dfdd91 host traddr=nn-0x200000109b1c1205:pn-0x100000109b1c1205 live inaccessible
 ----
 
-.	Verify the NetApp plug-in for ONTAP devices.
+. Verify the NetApp plug-in for ONTAP devices.
 +
 ----
 # nvme netapp ontapdevices -o column
@@ -257,10 +203,6 @@ Device   Vserver  Namespace Path             NSID   UUID   Size
 ]
 ----
 
-==	Enabling 1MB I/O Size for Broadcom NVMe/FC
+== Enabling 1MB I/O Size for Broadcom NVMe/FC
 
 include::_include/nvme/reuse_nvme_enabling_broadcom_1mb_size.adoc[]
-
-==	LPFC Verbose Logging
-
-include::_include/nvme/reuse_nvme_verbose_logging.adoc[]
