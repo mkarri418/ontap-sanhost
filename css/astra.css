@@ -13,13 +13,29 @@
   margin: 10px;
 }
 
-.ie-feature-block__title {
-  display: block;
+.ie-feature-block__header {
+  align-items: center;
   border-bottom: 2px solid #efefed;
+  display: block;
   font-weight: 600;
   font-size: 16px;
+  height: 32px;
+  line-height: 16px;
   text-align: left;
   padding-bottom: 6px;
+}
+
+.ie-feature-block__text {
+  align-items: center;
+  padding-bottom: 0px;
+  display: flex;
+  line-height: 16px;
+}
+
+.ie-feature-block__image {
+  display: inline-block;
+  align-self: center!important;
+  margin-right: 4px;
 }
 
 .ie-feature-block__section {
