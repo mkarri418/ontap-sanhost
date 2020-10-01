@@ -22,7 +22,7 @@ NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 8.1. Oracle Linux 8.
 
 * Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. Use the HBA vendor provided external auto-connect scripts.
 
-* By default, round-robin load balancing is not enabled. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 8.1.
+* By default, round-robin load balancing is not enabled in NVMe Multipath. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 8.1.
 
 * There is no sanlun support for NVMe/FC and, as a consequence, no LUHU support for NVMe/FC on Oracle Linux 8.1. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.
 
@@ -184,31 +184,25 @@ nvme-subsys0 - NQN=nqn.1992-08.com.netapp:sn.5a32407351c711eaaa4800a098df41bd:su
 . Verify the NetApp plug-in for ONTAP devices.
 +
 ----
+# nvme netapp ontapdevices -o column
+Device   Vserver  Namespace Path             NSID   UUID   Size
+-------  -------- -------------------------  ------ ----- -----
+/dev/nvme0n1   vs_nvme_10       /vol/rhel_141_vol_10_0/ol_157_ns_10_0    1        55baf453-f629-4a18-9364-b6aee3f50dad   53.69GB
+
 # nvme netapp ontapdevices -o json
 {
-"ONTAPdevices" : [
+   "ONTAPdevices" : [
    {
-       "Device" : "/dev/nvme0n1",
-       "Vserver" : "vs_141_nvme_test",
-       "Namespace_Path" : "/vol/vol_test2/ns_test2",
-       "NSID" : 2,
-       "UUID" : "e6a2dde1-0bb0-40ac-9c3b-409c42c390e1",
-      "Size" : "107.37GB",
-       "LBA_Data_Size" : 4096,
-       "Namespace_Size" : 26214400
-   },
-   {
-        "Device" : "/dev/nvme0n2",
-        "Vserver" : "vs_141_nvme_test",
-        "Namespace_Path" : "/vol/vol_test3/ns_test3",
-        "NSID" : 3,
-        "UUID" : "9844aa67-e044-4f7f-86b5-cb4e10a0b8b8",
-        "Size" : "107.37GB",
-        "LBA_Data_Size" : 4096,
-        "Namespace_Size" : 26214400
+        Device" : "/dev/nvme0n1",
+        "Vserver" : "vs_nvme_10",
+        "Namespace_Path" : "/vol/rhel_141_vol_10_0/ol_157_ns_10_0",
+         "NSID" : 1,
+         "UUID" : "55baf453-f629-4a18-9364-b6aee3f50dad",
+         "Size" : "53.69GB",
+         "LBA_Data_Size" : 4096,
+         "Namespace_Size" : 13107200
     }
 ]
-
 ----
 
 == Enabling 1MB I/O Size for Broadcom NVMe/FC
