@@ -22,9 +22,9 @@ NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 8.2. Oracle Linux 8.
 
 * Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. Use the HBA vendor provided external auto-connect scripts.
 
-* By default, round-robin load balancing is not enabled in NVMe Multipath. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 8.2.
+* By default, round-robin load balancing is not enabled in NVMe Multipath. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on Oracle Linux 8.2.
 
-* There is no sanlun support for NVMe/FC and, as a consequence, no LUHU support for NVMe/FC on Oracle Linux 8.2. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.
+* There is no sanlun support for NVMe/FC and, as a consequence, no Linux Unified Host Utilities (LUHU) support for NVMe/FC on Oracle Linux 8.2. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.
 
 == Enabling NVMe/FC
 
@@ -52,7 +52,7 @@ nvme-cli-1.9-5.el8.x86_64
 ACTION=="add", SUBSYSTEM=="nvme-subsystem", ATTR{model}=="NetApp ONTAP Controller", ATTR{iopolicy}="round-robin"
 ----
 
-. On the OL 8.2 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.
+. On the Oracle Linux 8.2 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.
 +
 ----
 # cat /etc/nvme/hostnqn
