@@ -20,7 +20,7 @@ NVMe/FC is supported on ONTAP 9.6 or later for Oracle Linux 8.2. Oracle Linux 8.
 
 == Known limitations
 
-There is no sanlun support for NVMe/FC and, as a consequence, no Linux Unified Host Utilities (LUHU) support for NVMe/FC on Oracle Linux 8.2. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.
+None.
 
 == Enabling NVMe/FC
 
@@ -32,7 +32,7 @@ There is no sanlun support for NVMe/FC and, as a consequence, no Linux Unified H
 # uname -r
 5.4.17-2011.1.2.el8uek.x86_64
 ----
-. Upgrade the nvme-cli package.
+. Upgrade the nvme-cli package. The native nvme-cli package contains the NVMe/FC auto-connect scripts, ONTAP udev rule which enables round-robin load balancing for NVMe Multipath as well as the NetApp plug-in for ONTAP namespaces.
 +
 ----
 # rpm -qa|grep nvme-cli
@@ -56,9 +56,6 @@ vs_ol_nvme
 ----
 +
 If the +hostnqn+ strings do not match, you should use the vserver modify command to update the host NQN string on your corresponding ONTAP array subsystem to match to host NQN string from etc/nvme/hostnqn on the host.
-
-. Reboot the host.
-
 
 == Configuring the Broadcom FC Adapter for NVMe/FC
 
