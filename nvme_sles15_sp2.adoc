@@ -16,37 +16,28 @@ summary: Describes how to configure NVMe/FC for SUSE Linux Enterprise Server 15 
 
 == Supportability
 
-NVMe/FC is supported on ONTAP 9.6 or later for the following versions of SLES:
+NVMe/FC is supported on ONTAP 9.6 and above with SLES15 SP2. SLES15 SP2 host can run both NVMe/FC, & FCP traffic through the same fibre channel initiator adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
 
-*	SLES15 SP2
-+
-SLES15 SP2 host can run both NVMe/FC, & FCP (FC-SCSI) traffic through the same fibre channel initiator adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
-+
 For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 
 ==	Known limitations
 
-None. Native NVMe/FC auto-connect scripts are included in the nvme-cli package. You can use the native inbox lpfc driver on SLES15 SP2.
+None.
 
 ==	Enabling NVMe/FC on SLES15 SP2
 
-.	Upgrade to SLES15 SP2 MU kernel-default-4.12.14-197.40.1. See the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix] for the most current list of supported versions.
+. Upgrade to the recommended SLES15 SP2 MU kernel version.
 +
-----
-# uname -r
-5.3.18-24.9-default
-----
-
-.	Upgrade to nvme-cli-1.8.1-6.9.1 MU package.
+.	Upgrade the native nvme-cli package.
 +
-This nvme-cli package contains the native NVMe/FC auto-connect scripts, so you do not need to install the external NVMe/FC auto-connect scripts provided by Broadcom on the SLES15 SP2 host.  This package also includes the ONTAP udev rule which enables round-robin load balancing for NVMe multipath, and the NetApp plug-in for ONTAP devices.
+This native nvme-cli package contains the NVMe/FC auto-connect scripts, ONTAP udev rule which enables round-robin load balancing for NVMe Multipath as well as the NetApp plug-in for ONTAP namespaces.
 +
 ----
 # rpm -qa|grep nvme-cli
 nvme-cli-1.10-2.38.x86_64
 ----
 
-.	On the SLES15 SP2 host, check the host NQN string at `/etc/nvme/hostnqn` and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.
+.	On the SLES15 SP2 host, check the host NQN string at `/etc/nvme/hostnqn` and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array. For example:
 +
 ----
 # cat /etc/nvme/hostnqn
@@ -54,9 +45,9 @@ nqn.2014-08.org.nvmexpress:uuid:3ca559e1-5588-4fc4-b7d6-5ccfb0b9f054
 ----
 +
 ----
-*> vserver nvme subsystem host show -vserver vs_fcnvme_145
+::> vserver nvme subsystem host show -vserver vs_fcnvme_145
 Vserver Subsystem Host NQN
-------- --------- -------------------------------------- -----------
+------- --------- ----------------------------------------------------------
 vs_fcnvme_145
 nvme_145_1
 nqn.2014-08.org.nvmexpress:uuid:c7b07b16-a22e-41a6-a1fd-cf8262c8713f
@@ -93,8 +84,8 @@ Emulex LightPulse LPe32002-M2 2-Port 32Gb Fibre Channel Adapter
 +
 ----
 # cat /sys/class/scsi_host/host*/fwrev
-12.6.182.8, sli-4:2:c
-12.6.182.8, sli-4:2:c
+12.6.240.40, sli-4:2:c
+12.6.240.40, sli-4:2:c
 ----
 +
 ----
@@ -138,6 +129,17 @@ LS XMIT: Err 00000000 CMPL: xb 00000000 Err 00000000
 Total FCP Cmpl 000000003ceb594f Issue 000000003ce65dbe OutIO fffffffffffb046f
 abort 00000bd2 noxri 00000000 nondlp 00000000 qdepth 00000000 wqerr 00000000 err 00000000
 FCP CMPL: xb 000014f4 Err 00012abd
+NVME Initiator Enabled
+XRI Dist lpfc1 Total 6144 IO 5894 ELS 250
+NVME LPORT lpfc1 WWPN x100000109b579d5f WWNN x200000109b579d5f DID x011b00 ONLINE
+NVME RPORT WWPN x208300a098dfdd91 WWNN x208100a098dfdd91 DID x010c03 TARGET DISCSRVC ONLINE
+NVME RPORT WWPN x208200a098dfdd91 WWNN x208100a098dfdd91 DID x012a03 TARGET DISCSRVC ONLINE
+NVME Statistics
+LS: Xmt 0000000e50 Cmpl 0000000e50 Abort 00000000
+LS XMIT: Err 00000000 CMPL: xb 00000000 Err 00000000
+Total FCP Cmpl 000000003c9859ca Issue 000000003c93515e OutIO fffffffffffaf794
+abort 00000b73 noxri 00000000 nondlp 00000000 qdepth 00000000 wqerr 00000000 err 00000000
+FCP CMPL: xb 0000159d Err 000135c3
 ----
 
 ==	Validating NVMe/FC
