@@ -20,7 +20,7 @@ NVMe/FC is supported on ONTAP 9.6 or later for the following versions of SLES:
 
 *	SLES15 SP1
 +
-SLES15 SP1 host can run both NVMe/FC, & FCP (FC-SCSI) traffic through the same fibre channel initiator adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
+SLES15 SP1 host can run both NVMe/FC, & FCP traffic through the same fibre channel initiator adapter ports. See the link:https://hwu.netapp.com/Home/Index[Hardware Universe] for a list of supported FC adapters and controllers.
 +
 For the most current list of supported configurations & versions, see the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix].
 
@@ -30,14 +30,9 @@ None. Native NVMe/FC auto-connect scripts are included in the nvme-cli package. 
 
 ==	Enabling NVMe/FC on SLES15 SP1
 
-.	Upgrade to SLES15 SP1 MU kernel-default-4.12.14-197.40.1. See the link:https://mysupport.netapp.com/matrix/[NetApp Interoperability Matrix] for the most current list of supported versions.
+.	Upgrade to the recommended SLES15 SP2 MU kernel
 +
-----
-# uname -r
-4.12.14-197.40-default
-----
-
-.	Upgrade to nvme-cli-1.8.1-6.9.1 MU package.
+.	Upgrade to the recommended nvme-cli MU version.
 +
 This nvme-cli package contains the native NVMe/FC auto-connect scripts, so you do not need to install the external NVMe/FC auto-connect scripts provided by Broadcom on the SLES15 SP1 host.  This package also includes the ONTAP udev rule which enables round-robin load balancing for NVMe multipath, and the NetApp plug-in for ONTAP devices.
 +
@@ -46,7 +41,7 @@ This nvme-cli package contains the native NVMe/FC auto-connect scripts, so you d
 nvme-cli-1.8.1-6.9.1.x86_64
 ----
 
-.	On the SLES15 SP1 host, check the host NQN string at `/etc/nvme/hostnqn` and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.
+.	On the SLES15 SP1 host, check the host NQN string at `/etc/nvme/hostnqn` and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array. For example:
 +
 ----
 # cat /etc/nvme/hostnqn
