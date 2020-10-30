@@ -1192,25 +1192,25 @@
 <p class="page-details">
   
     
-    <time datetime="2020-09-15 08:33:31 +0000">09/15/2020</time>
+    <time datetime="2020-10-01 19:00:54 +0000">10/01/2020</time>
     
   
 
 <span>Contributors
-  
-  <a target="_blank" href="https://github.com/netapp-cplumer">
-    <img  class="avatar avatar-small"
-          alt="netapp-cplumer"
-          width="20" height="20"
-          src="https://avatars3.githubusercontent.com/u/62605832?v=4"
-          style="border-radius: 50%;"/>
-  </a>
   
   <a target="_blank" href="https://github.com/ciarm">
     <img  class="avatar avatar-small"
           alt="ciarm"
           width="20" height="20"
           src="https://avatars1.githubusercontent.com/u/68733805?v=4"
+          style="border-radius: 50%;"/>
+  </a>
+  
+  <a target="_blank" href="https://github.com/netapp-cplumer">
+    <img  class="avatar avatar-small"
+          alt="netapp-cplumer"
+          width="20" height="20"
+          src="https://avatars3.githubusercontent.com/u/62605832?v=4"
           style="border-radius: 50%;"/>
   </a>
   
@@ -1243,10 +1243,10 @@
 <p>Native NVMe/FC auto-connect scripts are not available in the nvme-cli package. Use the HBA vendor provided external auto-connect scripts.</p>
 </li>
 <li>
-<p>By default, round-robin load balancing is not enabled. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on OL 7.8.</p>
+<p>By default, round-robin load balancing is not enabled in NVMe Multipath. You must write a udev rule to enable this functionality. Steps are provided in the section on Enabling NVMe/FC on Oracle Linux 7.8.</p>
 </li>
 <li>
-<p>There is no sanlun support for NVMe/FC and, as a consequence, no LUHU support for NVMe/FC on Oracle Linux 7.8. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.</p>
+<p>There is no sanlun support for NVMe/FC and, as a consequence, no Linux Unified Host Utilities (LUHU) support for NVMe/FC on Oracle Linux 7.8. Use the ONTAP command output available as part of the NetApp plug-in included in the native nvme-cli.</p>
 </li>
 </ul>
 </div>
@@ -1289,7 +1289,7 @@ ACTION=="add", SUBSYSTEM=="nvme-subsystem", ATTR{model}=="NetApp ONTAP Controlle
 </div>
 </li>
 <li>
-<p>On the OL 7.8 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.</p>
+<p>On the Oracle Linux L 7.8 host, check the host NQN string at /etc/nvme/hostnqn and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/nvme/hostnqn

@@ -1207,7 +1207,7 @@
 <p class="page-details">
   
     
-    <time datetime="2020-09-10 10:22:42 +0000">09/10/2020</time>
+    <time datetime="2020-10-14 11:59:38 +0000">10/14/2020</time>
     
   
 
@@ -1252,7 +1252,7 @@
 <li>
 <p>SLES15 SP1</p>
 <div class="paragraph">
-<p>SLES15 SP1 host can run both NVMe/FC, &amp; FCP (FC-SCSI) traffic through the same fibre channel initiator adapter ports. See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers.</p>
+<p>SLES15 SP1 host can run both NVMe/FC, &amp; FCP traffic through the same fibre channel initiator adapter ports. See the <a href="https://hwu.netapp.com/Home/Index">Hardware Universe</a> for a list of supported FC adapters and controllers.</p>
 </div>
 <div class="paragraph">
 <p>For the most current list of supported configurations &amp; versions, see the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a>.</p>
@@ -1276,16 +1276,10 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Upgrade to SLES15 SP1 MU kernel-default-4.12.14-197.40.1. See the <a href="https://mysupport.netapp.com/matrix/">NetApp Interoperability Matrix</a> for the most current list of supported versions.</p>
-<div class="listingblock">
-<div class="content">
-<pre># uname -r
-4.12.14-197.40-default</pre>
-</div>
-</div>
+<p>Upgrade to the recommended SLES15 SP2 MU kernel</p>
 </li>
 <li>
-<p>Upgrade to nvme-cli-1.8.1-6.9.1 MU package.</p>
+<p>Upgrade to the recommended nvme-cli MU version.</p>
 <div class="paragraph">
 <p>This nvme-cli package contains the native NVMe/FC auto-connect scripts, so you do not need to install the external NVMe/FC auto-connect scripts provided by Broadcom on the SLES15 SP1 host.  This package also includes the ONTAP udev rule which enables round-robin load balancing for NVMe multipath, and the NetApp plug-in for ONTAP devices.</p>
 </div>
@@ -1297,7 +1291,7 @@ nvme-cli-1.8.1-6.9.1.x86_64</pre>
 </div>
 </li>
 <li>
-<p>On the SLES15 SP1 host, check the host NQN string at <code>/etc/nvme/hostnqn</code> and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array.</p>
+<p>On the SLES15 SP1 host, check the host NQN string at <code>/etc/nvme/hostnqn</code> and verify that it matches the host NQN string for the corresponding subsystem on the ONTAP array. For example:</p>
 <div class="listingblock">
 <div class="content">
 <pre># cat /etc/nvme/hostnqn
